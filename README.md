@@ -2,7 +2,7 @@
 
 [![PHP](https://img.shields.io/badge/language-PHP-787cb5.svg?style=plastic)](https://en.wikipedia.org/wiki/PHP) 
 
-Authentication service, similar to [KeyAuth](https://keyauth.win/). 
+Authentication service, similar to [KeyAuth](https://keyauth.win/). Based off of [php-mysql-example](https://github.com/UntitledEntity/php-mysql-example).
 
 ## Please Note
 This was not intended for commercial use. If that is what you are looking for, I suggest [KeyAuth](https://keyauth.win/). 
