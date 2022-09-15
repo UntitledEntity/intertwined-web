@@ -5,7 +5,6 @@ session_start();
 require '../../includes/mysql_connect.php';
 include '../../includes/functions.php';
 
-// this is a really REALLY bad keygen api
 if (isset($_GET['key']))
 {
 	$key = $_GET['key'];

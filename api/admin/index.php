@@ -1,6 +1,6 @@
 <?php
 
-session_start(); 
+session_start();
 
 require '../../includes/mysql_connect.php';
 include '../../includes/functions.php';
@@ -26,10 +26,10 @@ switch ($_GET['type'])
 {
     case 'getusers':
         $appid = $application_data->appid;
-        
+
         // find user
         $result = mysqli_query($mysql_link, "SELECT * FROM application_users WHERE application = '$appid'");
-    
+
         // unable to find user
         if (mysqli_num_rows($result) === 0)
         {
@@ -42,28 +42,28 @@ switch ($_GET['type'])
         }
 
         die(json_encode($rows));
-        
+
     case 'deleteuser':
         $user = sanitize($_GET['user']);
         if (!isset($user))
         {
             die("No user");
         }
-        
+
         die(delete_application_account($user));
-        
+
     case 'genlicense':
         $appid = $application_data->appid;
-        
+
         $expiry = sanitize($_GET['expiry']);
         $level = sanitize($_GET['level']);
-        
+
         $amount = sanitize($_GET['amount']);
         if (!isset($amount))
         {
             $amount = 1;
         }
-        
+
         if (!is_numeric($amount))
         {
             die("Invalid amount format (must be numeric)");
@@ -80,9 +80,9 @@ switch ($_GET['type'])
             $key = generate_application_license($appid, $expiry, $amount);
             array_push($keys, $key);
         }
-        
+
         die(json_encode($keys));
-        
+
     case 'userdata':
         $appid = $application_data->appid;
 
@@ -94,7 +94,7 @@ switch ($_GET['type'])
 
         // find user
         $result = mysqli_query($mysql_link, "SELECT * FROM application_users WHERE username = '$user' and application = '$appid'");
-    
+
         // unable to find user
         if (mysqli_num_rows($result) === 0)
         {
@@ -142,18 +142,18 @@ switch ($_GET['type'])
         }
 
         $params = sanitize($_GET['params']);
-     
+
         $url = $link .= $params;
-        
+
         $ch = curl_init();
-        
+
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         $response = curl_exec($ch);
 
-        curl_close($ch);     
-        
+        curl_close($ch);
+
         die($response);
 
     case 'deletewebhook':

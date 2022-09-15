@@ -1,11 +1,11 @@
 
 <!DOCTYPE html>
 <html>
-    
+
 <head>
 	<title>Intertwined</title>
 	<meta charset="UTF-8">
-	
+
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon">
@@ -19,9 +19,9 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800&display=swap">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800&display=swap">
 	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-	
+
 	<script src="assets/javascript/smoothscroll.js"></script>
-	
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -29,7 +29,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="static/js/smoothscroll.js"></script>
 	<script src="https://cdn.sellix.io/static/js/embed.js" ></script>
-	
+
 	<script>
 	$("#navbarNav").on("click", "a", function() {
 		$(".navbar-toggle").click();
@@ -45,7 +45,7 @@
 			<div id="top"></div>
 			<div class="collapse navbar-collapse justify-content-around" id="navbarNav">
 				<ul class="navbar-nav menu-navbar-nav">
-					
+
 					<li class="nav-item">
 						<a class="nav-link" href="api/docs/">
 							<p class="nav-link-menu">API documentation</p>
@@ -67,38 +67,38 @@
 	</nav>
 
     <div class="wrapper">
-		
+
         <div class="header">
 			<div class="container header-container fade-in">
 				<div class="col-lg-6 header-title-section text-center">
 					<h1 class="header-title">Intertwined</h1>
-					<p class="header-title-text">Intertwined helps you set up your web servers securely, safely, and easily. We also offer ourselves as a secure database for your web, pc, and mobile applications with our API. We are dedicated to our users, which is why we hold ourselves to the highest standard of security.</p>
+					<p class="header-title-text">Intertwined is an <a href="https://github.com/UntitledEntity/intertwined-web">open-source</a> authentication service, that helps you set up your web and client applications securely.</p>
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="why-us">
 			<div class="container header-container fade-in">
 				<div class="col-lg-6 header-title-section text-center">
 					<h1 class="header-title">Why us?</h1>
-					
+
 					<p class="header-title-text">We offer end-to-end encryption, which ensures your data will be protected from web point A to web point B.</p>
-					
+
 					<div class="header-img-section">
 					    <img src="assets/images/end-to-end.png" alt="End-To-End">
 					</div>
-					
-					<p class="header-title-text">None of our passwords are stored in plain text format. They're all hashed with <a href="https://en.wikipedia.org/wiki/Bcrypt">bcrypt</a>.</p>
-					
-					<p class="header-title-text">Our firewall mitigates DDoS attacks and protects against data leaks swiftly and rapidly.</p>
-						
+
+					<p class="header-title-text">We hash our passwords and HWIDs with <a href="https://en.wikipedia.org/wiki/Bcrypt">Bcrypt</a>. </p>
+
+					<p class="header-title-text">We use <a href="https://www.cloudflare.com/">cloudflare</a> to help mitigate agianst DDOS attacks.</p>
+
 				</div>
 			</div>
 		</div>
-		
-		
 
-		
+
+
+
 		<div class="footer-section">
 			<div class="container footer-container">
 				<div class="col-lg-3 col-md-6 footer-subsection">
@@ -109,7 +109,7 @@
 							<li><a href="privacy">Privacy</a></li>
 							<li><a href="credits">Credits</a></li>
 						</ul>
-	
+
 					</div>
 				</div>
 			</div>
@@ -119,7 +119,7 @@
 		</div>
 	</div>
 </div>
-    
+
     <script type="text/javascript">
 	$(window).scroll(function() {
 		if($(this).scrollTop() > 20) {
@@ -129,7 +129,7 @@
 		}
 	});
 	</script>
-    
+
 </body>
 
 </html>

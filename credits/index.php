@@ -45,8 +45,6 @@
                     <h1 class="header-title">Error Pages</h1>
                     <p class="header-title-text">The error pages were all based off of <a href="https://github.com/gaoryrt/retro-404">gaoryrt's retro 404 error pages</a></p>
 					
-                    <h1 class="header-title">Logo</h1>
-                    <p class="header-title-text">The logo was created by <a href="https://www.instagram.com/r3ntz/">r3ntz</a></p>
 					
 
 				</div>
