@@ -33,6 +33,14 @@ if (isset($_POST['logout']))
     die();
 }
 
+if (isset($_POST['apply'])) {
+
+	$enabled = sanitize($_POST['enabled']) == "true" ? 1 : 0;
+	$appid = $appinfo->appid;
+	
+	$result = mysqli_query($mysql_link, "UPDATE user_applications SET enabled = '$enabled' WHERE appid = '$appid'");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -101,8 +109,19 @@ if (isset($_POST['logout']))
 				    Enckey: <blur><?php echo $appinfo->enckey; ?></blur>
 				</span>
 
-	
-					
+				<span class="dash100-form-text">Enabled</span>
+				<div class="wrap-input100 m-b-16">
+                    <select class="input100" name="enabled">
+                        <option class="option100" value="true">True</option>
+                        <option class="option100" value="false">False</option>
+					</select>
+                </div>
+
+				<div class="container-dash100-form-btn m-t-17">
+					<button name="apply" class="dash100-form-btn">
+						Apply
+					</button>
+				</div>
 
 
             </form>
@@ -112,9 +131,9 @@ if (isset($_POST['logout']))
 
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
-<?php
-
-    
-?>
+<script> 
+document.getElementById('enabled').innerHTML = 
+  <?php echo $appinfo->enabled ? "true" : "false"; ?>;
+</script>
 
 </html>

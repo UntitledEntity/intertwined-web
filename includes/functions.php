@@ -513,6 +513,17 @@ function create_application($owner)
     return $appid;
 }
 
+function check_app_enabled($appid) 
+{
+    global $mysql_link;
+
+    $appid = sanitize($appid);
+
+    $result = mysqli_query($mysql_link, "SELECT * FROM user_applications WHERE appid = '$appid' and enabled = 1");
+    
+    return mysqli_num_rows($result) > 0;
+}
+
 function login_application($appid, $user, $pass)
 {
     // get the mysql_link
@@ -848,11 +859,13 @@ function get_application($user)
     {
         $appid = $row['appid'];
         $enckey = $row['enckey'];
+        $enabled = $row['enabled'];
     }
     
     return json_encode(array(
         "appid" => $appid,
-        "enckey" => $enckey
+        "enckey" => $enckey,
+        "enabled" => $enabled 
     ));
 }
 

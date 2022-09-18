@@ -15,6 +15,15 @@ switch ($_POST['type'])
     case 'init':
 
         $appid = sanitize($_POST['appid']);
+
+        if (!check_app_enabled($appid)) 
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Application disabled."
+            )));
+        }
+
         if (!isset($appid))
         {
            die(json_encode(array(
@@ -56,6 +65,14 @@ switch ($_POST['type'])
         $pass = sanitize($_POST['pass']);
         $appid = $session_data->appid;
 
+        if (!check_app_enabled($appid)) 
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Application disabled."
+            )));
+        }
+
 
         $login_resp = login_application($appid, $user, $pass);
         if ($login_resp !== 'success')
@@ -94,6 +111,15 @@ switch ($_POST['type'])
         $pass = sanitize($_POST['pass']);
         $license = sanitize($_POST['license']);
         $appid = $session_data->appid;
+
+
+        if (!check_app_enabled($appid)) 
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Application disabled."
+            )));
+        }
 
 
         $register_resp = register_application($appid, $user, $pass, $license);
