@@ -131,9 +131,4 @@ if (isset($_POST['apply'])) {
 
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
-<script> 
-document.getElementById('enabled').innerHTML = 
-  <?php echo $appinfo->enabled ? "true" : "false"; ?>;
-</script>
-
 </html>
