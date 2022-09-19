@@ -1,6 +1,6 @@
 <?php
 
-if (empty($_POST)) {
+if (empty($_POST) && empty($_GET)) {
   die(header("location: https://intertwined.solutions/api/docs"));  
 }
 
@@ -10,11 +10,11 @@ require '../includes/mysql_connect.php';
 include '../includes/functions.php';
 
 
-switch ($_POST['type'])
+switch ($_POST['type'] ?? $_GET['type'])
 {
     case 'init':
 
-        $appid = sanitize($_POST['appid']);
+        $appid = sanitize($_POST['appid'] ?? $_GET['appid']);
 
         if (!check_app_enabled($appid)) 
         {
@@ -47,7 +47,7 @@ switch ($_POST['type'])
         )));
 
     case 'login':
-        $sessionid = sanitize($_POST['sid']);
+        $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
 
         $resp = check_session_open($sessionid);
         if ($resp === false || !isset($resp))
@@ -61,8 +61,8 @@ switch ($_POST['type'])
 
         $session_data = json_decode($resp);
 
-        $user = sanitize($_POST['user']);
-        $pass = sanitize($_POST['pass']);
+        $user = sanitize($_POST['user'] ?? $_GET['user']);
+        $pass = sanitize($_POST['pass'] ?? $_GET['pass']);
         $appid = $session_data->appid;
 
         if (!check_app_enabled($appid)) 
@@ -75,7 +75,7 @@ switch ($_POST['type'])
 
 
         $login_resp = login_application($appid, $user, $pass);
-        if ($login_resp !== 'success')
+        if (!is_array($login_resp))
         {
             die(json_encode(array(
                 "success" => false,
@@ -93,7 +93,7 @@ switch ($_POST['type'])
 
     case 'register':
 
-        $sessionid = sanitize($_POST['sid']);
+        $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
 
         $resp = check_session_open($sessionid);
         if ($resp === false || !isset($resp))
@@ -107,9 +107,9 @@ switch ($_POST['type'])
 
         $session_data = json_decode($resp);
 
-        $user = sanitize($_POST['user']);
-        $pass = sanitize($_POST['pass']);
-        $license = sanitize($_POST['license']);
+        $user = sanitize($_POST['user'] ?? $_GET['user']);
+        $pass = sanitize($_POST['pass'] ?? $_GET['pass']);
+        $license = sanitize($_POST['license'] ?? $_GET['license']);
         $appid = $session_data->appid;
 
 
@@ -141,7 +141,7 @@ switch ($_POST['type'])
         )));
 
     case 'webhook':
-        $sessionid = sanitize($_POST['sid']);
+        $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
 
         $resp = check_session_open($sessionid);
         if ($resp === false || !isset($resp))
@@ -152,8 +152,8 @@ switch ($_POST['type'])
             )));
         }
 
-        $webhookid = sanitize($_POST['whid']);
-        $params = sanitize($_POST['params']);
+        $webhookid = sanitize($_POST['whid'] ?? $_GET['whid']);
+        $params = sanitize($_POST['params'] ?? $_GET['params']);
 
         $baselink = get_webhook($webhookid);
 
@@ -174,7 +174,7 @@ switch ($_POST['type'])
         )));
 
     case 'close':
-        $sessionid = sanitize($_POST['sid']);
+        $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
         close_session($sessionid);
 
         die(json_encode(array(
