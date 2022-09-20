@@ -16,7 +16,6 @@ if ($appinfo === 'no_application')
 	header('Location: '.$_SERVER['REQUEST_URI']);
 }
 
-
 $appinfo = json_decode($appinfo);
 $appid = $appinfo->appid;
 
@@ -26,12 +25,12 @@ if ($_SESSION["user_data"]["level"] === 5)
     $showadmin = "dash100-form-text";
 }
 
-$result = mysqli_query($mysql_link, "SELECT * FROM licenses WHERE application = '$appid'");
+$result = mysqli_query($mysql_link, "SELECT * FROM application_users WHERE application = '$appid'");
 
 // unable to find user
 if (mysqli_num_rows($result) === 0)
 {
-    die("No licenses");
+    die("No application_users");
 }
 
 $rows = array();
@@ -39,8 +38,15 @@ while ($r = mysqli_fetch_assoc($result)) {
     $rows[] = $r;
 }
 
-$licenses = json_encode($rows);
+$application_users = json_encode($rows);
 
+if (isset($_POST['resetpassword']))
+{
+    $password = password_hash(sanitize($_POST['pass']), PASSWORD_BCRYPT);
+    $user = sanitize($_POST['user']);
+
+    mysqli_query($mysql_link, "UPDATE application_users SET password = '$password' WHERE username = '$user' and application = '$appid'");
+}
 
 if (isset($_POST['logout']))
 {
@@ -109,45 +115,28 @@ if (isset($_POST['logout']))
 			<form method="post">
 
                 <span class="dash100-form-title">
-				    Licenses
+				    Users
 				</span>
 
-				<div class="wrap-input100 validate-input m-b-16" data-validate = "Level required">
-					<input class="input100" type="text" name="level" placeholder="Level">
+				<div class="wrap-input100 validate-input m-b-16" data-validate = "user required">
+					<input class="input100" type="user" name="user" placeholder="User">
 					<span class="focus-input100"></span>
 				</div>
 
-
-				<span class="dash100-form-text">License expiration</span>
-				<div class="wrap-input100 m-b-16">
-                    <select class="input100" name="expiration">
-                        <option class="option100" value="month">1 month</option>
-                        <option class="option100" value="half-year">6 months</option>
-						<option class="option100" value="year">1 year</option>
-						<option class="option100" value="never">Never</option>
-					</select>
-                </div>
-
-                <div class="wrap-input100 validate-input m-b-16" data-validate = "Amount required">
-					<input class="input100" type="text" name="amount" placeholder="Amount">
+                <div class="wrap-input100 validate-input m-b-16" data-validate = "new password required">
+					<input class="input100" type="pass" name="pass" placeholder="New password">
 					<span class="focus-input100"></span>
 				</div>
 
                 <div class="container-dash100-form-btn m-t-17">
-					<button name="genlicense" class="dash100-form-btn">
-						Generate
-					</button>
-				</div>
-
-                <div class="container-dash100-form-btn m-t-17">
-					<button name="downloadlicenses" class="dash100-form-btn">
-						Download all licenes
+					<button name="resetpassword" class="dash100-form-btn">
+						Reset password
 					</button>
 				</div>
 
             </form>
 
-				<span class="dash100-form-text"><?php echo $licenses; ?></span>
+			<span class="dash100-form-text"><?php echo $application_users; ?></span>
 		</div>
 	</div>
 </body>
@@ -155,47 +144,6 @@ if (isset($_POST['logout']))
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
 <?php
-
-    if (isset($_POST['downloadlicenses']))
-    {
-        echo "<meta http-equiv='Refresh' Content='0; url=download.php'>";
-    }
-
-    if (isset($_POST['genlicense']))
-    {
-        $expiry = sanitize($_POST['expiration']);
-        $level = sanitize($_POST['level']);
-
-        $amount = sanitize($_POST['amount']);
-        if (!is_numeric($amount) || $amount < 1)
-        {
-            error("Amount must be numeric");
-        }
-
-        $keys = "";
-        for ($x = 1; $x <= $amount; $x++)
-        {
-            $key = generate_application_license($appinfo->appid, $expiry, $amount);
-
-            if ($x === 1)
-                $keys = $key;
-            else
-                $keys = $keys .= ", $key";
-        }
-
-        echo '<script type=\'text/javascript\'>
-
-        navigator.clipboard.writeText(\'' . addslashes($keys) . '\')
-
-        </script>
-        ';
-
-        if ($amount === 1)
-            notif("Copied license to clipboard");
-        else
-            notif("Copied licenses to clipboard");
-    }
-
 
 ?>
 

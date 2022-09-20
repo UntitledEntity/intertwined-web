@@ -9,7 +9,15 @@ if (!isset($_SESSION["user_data"]))
 	die();
 }
 
-$appinfo = json_decode(get_application($_SESSION["user_data"]["user"]));
+$appinfo = get_application($_SESSION["user_data"]["user"]);
+if ($appinfo === 'no_application')
+{
+	create_application($_SESSION["user_data"]["user"]);
+	header('Location: '.$_SERVER['REQUEST_URI']);
+}
+
+
+$appinfo = json_decode($appinfo);
 
 $appid = $appinfo->appid;
 

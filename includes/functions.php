@@ -847,11 +847,17 @@ function get_application($user)
 
     $user = sanitize($user);  
     
+    $result = mysqli_query($mysql_link, "SELECT * FROM users WHERE username = '$user'");
+    if (mysqli_num_rows($result) < 1)
+    {
+        return 'invalid_user';
+    }
+
     // check application
     $result = mysqli_query($mysql_link, "SELECT * FROM user_applications WHERE owner = '$user'");
     if (mysqli_num_rows($result) < 1)
     {  
-        return 'invalid_owner';
+        return 'no_application';
     }
     
     // get session data
