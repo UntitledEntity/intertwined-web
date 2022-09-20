@@ -61,6 +61,7 @@ $license_data = json_decode($license_data);
             <a href="application" class="dash100-form-text">Application</a>
             <a href="licenses" class="dash100-form-text">Licenses</a>
 			<a href="files" class="dash100-form-text">Files</a>
+			<a href="users" class="dash100-form-text">Users</a>
             <a href="admin" class='<?php echo $showadmin; ?>'>Admin</a>
             
         </div>
