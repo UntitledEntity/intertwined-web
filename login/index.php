@@ -56,7 +56,7 @@ if (isset($_SESSION["user_data"]))
 					</div>
 					
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Password is required">
-						<input class="input100" type="text" name="pass" placeholder="Password">
+						<input class="input100" type="password" name="pass" placeholder="Password">
 						<span class="focus-input100"></span>
 					</div>
 					

@@ -27,25 +27,9 @@ if ($_SESSION["user_data"]["level"] === 5)
 
 $result = mysqli_query($mysql_link, "SELECT * FROM application_users WHERE application = '$appid'");
 
-// unable to find user
-if (mysqli_num_rows($result) === 0)
-{
-    die("No application_users");
-}
-
 $rows = array();
 while ($r = mysqli_fetch_assoc($result)) {
     $rows[] = $r;
-}
-
-$application_users = json_encode($rows);
-
-if (isset($_POST['resetpassword']))
-{
-    $password = password_hash(sanitize($_POST['pass']), PASSWORD_BCRYPT);
-    $user = sanitize($_POST['user']);
-
-    mysqli_query($mysql_link, "UPDATE application_users SET password = '$password' WHERE username = '$user' and application = '$appid'");
 }
 
 if (isset($_POST['logout']))
@@ -82,6 +66,12 @@ if (isset($_POST['logout']))
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800&display=swap">
 	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
+    <!-- prevent resubmission -->
+    <script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+    </script>
 </head>
 
 <body>
@@ -119,10 +109,28 @@ if (isset($_POST['logout']))
 				    Users
 				</span>
 
-				<div class="wrap-input100 validate-input m-b-16" data-validate = "user required">
-					<input class="input100" type="user" name="user" placeholder="User">
-					<span class="focus-input100"></span>
-				</div>
+                <span class="dash100-form-text">Selected user</span>
+				<div class="wrap-select100 m-b-16">
+                   	<select class="select100" name="user">
+                        <?php 
+
+							if (mysqli_num_rows($result) === 0)
+							{
+								echo "<option class=\"option100\" value=\"nousers\">No available users</option>";
+							}
+
+
+                            for ($i = 0; $i < count($rows); $i++) {
+                                $row = $rows[$i];     
+                                $username = $row['username'];
+
+                                echo "<option class=\"option100\" value=\"$i\">$username</option>";
+                            }
+
+                        ?>
+					</select>
+					<span class="focus-select100"></span>
+                </div>
 
                 <div class="wrap-input100 validate-input m-b-16" data-validate = "new password required">
 					<input class="input100" type="pass" name="pass" placeholder="New password">
@@ -135,17 +143,73 @@ if (isset($_POST['logout']))
 					</button>
 				</div>
 
-            </form>
+				</br>
 
-			<span class="dash100-form-text"><?php echo $application_users; ?></span>
+				<div class="container-dash100-form-btn m-t-17">
+					<button name="getdata" class="dash100-form-btn">
+						Copy userdata
+					</button>
+				</div>
+				
+				<div class="container-dash100-form-btn m-t-17">
+					<button name="ban" class="dash100-form-btn">
+						Ban
+					</button>
+				</div>
+
+				<div class="container-dash100-form-btn m-t-17">
+					<button name="unban" class="dash100-form-btn">
+						Unban
+					</button>
+				</div>
+
+            </form>
 		</div>
 	</div>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
+<!-- Button functions -->
 <?php
+	if (isset($_POST['resetpassword'])) {
+    	$password = password_hash(sanitize($_POST['pass']), PASSWORD_BCRYPT);
+    	$user = sanitize($rows[$_POST['user']]['username']);
 
+    	mysqli_query($mysql_link, "UPDATE application_users SET password = '$password' WHERE username = '$user' and application = '$appid'");
+	}
+
+	if (isset($_POST['getdata'])) {
+		$userdata = json_encode($rows[$_POST['user']]);
+
+		echo '<script type=\'text/javascript\'>
+
+        	navigator.clipboard.writeText(\'' . addslashes($userdata) . '\')
+
+        	</script>
+        	';
+
+		notif("User data copied to clipboard");
+	}
+
+	if (isset($_POST['ban'])) {
+
+		warning("Are you sure you want to ban this user? Please click again to ban this account.");
+        $_SESSION["timesclicked_ban"] += 1;
+    
+        if ($_SESSION["timesclicked_ban"] >= 2)
+        {
+			$user = sanitize($rows[$_POST['user']]['username']);
+
+    		mysqli_query($mysql_link, "UPDATE application_users SET banned = 1 WHERE username = '$user' and application = '$appid'");
+		}
+	}
+
+	if (isset($_POST['unban'])) {
+		$user = sanitize($rows[$_POST['user']]['username']);
+
+		mysqli_query($mysql_link, "UPDATE application_users SET banned = 0 WHERE username = '$user' and application = '$appid'");
+	}
 ?>
 
-</html>
+</html>	

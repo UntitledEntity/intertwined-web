@@ -53,12 +53,6 @@ a:hover {
   color: #ff4000c0;
 }
 
-.option100 {
-  width: 100%;
-  margin: 0 auto;
-  color: #152238;
-}
-
 blur {
   -webkit-filter: blur(4px); /* Chrome, Safari, Opera */
   filter: blur(4px);
@@ -232,6 +226,13 @@ iframe {
   display: block;
 }
 
+.option100 {
+  color: #c80000;
+
+  width: 100%;
+  display: block;
+}
+
 /*------------------------------------------------------------------
 [ Select ]*/
 
@@ -247,15 +248,18 @@ iframe {
 /*---------------------------------------------*/
 .select100 {
   font-family: Montserrat;
-  color: #ffffffc0;
+  color: #ff4000c0;
   line-height: 1.2;
   font-size: 18px;
 
   display: block;
   width: 100%;
-  background: transparent;
+  background: #152238;
   height: 62px;
   padding: 0 20px 0 38px;
+
+  border: 1px solid #ff4000c0;
+  border-radius: 3px;
 }
 /*------------------------------------------------------------------
 [ Focus Select ]*/
@@ -304,7 +308,7 @@ iframe {
 .wrap-input100 {
   width: 100%;
   position: relative;
-   background-color: #192841;
+  background-color: #192841;
   border: 1px solid transparent;
   border-radius: 3px;
 }
@@ -592,7 +596,6 @@ display: block;
     opacity: 1;
   }
 }
-
 
 /*//////////////////////////////////////////////////////////////////
 [ Responsive ]*/

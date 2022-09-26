@@ -524,6 +524,33 @@ function check_app_enabled($appid)
     return mysqli_num_rows($result) > 0;
 }
 
+function check_ban_application($appid, $user)
+{
+    // get the mysql_link
+    global $mysql_link;
+
+    // sanitize
+    $user = sanitize($user);
+    $appid = sanitize($appid);
+
+    // find user
+    $result = mysqli_query($mysql_link, "SELECT * FROM application_users WHERE username = '$user' and application = '$appid'");
+    
+    // unable to find user
+    if (mysqli_num_rows($result) === 0)
+    {
+        return -1;
+    }
+
+    // get user data
+    while ($row = mysqli_fetch_array($result))
+    {
+        $banned = $row['banned'];
+    }
+
+    return $banned;
+}
+
 function login_application($appid, $user, $pass)
 {
     // get the mysql_link
@@ -562,7 +589,7 @@ function login_application($appid, $user, $pass)
     {
         // ban the user if the hwid or ip is blacklisted
         // they already should be, but just in case
-        mysqli_query($mysql_link, "UPDATE application_users SET banned = '1' WHERE username = '$user'");
+        mysqli_query($mysql_link, "UPDATE application_users SET banned = '1' WHERE username = '$user' and application = '$appid'");
         return 'blacklisted';
     }
 

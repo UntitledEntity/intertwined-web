@@ -28,12 +28,6 @@ if ($_SESSION["user_data"]["level"] === 5)
 
 $result = mysqli_query($mysql_link, "SELECT * FROM licenses WHERE application = '$appid'");
 
-// unable to find user
-if (mysqli_num_rows($result) === 0)
-{
-    die("No licenses");
-}
-
 $rows = array();
 while ($r = mysqli_fetch_assoc($result)) {
     $rows[] = $r;
