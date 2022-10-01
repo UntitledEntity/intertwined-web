@@ -71,7 +71,7 @@
 			<div class="container header-container fade-in">
 				<div class="col-lg-6 header-title-section text-center">
 					<h1 class="header-title">Intertwined API documentation</h1>
-					<p class="header-title-text">Request type: POST</p>
+					<p class="header-title-text"><a href="https://github.com/UntitledEntity/intertwined-api-example">Python login example</a></p>
 				</div>
 			</div>
 		</div>
@@ -79,7 +79,8 @@
 		<div class="why-us">
 			<div class="container header-container fade-in">
 				<div class="col-lg-6 header-title-section text-center">
-		            
+	
+					
 		            <div id="init"></div>
 		            
 		            <br></br>
