@@ -172,11 +172,17 @@ if (isset($_POST['logout']))
 
 <!-- Button functions -->
 <?php
-	if (isset($_POST['resetpassword'])) {
-    	$password = password_hash(sanitize($_POST['pass']), PASSWORD_BCRYPT);
-    	$user = sanitize($rows[$_POST['user']]['username']);
+	if (isset($_POST['resetpassword'])) 
+	{
+		if (isset($_POST['pass'])) {
+			$password = password_hash(sanitize($_POST['pass']), PASSWORD_BCRYPT);
+    		$user = sanitize($rows[$_POST['user']]['username']);
 
-    	mysqli_query($mysql_link, "UPDATE application_users SET password = '$password' WHERE username = '$user' and application = '$appid'");
+    		mysqli_query($mysql_link, "UPDATE application_users SET password = '$password' WHERE username = '$user' and application = '$appid'");
+		}
+		else {
+			error("Password field empty");
+		}
 	}
 
 	if (isset($_POST['getdata'])) {
