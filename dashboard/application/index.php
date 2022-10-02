@@ -110,8 +110,8 @@ if (isset($_POST['apply'])) {
 				</span>
 
 				<span class="dash100-form-text">Enabled</span>
-				<div class="wrap-input100 m-b-16">
-                    <select class="input100" name="enabled">
+				<div class="wrap-select100 m-b-16">
+                    <select class="select100" name="enabled">
                         <option class="option100" value="true">True</option>
                         <option class="option100" value="false">False</option>
 					</select>

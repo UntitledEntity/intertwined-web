@@ -114,8 +114,8 @@ if (isset($_POST['logout']))
 
 
 				<span class="dash100-form-text">License expiration</span>
-				<div class="wrap-input100 m-b-16">
-                    <select class="input100" name="expiration">
+				<div class="wrap-select100 m-b-16">
+                    <select class="select100" name="expiration">
                         <option class="option100" value="month">1 month</option>
                         <option class="option100" value="half-year">6 months</option>
 						<option class="option100" value="year">1 year</option>
@@ -128,6 +128,14 @@ if (isset($_POST['logout']))
 					<span class="focus-input100"></span>
 				</div>
 
+                <span class="dash100-form-text">Format</span>
+				<div class="wrap-select100 m-b-16">
+                    <select class="select100" name="format">
+                        <option class="option100" value="text">Text</option>
+                        <option class="option100" value="json">JSON</option>
+					</select>
+                </div>
+
                 <div class="container-dash100-form-btn m-t-17">
 					<button name="genlicense" class="dash100-form-btn">
 						Generate
@@ -136,7 +144,13 @@ if (isset($_POST['logout']))
 
                 <div class="container-dash100-form-btn m-t-17">
 					<button name="downloadlicenses" class="dash100-form-btn">
-						Download all licenes
+						Download all licenses
+					</button>
+				</div>
+
+                <div class="container-dash100-form-btn m-t-17">
+					<button name="deleteunusedlicenses" class="dash100-form-btn">
+						Delete unused licenses
 					</button>
 				</div>
 
@@ -167,15 +181,29 @@ if (isset($_POST['logout']))
             error("Amount must be numeric");
         }
 
-        $keys = "";
-        for ($x = 1; $x <= $amount; $x++)
+        if ($_POST['format'] === "json") 
         {
-            $key = generate_application_license($appinfo->appid, $expiry, $amount);
+            $keys = array();
+            for ($x = 1; $x <= $amount; $x++)
+            {
+                $key = generate_application_license($appinfo->appid, $expiry, $amount);
+                array_push($keys, $key);
+            }
 
-            if ($x === 1)
-                $keys = $key;
-            else
-                $keys = $keys .= ", $key";
+            $keys = json_encode($keys);
+        }
+        else 
+        {
+            $keys = "";
+            for ($x = 1; $x <= $amount; $x++)
+            {
+                $key = generate_application_license($appinfo->appid, $expiry, $amount);
+    
+                if ($x === 1)
+                    $keys = $key;
+                else
+                    $keys = $keys .= ", $key";
+            }
         }
 
         echo '<script type=\'text/javascript\'>
@@ -191,7 +219,10 @@ if (isset($_POST['logout']))
             notif("Copied licenses to clipboard");
     }
 
-
+    if (isset($_POST['deleteunusedlicenses']))
+    {
+        mysqli_query($mysql_link, "DELETE FROM licenses WHERE applied is null AND application = '$appid'");
+    }
 ?>
 
 </html>
