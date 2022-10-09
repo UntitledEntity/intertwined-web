@@ -72,7 +72,7 @@
 			<div class="container header-container fade-in">
 				<div class="col-lg-6 header-title-section text-center">
 					<h1 class="header-title">Intertwined</h1>
-					<p class="header-title-text">Intertwined is an <a href="https://github.com/UntitledEntity/intertwined-web">open-source</a> authentication service, that helps you set up your web and client applications securely.</p>
+					<p class="header-title-text">Intertwined is a php-based <a href="https://github.com/UntitledEntity/intertwined-web">open-source</a> authentication service, that helps you set up your web and client applications securely.</p>
 				</div>
 			</div>
 		</div>
