@@ -173,12 +173,31 @@ if (isset($_POST['logout']))
     if (isset($_POST['genlicense']))
     {
         $expiry = sanitize($_POST['expiration']);
+        
         $level = sanitize($_POST['level']);
-
         $amount = sanitize($_POST['amount']);
+        if (!isset($level) || !isset($amount))
+        {
+            error("One or more fields are missing.");
+            return;
+        }
+
+        if (!is_numeric($amount) || $amount < 1)
+        {
+            error("Level must be numeric");
+            return;
+        }
+
         if (!is_numeric($amount) || $amount < 1)
         {
             error("Amount must be numeric");
+            return;
+        }
+
+        if ($amount > 50) 
+        {
+            error("Only 50 licenses may be generated at one time.");
+            return;
         }
 
         if ($_POST['format'] === "json") 
