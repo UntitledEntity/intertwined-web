@@ -76,47 +76,59 @@
 			</div>
 		</div>
 		
-		<div class="why-us">
+		<div class="main-doc">
 			<div class="container header-container fade-in">
 				<div class="col-lg-6 header-title-section text-center">
 	
 					
-		            <div id="init"></div>
+		            <div id="init">
+		            	<br></br>
 		            
-		            <br></br>
+		            	<h1 class="header-title">Init</h1>
+		            	<p class="header-title-text">Initiate an API session.</p>
 		            
-		            <h1 class="header-title">Init</h1>
-		            <p class="header-title-text">Initiate an API session.</p>
-		            
-		            </br>
+		            	</br>
 		        
-					<p class="header-title-text">Parameters: 'type' : 'init', 'appid' : your  application id </p>
-					<p class="header-title-text">Return example: {"success":true,"sessionid":"xVOyMpnp"}</p>
-					
-					<div id="login"></div>
-					
-					<br></br>
+						<p class="header-title-text">Parameters: 'type' : 'init', 'appid' : your  application id </p>
+						<p class="header-title-text">Return example: {"success":true,"sessionid":"xVOyMpnp"}</p>
+					</div>
+
+					<div id="login">
+						<br></br>
 				
-					<h1 class="header-title">Login</h1>
-		            <p class="header-title-text">Validate login details from a user in your user application.</p>
+						<h1 class="header-title">Login</h1>
+		            	<p class="header-title-text">Validate login details from a user in your user application.</p>
 		            
-		            </br>
+		            	</br>
 		        
-					<p class="header-title-text">Parameters: 'type' : 'login', 'sid' : sessionid, 'user' : username, 'pass' : password </p>
-					<p class="header-title-text">Return example: {"success":true,"data":{"user":"untitled","expiry":"1673441902","level":3,"ip":"255.255.255.255"}}</p>
+						<p class="header-title-text">Parameters: 'type' : 'login', 'sid' : sessionid, 'user' : username, 'pass' : password </p>
+						<p class="header-title-text">Return example: {"success":true,"data":{"user":"untitled","expiry":"1673441902","level":3,"ip":"255.255.255.255"}}</p>
+					</div>
+
+					<div id="Register">
+						<br></br>
 					
-					<div id="close"></div>
-					
-					<br></br>
-					
-					<h1 class="header-title">Close</h1>
-		            <p class="header-title-text">Close an existing session.</p>
+						<h1 class="header-title">Register</h1>
+		            	<p class="header-title-text">Registers a user and logs them in</p>
 		            
-		            <br>
+		            	<br>
 		        
-					<p class="header-title-text">Parameters: 'type' : 'close', 'sid' : sessionid </p>
-					<p class="header-title-text">Return example: {"success":true,"message":"successfully closed session."}</p>
+						<p class="header-title-text">Parameters: 'type' : 'register', 'sid' : sessionid, 'user' : username, 'pass' : password, 'license' : license </p>
+						<p class="header-title-text">Return example: {"success":true,"data":{"user":"username","expiry":"9999999999","level":3,"ip":"255.255.255.255"}}</p>
+					</div>
 					
+					<div id="close">
+						<br></br>
+					
+						<h1 class="header-title">Close</h1>
+		            	<p class="header-title-text">Close an existing session.</p>
+		            
+		            	<br>
+		        
+						<p class="header-title-text">Parameters: 'type' : 'close', 'sid' : sessionid </p>
+						<p class="header-title-text">Return example: {"success":true,"message":"successfully closed session."}</p>
+					</div>
+
 				</div>
 			</div>
 		</div>
