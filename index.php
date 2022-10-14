@@ -92,6 +92,7 @@
 
 					<p class="header-title-text">We use <a href="https://www.cloudflare.com/">cloudflare</a> to help mitigate agianst DDOS attacks.</p>
 
+					<p class="header-title-text">We have <a href="https://intertwined.solutions/api/docs/">documentation</a> and <a href="https://github.com/UntitledEntity/intertwined-api-example">examples</a> for our API.</p>
 				</div>
 			</div>
 		</div>
