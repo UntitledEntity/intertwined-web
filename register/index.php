@@ -65,6 +65,13 @@ if (isset($_SESSION["user_data"]))
 						<span class="focus-input100"></span>
 					</div>
 					
+					<img src="../includes/captcha.php">
+
+					<div class="wrap-input100 validate-input m-b-16" data-validate = "Captcha is required">
+						<input class="input100" type="text" name="captcha" placeholder="Captcha">
+						<span class="focus-input100"></span>
+					</div>
+
 					<div class="container-login100-form-btn m-t-17">
 						<button name="register" class="login100-form-btn">
 							Register
@@ -82,6 +89,11 @@ if (isset($_SESSION["user_data"]))
 	
 	    if (isset($_POST['register']))
         {
+			if ($_POST['captcha'] !== $_SESSION["captcha"]){
+				error("Invalid Captcha.");
+				return;
+			}
+
             $resp = register($_POST['user'], $_POST['pass'], $_POST['license']);
             if ($resp === 'success')
             {

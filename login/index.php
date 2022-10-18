@@ -60,6 +60,13 @@ if (isset($_SESSION["user_data"]))
 						<span class="focus-input100"></span>
 					</div>
 					
+					<img src="../includes/captcha.php">
+
+					<div class="wrap-input100 validate-input m-b-16" data-validate = "Captcha is required">
+						<input class="input100" type="text" name="captcha" placeholder="Captcha (if applicable)">
+						<span class="focus-input100"></span>
+					</div>
+					
 					<div class="container-login100-form-btn m-t-17">
 						<button name="login" class="login100-form-btn">
 							Login
@@ -78,6 +85,26 @@ if (isset($_SESSION["user_data"]))
 	
 	    if (isset($_POST['login']))
         {
+			$u = $_POST['user'];
+			$result = mysqli_query($mysql_link, "SELECT * FROM users WHERE username = '$u'");
+
+			$ipp = mysqli_fetch_array($result)['ip'];
+			if ($ip !== $ipp) 
+			{
+				if (!strlen($_POST['captcha'])) 
+				{
+					error("Ip adress mismatch. Please complete captcha.");
+					$_SESSION['captcha_needed'] = true;
+					echo "<meta http-equiv='Refresh' Content='2; >";
+					return;	
+				}
+
+				if ($_POST['captcha'] !== $_SESSION["captcha"]){
+					error("Invalid Captcha.");
+					return;
+				}
+			}
+
             $resp = login($_POST['user'], $_POST['pass']);
             if ($resp === 'success')
             {

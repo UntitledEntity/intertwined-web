@@ -37,7 +37,7 @@ function randomstring($length = 8) {
     $strlength = strlen($characters);
     $ret = '';
     for ($i = 0; $i < $length; $i++) {
-        $ret .= $characters[rand(0, $strlength - 1)];
+        $ret .= $characters[random_int(0, $strlength - 1)];
     }
     return $ret;
 }
