@@ -65,7 +65,7 @@ if (isset($_SESSION["user_data"]))
 						<span class="focus-input100"></span>
 					</div>
 					
-					<img src="../includes/captcha.php">
+					<img class="captcha-image" src="../includes/captcha.php">
 
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Captcha is required">
 						<input class="input100" type="text" name="captcha" placeholder="Captcha">
@@ -95,31 +95,36 @@ if (isset($_SESSION["user_data"]))
 			}
 
             $resp = register($_POST['user'], $_POST['pass'], $_POST['license']);
-            if ($resp === 'success')
+            
+            switch ($resp)
             {
-                echo "<meta http-equiv='Refresh' Content='2; url=../login/'>";
-                notif("You have successfully registered.");
+                case 'invalid_pass':
+                    error("Password may not be under 4 characters and cannot be the same as the username.");
+					return;
+                case 'user_already_taken':
+                    error("The provided username is already in use.");
+					return;
+                case 'blacklisted':
+                    error("The IP you are trying to register from has been blacklisted due to breaking out TOS.");
+					return;
+                case 'invalid_license':
+                    error("The license you have provided is incorrect. Please check your spelling.");
+					return;
+                case 'expired_license':
+                    error("The license you have provided is expired.");
+					return;
+                case 'invalid_level':
+                    error("The license you have provided is invalid. Please contact an administrator.");
+					return;
+				case 'success':
+					echo "<meta http-equiv='Refresh' Content='2; url=../login/'>";
+                	notif("You have successfully registered.");
+                default:
+                    error("There has been an error registering. If this persists, please contact an administrator");
+					return;
             }
-            else {
-                switch ($resp)
-                {
-                    case 'invalid_pass':
-                        error("Password may not be under 4 characters and cannot be the same as the username.");
-                    case 'user_already_taken':
-                        error("The provided username is already in use.");
-                    case 'blacklisted':
-                        error("The IP you are trying to register from has been blacklisted due to breaking out TOS.");
-                    case 'invalid_license':
-                        error("The license you have provided is incorrect. Please check your spelling.");
-                    case 'expired_license':
-                        error("The license you have provided is expired.");
-                    case 'invalid_level':
-                        error("The license you have provided is invalid. Please contact an administrator.");
-                    default:
-                        error("There has been an error registering. If this persists, please contact an administrator");
-                }
-            }
-    }
+        }
+    
 
 	?>
 </body>

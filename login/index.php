@@ -60,10 +60,10 @@ if (isset($_SESSION["user_data"]))
 						<span class="focus-input100"></span>
 					</div>
 					
-					<img src="../includes/captcha.php">
-
+					<img class="captcha-image" src="../includes/captcha.php">
+					
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Captcha is required">
-						<input class="input100" type="text" name="captcha" placeholder="Captcha (if applicable)">
+						<input class="input100" type="text" name="captcha" placeholder="Captcha (if new I.P address)">
 						<span class="focus-input100"></span>
 					</div>
 					
@@ -106,29 +106,33 @@ if (isset($_SESSION["user_data"]))
 			}
 
             $resp = login($_POST['user'], $_POST['pass']);
-            if ($resp === 'success')
+           
+            switch ($resp)
             {
-                echo "<meta http-equiv='Refresh' Content='2; url=../dashboard/'>";
-                notif("You have successfully logged in.");
+                case 'user_not_found':
+                    error("The provided username is incorrect. Please check your spelling.");
+					return;
+                case 'blacklisted':
+                    error("The IP you are trying to login to from has been blacklisted due to breaking out TOS.");
+					return;
+				case 'banned':
+                    error("The account you are trying to login to has been banned due to breaking out TOS.");
+					return;
+                case 'subscription_expired':
+                    error("Your subscription has expired.");
+					return;
+                case 'password_mismatch':
+                    error("The provided password is incorrect. Please check your spelling.");
+					return;
+				case 'success':
+					echo "<meta http-equiv='Refresh' Content='2; url=../dashboard/'>";
+                	notif("You have successfully logged in.");
+                default:
+                    error("There has been an error logging in. If this persists, please contact an administrator");
+					return;
             }
-            else {
-                switch ($resp)
-                {
-                    case 'user_not_found':
-                        error("The provided username is incorrect. Please check your spelling.");
-                    case 'blacklisted':
-                        error("The IP you are trying to login to from has been blacklisted due to breaking out TOS.");
-                    case 'banned':
-                        error("The account you are trying to login to has been banned due to breaking out TOS.");
-                    case 'subscription_expired':
-                        error("Your subscription has expired.");
-                    case 'password_mismatch':
-                        error("The provided password is incorrect. Please check your spelling.");
-                    default:
-                        error("There has been an error registering. If this persists, please contact an administrator");
-                }
-            }
-    }
+            
+		}
 
 	?>
 
