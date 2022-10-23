@@ -182,21 +182,15 @@ if (isset($_POST['logout']))
             return;
         }
 
-        if (!is_numeric($amount) || $amount < 1)
+        if (!is_numeric($level) || $level < 1)
         {
             error("Level must be numeric");
             return;
         }
 
-        if (!is_numeric($amount) || $amount < 1)
+        if (!is_numeric($amount) || $amount < 1 || $amount > 50)
         {
-            error("Amount must be numeric");
-            return;
-        }
-
-        if ($amount > 50) 
-        {
-            error("Only 50 licenses may be generated at one time.");
+            error("Invalid amount.");
             return;
         }
 
