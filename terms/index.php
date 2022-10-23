@@ -45,18 +45,25 @@
 					<h1 class="header-title">Terms of service</h1>
 					<p class="header-title-text">This may be modified at any time without further consent of the user.</p>
 					
-					
 					<h1 class="header-title">Copyright</h1>
 					<p class="header-title-text">We respect copyright and intellectual property laws and require our users to do the same. Any DMCA takedown or general copyright infringement notices should be sent to <a href="mailto:jacobgluska@intertwined.solutions">jacobgluska@intertwined.solutions</a>. We will then work to resolve the issue with the information given.</p>
 					
 					<h1 class="header-title">Privacy</h1>
-					<p class="header-title-text">By using our service, you affirm that you have read our <a href="../privacy">privacy policy</a>, and understand the possible usage of your data and consent to the usage outlined within the policy. If you do not consent to our data usage practices you are prohibited from using Intertwined.</p>
+					<p class="header-title-text">By using our service, you affirm that you have read our privacy policy, and understand the possible usage of your data and consent to the usage outlined within the policy. If you do not consent to our data usage practices you are prohibited from using Intertwined.</p>
 				
 					<h1 class="header-title">Data leaks</h1>
 					<p class="header-title-text">Intertwined is not responsible for any sensitive data that may be leaked in any breach.</p>
+				</div>
+				
+				<div class="col-lg-8 header-title-section text-center">
+					<h1 class="header-title">Privacy</h1>
+					<p class="header-title-text">This may be modified at any time without further consent of the user.</p>
 					
-			
-
+					<h1 class="header-title">Passwords</h1>
+					<p class="header-title-text">All passwords of users and application users are hashed with BCrypt prior to entering our database. No password is saved in plain-text format.</p>
+				
+                    <h1 class="header-title">IP Addresses</h1>
+                    <p class="header-title-text">The IP address used to register your account, and the IP is logged whenever you log into your account. </p>
 				</div>
 			</div>
 		</div>

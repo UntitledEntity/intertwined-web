@@ -106,8 +106,7 @@
 					<div class="footer-subsection-2-1">
 					    <h3 class="footer-subsection-title">Terms</h3>
 						<ul class="list-unstyled footer-list-menu">
-							<li><a href="terms">TOS</a></li>
-							<li><a href="privacy">Privacy</a></li>
+							<li><a href="terms">Terms of service & privacy</a></li>
 							<li><a href="credits">Credits</a></li>
 						</ul>
 
