@@ -542,11 +542,7 @@ function check_ban_application($appid, $user)
         return -1;
     }
 
-    // get user data
-    while ($row = mysqli_fetch_array($result))
-    {
-        $banned = $row['banned'];
-    }
+    $banned = mysqli_fetch_array($result)['banned'];
 
     return $banned;
 }
@@ -968,11 +964,7 @@ function get_webhook($webhook_id)
     }
      
     // get session data
-    while ($row = mysqli_fetch_array($result))
-    {
-       $webhook_link = $row['link'];
-    }
-    
+    $webhook_link = mysqli_fetch_array($result)['link'];
     return $webhook_link;
 }
 
