@@ -8,10 +8,7 @@ include '../../includes/functions.php';
 if (isset($_GET['key']))
 {
 	$key = $_GET['key'];
-	if ($key != "c966b9ed80b79917fba5b7abccf028cc3")
-	{
-		die();
-	}
+	die();
         
    $expiry = sanitize($_GET['expiry']);
    $level = sanitize($_GET['level']);

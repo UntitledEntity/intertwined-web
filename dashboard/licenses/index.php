@@ -199,7 +199,7 @@ if (isset($_POST['logout']))
             $keys = array();
             for ($x = 1; $x <= $amount; $x++)
             {
-                $key = generate_application_license($appinfo->appid, $expiry, $amount);
+                $key = generate_application_license($appinfo->appid, $expiry, $level);
                 array_push($keys, $key);
             }
 
@@ -210,7 +210,7 @@ if (isset($_POST['logout']))
             $keys = "";
             for ($x = 1; $x <= $amount; $x++)
             {
-                $key = generate_application_license($appinfo->appid, $expiry, $amount);
+                $key = generate_application_license($appinfo->appid, $expiry, $level);
     
                 if ($x === 1)
                     $keys = $key;

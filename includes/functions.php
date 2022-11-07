@@ -701,6 +701,77 @@ function register_application($appid, $user, $pass, $license)
     return 'success';
 }
 
+function upgrade_application($appid, $user, $license) 
+{
+    // get the mysql_link
+    global $mysql_link;
+
+    // get the ip
+    global $ip;
+
+    // sanitize
+    $user = sanitize($user);
+    $license = sanitize($license);
+    $appid = sanitize($appid);
+
+    // check if there's a user
+    $result = mysqli_query($mysql_link, "SELECT * FROM application_users WHERE username = '$user' and application = '$appid'");
+    if (mysqli_num_rows($result) < 1)
+    {
+        return 'user_not_found';
+    }
+
+    $userlevel = mysqli_fetch_array($result)['level'];
+    
+    // get license info
+    $result = mysqli_query($mysql_link, "SELECT * FROM licenses WHERE license = '$license' and application = '$appid'");
+    if (mysqli_num_rows($result) < 1)
+    {
+        return 'invalid_license';
+    }
+
+    while ($row = mysqli_fetch_array($result))
+    {
+        $expiry = $row['expires'];
+        $level = $row['level'];
+        $applieduser = $row['applieduser'];
+    }
+    
+    if (isset($applieduser))
+    {
+        return 'license_already_used';
+    }
+
+    // check to see if the license has already expired
+    if ($expiry <= time())
+    {
+        return 'expired_license';
+    }
+
+    if ($level < 1 || $userlevel > $level)
+    {
+        return 'invalid_level';
+    }
+
+    $resp = mysqli_query($mysql_link, "UPDATE application_users SET level = '$level', expires = '$expiry' WHERE username = '$user' and application = '$appid'");
+    if ($resp === false)
+    {
+        return mysqli_error($mysql_link);
+    }
+
+    $timestamp = time();
+    $resp = mysqli_query($mysql_link, "UPDATE licenses SET applied = '1', usedate = '$timestamp', applieduser = '$user' WHERE license = '$license'");
+    if ($resp === false)
+    {
+        return mysqli_error($mysql_link);
+    }
+
+    return array(
+        "level" => $level,
+        "expiry" => $expiry
+    );
+}
+
 function generate_application_license($appid, $expiry, $level)
 {
     // get the mysql_link

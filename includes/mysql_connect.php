@@ -7,7 +7,7 @@ header("x-content-type-options: nosniff");
 header("x-frame-options: DENY");
 header("Referrer-Policy: no-referrer");
 
-$mysql_link = mysqli_connect("localhost", "root", "password", "main");
+$mysql_link = mysqli_connect("localhost", "root", ".Ubw]dOg\"s#{w8&-1l}.p)t9]oRnP?", "main");
 
 if ($mysql_link == false)
 {
