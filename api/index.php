@@ -49,8 +49,8 @@ switch ($_POST['type'] ?? $_GET['type'])
     case 'login':
         $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
 
-        $resp = check_session_open($sessionid);
-        if ($resp === false || !isset($resp))
+        $session_data = check_session_open($sessionid);
+        if ($session_data === false || !isset($session_data))
         {
             die(json_encode(array(
                 "success" => false,
@@ -58,12 +58,9 @@ switch ($_POST['type'] ?? $_GET['type'])
             )));
         }
 
-
-        $session_data = json_decode($resp);
-
         $user = sanitize($_POST['user'] ?? $_GET['user']);
         $pass = sanitize($_POST['pass'] ?? $_GET['pass']);
-        $appid = $session_data->appid;
+        $appid = $session_data['appid'];
 
         if (!check_app_enabled($appid)) 
         {
@@ -95,8 +92,8 @@ switch ($_POST['type'] ?? $_GET['type'])
 
         $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
 
-        $resp = check_session_open($sessionid);
-        if ($resp === false || !isset($resp))
+        $session_data = check_session_open($sessionid);
+        if ($session_data === false || !isset($session_data))
         {
             die(json_encode(array(
                 "success" => false,
@@ -104,13 +101,10 @@ switch ($_POST['type'] ?? $_GET['type'])
             )));
         }
 
-
-        $session_data = json_decode($resp);
-
         $user = sanitize($_POST['user'] ?? $_GET['user']);
         $pass = sanitize($_POST['pass'] ?? $_GET['pass']);
         $license = sanitize($_POST['license'] ?? $_GET['license']);
-        $appid = $session_data->appid;
+        $appid = $session_data['appid'];
 
 
         if (!check_app_enabled($appid)) 
@@ -143,8 +137,8 @@ switch ($_POST['type'] ?? $_GET['type'])
     case 'upgrade': 
         $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
 
-        $resp = check_session_open($sessionid);
-        if ($resp === false || !isset($resp))
+        $session_data = check_session_open($sessionid);
+        if ($session_data === false || !isset($session_data))
         {
             die(json_encode(array(
                 "success" => false,
@@ -152,11 +146,9 @@ switch ($_POST['type'] ?? $_GET['type'])
             )));
         }
 
-        $session_data = json_decode($resp);
-
         $user = sanitize($_POST['user'] ?? $_GET['user']);
         $license = sanitize($_POST['license'] ?? $_GET['license']);
-        $appid = $session_data->appid;
+        $appid = $session_data['appid'];
 
         $upgrade = upgrade_application($appid, $user, $license);
         if (!is_array($upgrade)) 
@@ -176,8 +168,8 @@ switch ($_POST['type'] ?? $_GET['type'])
     case 'webhook':
         $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
 
-        $resp = check_session_open($sessionid);
-        if ($resp === false || !isset($resp))
+        $session_data = check_session_open($sessionid);
+        if ($session_data === false || !isset($session_data))
         {
             die(json_encode(array(
                 "success" => false,
@@ -209,8 +201,8 @@ switch ($_POST['type'] ?? $_GET['type'])
     case 'close':
         $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
         
-        $resp = check_session_open($sessionid);
-        if ($resp === false || !isset($resp))
+        $session_data = check_session_open($sessionid);
+        if ($session_data === false || !isset($session_data))
         {
             die(json_encode(array(
                 "success" => false,

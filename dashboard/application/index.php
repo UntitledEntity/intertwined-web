@@ -16,8 +16,6 @@ if ($appinfo === 'no_application')
 	header('Location: '.$_SERVER['REQUEST_URI']);
 }
 
-$appinfo = json_decode($appinfo);
-
 $showadmin = "none";
 if ($_SESSION["user_data"]["level"] === 5)
 {
@@ -35,7 +33,7 @@ if (isset($_POST['logout']))
 if (isset($_POST['apply'])) {
 
 	$enabled = sanitize($_POST['enabled']) == "true" ? 1 : 0;
-	$appid = $appinfo->appid;
+	$appid = $appinfo['appid'];
 	
 	$result = mysqli_query($mysql_link, "UPDATE user_applications SET enabled = '$enabled' WHERE appid = '$appid'");
 }
@@ -102,11 +100,11 @@ if (isset($_POST['apply'])) {
 				</span>
 				    
 				<span class="dash100-form-text">
-					App ID: <blur><?php echo $appinfo->appid; ?></blur>
+					App ID: <blur><?php echo $appinfo['appid']; ?></blur>
 				</span>
 					
 				<span class="dash100-form-text">
-				    Enckey: <blur><?php echo $appinfo->enckey; ?></blur>
+				    Enckey: <blur><?php echo $appinfo['enckey']; ?></blur>
 				</span>
 
 				<span class="dash100-form-text">Enabled</span>

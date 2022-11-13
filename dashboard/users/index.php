@@ -16,8 +16,7 @@ if ($appinfo === 'no_application')
 	header('Location: '.$_SERVER['REQUEST_URI']);
 }
 
-$appinfo = json_decode($appinfo);
-$appid = $appinfo->appid;
+$appid = $appinfo['appid'];
 
 $showadmin = "none";
 if ($_SESSION["user_data"]["level"] === 5)

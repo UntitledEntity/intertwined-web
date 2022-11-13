@@ -17,9 +17,7 @@ if ($appinfo === 'no_application')
 }
 
 
-$appinfo = json_decode($appinfo);
-
-$appid = $appinfo->appid;
+$appid = $appinfo['appid'];
 
 $result = mysqli_query($mysql_link, "SELECT * FROM licenses WHERE application = '$appid'");
 

@@ -310,11 +310,11 @@ function get_application($user)
         $enabled = $row['enabled'];
     }
     
-    return json_encode(array(
+    return array(
         "appid" => $appid,
         "enckey" => $enckey,
         "enabled" => $enabled 
-    ));
+    );
 }
 
 function delete_application_account($user)

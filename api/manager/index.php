@@ -12,15 +12,14 @@ if (!isset($license))
     die("Missing license");
 }
 
-$license_data = json_decode(get_license_data($license));
+$license_data = get_license_data($license);
 
 if (!isset($license_data))
 {
     die("Invalid license.");
 }
 
-$application = get_application($license_data->applieduser);
-$application_data = json_decode($application);
+$application = get_application($license_data['applieduser']);
 
 switch ($_GET['type'])
 {

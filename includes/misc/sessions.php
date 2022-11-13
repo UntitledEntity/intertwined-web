@@ -83,10 +83,10 @@ function check_session_open($sessionid)
         $opentime = $row['opentime'];
     }
     
-    return json_encode(array(
+    return array(
         "appid" => $appid,
         "opentime" => $opentime
-    ));
+    );
 }
 
 function validate_session($sessionid)

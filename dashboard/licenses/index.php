@@ -16,9 +16,7 @@ if ($appinfo === 'no_application')
 	header('Location: '.$_SERVER['REQUEST_URI']);
 }
 
-
-$appinfo = json_decode($appinfo);
-$appid = $appinfo->appid;
+$appid = $appinfo['appid'];
 
 $showadmin = "none";
 if ($_SESSION["user_data"]["level"] === 5)
@@ -199,7 +197,7 @@ if (isset($_POST['logout']))
             $keys = array();
             for ($x = 1; $x <= $amount; $x++)
             {
-                $key = generate_application_license($appinfo->appid, $expiry, $level);
+                $key = generate_application_license($appid, $expiry, $level);
                 array_push($keys, $key);
             }
 
@@ -210,7 +208,7 @@ if (isset($_POST['logout']))
             $keys = "";
             for ($x = 1; $x <= $amount; $x++)
             {
-                $key = generate_application_license($appinfo->appid, $expiry, $level);
+                $key = generate_application_license($appid, $expiry, $level);
     
                 if ($x === 1)
                     $keys = $key;

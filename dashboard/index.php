@@ -16,7 +16,6 @@ if ($_SESSION["user_data"]["level"] === 5)
 }
 
 $license_data = get_license($_SESSION["user_data"]["user"]);
-$license_data = json_decode($license_data);
     
 ?>
 
@@ -75,7 +74,7 @@ $license_data = json_decode($license_data);
 			        </span>
 				    
 				    <span class="dash100-form-text"> 
-				       Your license: <blur><?php echo $license_data->license ?></blur>
+				       Your license: <blur><?php echo $license_data['license']; ?></blur>
 		        	</span>
 				    
 				    <div class="container-dash100-form-btn m-t-17">

@@ -129,11 +129,11 @@ function get_license($user)
         $license = $row['license'];
     }
 
-    return json_encode(array(
+    return array(
         "expiry" => $expiry,
         "level" => $level,
         "license" => $license
-    ));
+    );
 }
 
 function get_license_data($license)
@@ -156,11 +156,11 @@ function get_license_data($license)
         $applieduser = $row['applieduser'];
     }
 
-    return json_encode(array(
+    return array(
         "expiry" => $expiry,
         "level" => intval($level),
         "applieduser" => $applieduser
-    ));
+    );
 }
 
 ?>
