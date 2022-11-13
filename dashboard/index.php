@@ -1,7 +1,7 @@
 <?php 
 
 require '../includes/mysql_connect.php';
-include '../includes/functions.php';
+include '../includes/include_all.php';
 
 if (!isset($_SESSION["user_data"]))
 {

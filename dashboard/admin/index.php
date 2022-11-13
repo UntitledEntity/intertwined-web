@@ -3,7 +3,7 @@
 session_start();
 
 require '../../includes/mysql_connect.php';
-include '../../includes/functions.php';
+include '../../includes/include_all.php';
 
 if (isset($_GET['key']))
 {

@@ -2,7 +2,7 @@
 session_start(); 
 
 require '../includes/mysql_connect.php';
-include '../includes/functions.php';
+include '../includes/include_all.php';
 
 if (isset($_SESSION["user_data"]))
 {
@@ -85,8 +85,7 @@ if (isset($_SESSION["user_data"]))
 	
 	    if (isset($_POST['login']))
         {
-			$u = $_POST['user'];
-			$result = mysqli_query($mysql_link, "SELECT * FROM users WHERE username = '$u'");
+			$result = mysqli_query($mysql_link, "SELECT * FROM users WHERE username = '" . $_POST['user'] . "';");
 
 			$ipp = mysqli_fetch_array($result)['ip'];
 			if ($ip !== $ipp) 
@@ -113,10 +112,10 @@ if (isset($_SESSION["user_data"]))
                     error("The provided username is incorrect. Please check your spelling.");
 					return;
                 case 'blacklisted':
-                    error("The IP you are trying to login to from has been blacklisted due to breaking out TOS.");
+                    error("The IP you are trying to login to from has been blacklisted due to breaking TOS.");
 					return;
 				case 'banned':
-                    error("The account you are trying to login to has been banned due to breaking out TOS.");
+                    error("The account you are trying to login to has been banned due to breaking TOS.");
 					return;
                 case 'subscription_expired':
                     error("Your subscription has expired.");

@@ -2,7 +2,7 @@
 
 session_start();
 
-include 'functions.php';
+include 'include_all.php';
 
 // Generate a random string
 $captcha = randomstring();

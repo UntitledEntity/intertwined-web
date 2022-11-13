@@ -2,7 +2,7 @@
 session_start(); 
 
 require '../includes/mysql_connect.php';
-include '../includes/functions.php';
+include '../includes/include_all.php';
 
 if (isset($_SESSION["user_data"]))
 {
@@ -105,7 +105,7 @@ if (isset($_SESSION["user_data"]))
                     error("The provided username is already in use.");
 					return;
                 case 'blacklisted':
-                    error("The IP you are trying to register from has been blacklisted due to breaking out TOS.");
+                    error("The IP you are trying to register from has been blacklisted due to breaking TOS.");
 					return;
                 case 'invalid_license':
                     error("The license you have provided is incorrect. Please check your spelling.");

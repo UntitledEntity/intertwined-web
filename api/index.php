@@ -1,13 +1,13 @@
 <?php
 
 if (empty($_POST) && empty($_GET)) {
-  die(header("location: https://intertwined.solutions/api/docs"));  
+  die(header("location: https://intertwined.solutions/docs"));  
 }
 
 session_start();
 
 require '../includes/mysql_connect.php';
-include '../includes/functions.php';
+include '../includes/include_all.php';
 
 
 switch ($_POST['type'] ?? $_GET['type'])
@@ -140,6 +140,39 @@ switch ($_POST['type'] ?? $_GET['type'])
             "data" => $userdata
         )));
 
+    case 'upgrade': 
+        $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
+
+        $resp = check_session_open($sessionid);
+        if ($resp === false || !isset($resp))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Invalid session."
+            )));
+        }
+
+        $session_data = json_decode($resp);
+
+        $user = sanitize($_POST['user'] ?? $_GET['user']);
+        $license = sanitize($_POST['license'] ?? $_GET['license']);
+        $appid = $session_data->appid;
+
+        $upgrade = upgrade_application($appid, $user, $license);
+        if (!is_array($upgrade)) 
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => $upgrade
+            )));
+        }
+
+        die(json_encode(array(
+            "success" => true,
+            "upgrade_data" => $upgrade
+        )));
+
+
     case 'webhook':
         $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
 
@@ -175,7 +208,25 @@ switch ($_POST['type'] ?? $_GET['type'])
 
     case 'close':
         $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
-        close_session($sessionid);
+        
+        $resp = check_session_open($sessionid);
+        if ($resp === false || !isset($resp))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Invalid session."
+            )));
+        }
+
+        $resp = close_session($sessionid);
+
+        if ($resp !== 'deleted')
+        { 
+            die(json_encode(array(
+            "success" => false,
+            "error" => $resp
+            )));
+        }
 
         die(json_encode(array(
             "success" => true,

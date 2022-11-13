@@ -46,7 +46,7 @@
 					<p class="header-title-text">This may be modified at any time without further consent of the user.</p>
 					
 					<h1 class="header-title">Copyright</h1>
-					<p class="header-title-text">We respect copyright and intellectual property laws and require our users to do the same. Any DMCA takedown or general copyright infringement notices should be sent to <a href="mailto:jacobgluska@intertwined.solutions">jacobgluska@intertwined.solutions</a>. We will then work to resolve the issue with the information given.</p>
+					<p class="header-title-text">We respect copyright and intellectual property laws and require our users to do the same. Any DMCA takedown or general copyright infringement notices should be sent to <a href="mailto:contact@intertwined.solutions">contact@intertwined.solutions</a>. We will then work to resolve the issue with the information given.</p>
 					
 					<h1 class="header-title">Privacy</h1>
 					<p class="header-title-text">By using our service, you affirm that you have read our privacy policy, and understand the possible usage of your data and consent to the usage outlined within the policy. If you do not consent to our data usage practices you are prohibited from using Intertwined.</p>
@@ -64,6 +64,9 @@
 				
                     <h1 class="header-title">IP Addresses</h1>
                     <p class="header-title-text">The IP address used to register your account, and the IP is logged whenever you log into your account. </p>
+
+					<h1 class="header-title">Applications</h1>
+					<p class="header-title-text">No Intertwined staff member of any level are allowed to tamper with or leak any application data unless it is asked and consent is given from the owner of the application. If you believe any staff member may be breaking this rule, please contact at <a href="mailto:admin@intertwined.solutions">admin@intertwined.solutions</a></p>
 				</div>
 			</div>
 		</div>
