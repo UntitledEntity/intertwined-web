@@ -11,6 +11,7 @@ $mysql_link = mysqli_connect("localhost", "root", "password", "main");
 
 if ($mysql_link == false)
 {
+    http_response_code(503);
     die("ERROR: Could not connect. " . mysqli_connect_error());
 }
 

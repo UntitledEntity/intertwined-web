@@ -104,14 +104,50 @@
 			<div class="container footer-container">
 				<div class="col-lg-3 col-md-6 footer-subsection">
 					<div class="footer-subsection-2-1">
-					    <h3 class="footer-subsection-title">Terms</h3>
+					    
+						<h3 class="footer-subsection-title">Links</h3>
 						<ul class="list-unstyled footer-list-menu">
-							<li><a href="terms">TOS & privacy</a></li>
-							<li><a href="credits">Credits</a></li>
+							<li><a href="docs">Documentation</a></li>
+							<li><a href="https://github.com/UntitledEntity/intertwined-web">Source code</a></li>
+							<li><a href="https://github.com/UntitledEntity/intertwined-api-example">API examples</a></li>
 						</ul>
 
 					</div>
 				</div>
+
+				<div class="col-lg-3 col-md-6 footer-subsection">
+					<div class="footer-subsection-2-1">
+					    
+						<h3 class="footer-subsection-title">Documents</h3>
+						<ul class="list-unstyled footer-list-menu">
+							<li><a href="terms">TOS & privacy</a></li>
+						</ul>
+
+					</div>
+				</div>
+
+				<div class="col-lg-3 col-md-6 footer-subsection">
+					<div class="footer-subsection-2-1">
+					    
+						<h3 class="footer-subsection-title">Status</h3>
+						<ul class="list-unstyled footer-list-menu">
+							<li><a href="https://stats.uptimerobot.com/L1RAziPzlQ">Server status</a></li>
+						</ul>
+						
+					</div>
+				</div>
+
+				<div class="col-lg-3 col-md-6 footer-subsection">
+					<div class="footer-subsection-2-1">
+					    
+						<h3 class="footer-subsection-title">Other</h3>
+						<ul class="list-unstyled footer-list-menu">
+							<li><a href="credits">Credits</a></li>
+						</ul>
+						
+					</div>
+				</div>
+
 			</div>
 			<div class="container footer-credits">
 				<p>&copy; 2022 <b>Intertwined</b> All rights reserved</p>
