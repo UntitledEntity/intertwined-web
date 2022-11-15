@@ -72,7 +72,7 @@
 			<div class="container header-container fade-in">
 				<div class="col-lg-6 header-title-section text-center">
 					<h1 class="header-title">Intertwined</h1>
-					<p class="header-title-text">Intertwined is a php-based <a href="https://github.com/UntitledEntity/intertwined-web">open-source</a> authentication service, that helps you set up your web and client applications securely.</p>
+					<p class="header-title-text">Intertwined is a <a href="https://php.net">php</a>-based <a href="https://github.com/UntitledEntity/intertwined-web">open-source</a> authentication service, that helps you set up your web and client applications securely.</p>
 				</div>
 			</div>
 		</div>
@@ -88,11 +88,13 @@
 					    <img src="assets/images/end-to-end.png" alt="End-To-End">
 					</div>
 
-					<p class="header-title-text">We hash our passwords and HWIDs with <a href="https://en.wikipedia.org/wiki/Bcrypt">Bcrypt</a>. </p>
+					<p class="header-title-text">We value your privacy. That's why we hash our passwords with <a href="https://en.wikipedia.org/wiki/Bcrypt">Bcrypt</a>. </p>
 
-					<p class="header-title-text">We use <a href="https://www.cloudflare.com/">cloudflare</a> to help mitigate agianst DDOS attacks.</p>
+					<p class="header-title-text">We have taken all possible measures to prevent SQL injction, and regularly test our website for any vulnerabilities.</p>
+					
+					<p class="header-title-text">Our firewall and the use of <a href="https://cloudflare.com/">cloudflare</a> helps prevent and mitigate DDOS and DOS attacks.</p>
 
-					<p class="header-title-text">We have <a href="/docs/">documentation</a> and <a href="https://github.com/UntitledEntity/intertwined-api-example">examples</a> for our API.</p>
+					<p class="header-title-text">We have <a href="docs">documentation</a> and <a href="https://github.com/UntitledEntity/intertwined-api-example">examples</a> for our API, to assist you in development when developing using Intertwined.</p>
 				</div>
 			</div>
 		</div>
