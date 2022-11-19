@@ -90,6 +90,8 @@ if (isset($_SESSION["user_data"]))
 			$ipp = mysqli_fetch_array($result)['ip'];
 			if ($ip !== $ipp) 
 			{
+				log_msg("login.log", "" . $_POST['user'] . ": Stored IP ($ipp) does not match request IP $ip");
+
 				if (!strlen($_POST['captcha'])) 
 				{
 					error("Ip adress mismatch. Please complete captcha.");

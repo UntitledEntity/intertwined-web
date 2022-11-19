@@ -99,13 +99,13 @@ const notyf = new Notyf({
 
 function log_msg($file, $msg)
 {
-    $log_file = fopen("../logs/all.log", "a");
-    fwrite($log_file, "$msg\n");
-    fclose($log_file);
+  $log_file = fopen("../logs/all.log", "a");
+  fwrite($log_file, "$msg\n");
+  fclose($log_file);
     
-    $log_file = fopen($file, "a");
-    fwrite($log_file, "$msg\n");
-    fclose($log_file);
+  $log_file = fopen("../logs/$file", "a");
+  fwrite($log_file, "$msg\n");
+  fclose($log_file);
 }
 
 // global ip variable
@@ -113,7 +113,7 @@ $ip = fetch_ip();
 
 function fetch_ip()
 {
-    return $_SERVER['HTTP_CF_CONNECTING_IP'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
+  return $_SERVER['HTTP_CF_CONNECTING_IP'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
 }
 
 

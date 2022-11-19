@@ -198,6 +198,23 @@ switch ($_POST['type'] ?? $_GET['type'])
             "response" => $response
         )));
 
+    case 'check_validity':
+        $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
+
+        $valid = check_session_valid($sessionid);
+        if ($valid == -1 || !isset($sessionid))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Invalid session."
+            )));
+        }
+
+        die(json_encode(array(
+            "success" => true,
+            "validity" => $valid
+        )));
+
     case 'close':
         $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
         

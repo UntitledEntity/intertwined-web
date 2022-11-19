@@ -225,6 +225,36 @@
 	
 					</div>
 					
+					<div id="check_validity">
+
+						<br></br>
+					
+						<h1 class="header-title">Check Validity</h1>
+						<p class="header-title-text">Checks the validity of a session.</p>
+				
+						<br>
+			
+						<p class="header-subtitle">Parameters</p>
+
+						<p class="header-title-text"><b>{ 'type': "check_validity", 'sid': "XXXXXXXX" }</b></p>
+					
+						<p class="header-title-text"><b>sid</b> - The session ID which is returned when 'init' is called.</p>
+
+						<br>
+
+						<p class="header-subtitle">Returns</p>
+
+						<p class="header-title-text">{ 'success': true, 'validity': 1 </p>
+						<p class="header-title-text">{ 'success': false, 'error': "Lorem Ipsum" }</p>
+
+						<br>
+							
+						<p class="header-subtitle">Errors</p>
+
+						<p class="header-title-text"><b>Invalid session</b> - The session ID you provided is invalid.</p>
+
+					</div>
+
 					<div id="close">
 						<br></br>
 					

@@ -81,26 +81,39 @@
 			<div class="container header-container fade-in">
 				<div class="col-lg-6 header-title-section text-center">
 					<h1 class="header-title">Why us?</h1>
+				</div>					
+			</div>
+			
+			<div class="container header-container fade-in">
+				<div class="col-lg-5 order-lg-1 text-center">
+					<p class="header-subtitle">Privacy</p>
 
-					<p class="header-title-text">We offer end-to-end encryption, which ensures your data will be protected from web point A to web point B.</p>
-
+					<p class="header-title-text">Intertwined's main priority is privacy. That's why we hash both your and your user's passwords with <a href="https://en.wikipedia.org/wiki/Bcrypt">Bcrypt</a>. Prioritize your users security with us.</p>
+				
+				</div>
+				<div class="col-lg-6 order-lg-2">
 					<div class="header-img-section">
-					    <img src="assets/images/end-to-end.png" alt="End-To-End">
+					    <img src="assets/images/bcrypt.png" alt="End-To-End">
 					</div>
+				</div>
+			</div>
 
-					<p class="header-title-text">We value your privacy. That's why we hash our passwords with <a href="https://en.wikipedia.org/wiki/Bcrypt">Bcrypt</a>. </p>
+			<br><br>
 
-					<p class="header-title-text">We have taken all possible measures to prevent SQL injction, and regularly test our website for any vulnerabilities.</p>
-					
-					<p class="header-title-text">Our firewall and the use of <a href="https://cloudflare.com/">cloudflare</a> helps prevent and mitigate DDOS and DOS attacks.</p>
-
+			<div class="container header-container fade-in">
+				<div class="col-lg-5 order-lg-2 text-center">
+					<p class="header-subtitle">Ease of implementation</p>
+				
+					<p class="header-title-text">Our API can be implemented to multiple applications easily. </p>
 					<p class="header-title-text">We have <a href="docs">documentation</a> and <a href="https://github.com/UntitledEntity/intertwined-api-example">examples</a> for our API, to assist you in development when developing using Intertwined.</p>
+				</div>
+				<div class="col-lg-6 order-lg-1">
+					<div class="header-img-section">
+					    <img src="assets/images/implementation.jpg" alt="End-To-End">
+					</div>
 				</div>
 			</div>
 		</div>
-
-
-
 
 		<div class="footer-section">
 			<div class="container footer-container">

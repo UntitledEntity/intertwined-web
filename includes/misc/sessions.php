@@ -115,7 +115,14 @@ function check_session_valid($sessionid)
 
     $sessionid = sanitize($sessionid);  
 
-    // check session
+    // check session exists
+    $result = mysqli_query($mysql_link, "SELECT * FROM sessions WHERE sessionid = '$sessionid'");
+    if (mysqli_num_rows($result) < 1)
+    {  
+        return -1;
+    }
+
+    // check session validity
     $result = mysqli_query($mysql_link, "SELECT * FROM sessions WHERE sessionid = '$sessionid' AND validated = '1'");  
 
     return $result;
