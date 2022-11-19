@@ -85,6 +85,7 @@ if (isset($_SESSION["user_data"]))
 	
 	    if (isset($_POST['login']))
         {
+			global $ip;
 			$result = mysqli_query($mysql_link, "SELECT * FROM users WHERE username = '" . $_POST['user'] . "';");
 
 			$ipp = mysqli_fetch_array($result)['ip'];

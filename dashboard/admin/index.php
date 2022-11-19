@@ -5,17 +5,6 @@ session_start();
 require '../../includes/mysql_connect.php';
 include '../../includes/include_all.php';
 
-if (isset($_GET['key']))
-{
-	$key = $_GET['key'];
-	die();
-        
-   $expiry = sanitize($_GET['expiry']);
-   $level = sanitize($_GET['level']);
-        
-   die(gen_license($expiry, $level));
-}
-
 if (!isset($_SESSION["user_data"]) || $_SESSION["user_data"]["level"] !== 5)
 {
 	http_response_code(404);

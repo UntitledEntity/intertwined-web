@@ -24,7 +24,7 @@ $application = get_application($license_data['applieduser']);
 switch ($_GET['type'])
 {
     case 'getusers':
-        $appid = $application_data->appid;
+        $appid = $application_data['appid'];
 
         // find user
         $result = mysqli_query($mysql_link, "SELECT * FROM application_users WHERE application = '$appid'");
@@ -52,7 +52,7 @@ switch ($_GET['type'])
         die(delete_application_account($user));
 
     case 'genlicense':
-        $appid = $application_data->appid;
+        $appid = $application_data['appid'];
 
         $expiry = sanitize($_GET['expiry']);
         $level = sanitize($_GET['level']);
@@ -83,7 +83,7 @@ switch ($_GET['type'])
         die(json_encode($keys));
 
     case 'userdata':
-        $appid = $application_data->appid;
+        $appid = $application_data['appid'];
 
         $user = sanitize($_GET['user']);
         if (!isset($user))
@@ -108,7 +108,7 @@ switch ($_GET['type'])
         die(json_encode($rows));
 
     case 'closesession':
-        $appid = $application_data->appid;
+        $appid = $application_data['appid'];
 
         $sid = sanitize($_GET['sessionid']);
         if (!isset($sid))
