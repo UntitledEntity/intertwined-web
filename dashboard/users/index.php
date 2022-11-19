@@ -144,6 +144,19 @@ if (isset($_POST['logout']))
 
 				</br>
 
+				<div class="wrap-input100 validate-input m-b-16" data-validate = "license">
+					<input class="input100" type="text" name="license" placeholder="License">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="container-dash100-form-btn m-t-17">
+					<button name="upgrade" class="dash100-form-btn">
+						Upgrade user
+					</button>
+				</div>
+
+				<br>
+
 				<div class="container-dash100-form-btn m-t-17">
 					<button name="getdata" class="dash100-form-btn">
 						Copy userdata
@@ -214,6 +227,12 @@ if (isset($_POST['logout']))
 		$user = sanitize($rows[$_POST['user']]['username']);
 
 		mysqli_query($mysql_link, "UPDATE application_users SET banned = 0 WHERE username = '$user' and application = '$appid'");
+	}
+
+	if (isset($_POST['upgrade'])) {
+		$user = sanitize($rows[$_POST['user']]['username']);
+
+		upgrade_application($appid, $user, sanitize($_POST['license']));
 	}
 ?>
 
