@@ -120,11 +120,12 @@
 
 						<p class="header-subtitle">Parameters</p>
 
-						<p class="header-title-text"><b>{ 'type': "login", 'sid': "XXXXXXXX", 'user': "username", 'pass': "password" }</b></p>
+						<p class="header-title-text"><b>{ 'type': "login", 'sid': "XXXXXXXX", 'user': "username", 'pass': "password", 'hwid': "hwid" }</b></p>
 						
 						<p class="header-title-text"><b>sid</b> - The session ID which is returned when 'init' is called.</p>
 						<p class="header-title-text"><b>user</b> - The username of the user you are trying to validiate.</p>
 						<p class="header-title-text"><b>pass</b> - The password of the user you are trying to validiate.</p>
+						<p class="header-title-text"><b>hwid</b> - <b>NOT MANDATORY</b> - The HWID of the person you are attempting to validate. If this is the first login, this HWID will be stored.</p>
 
 						<br>
 

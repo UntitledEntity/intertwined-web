@@ -60,6 +60,8 @@ switch ($_POST['type'] ?? $_GET['type'])
 
         $user = sanitize($_POST['user'] ?? $_GET['user']);
         $pass = sanitize($_POST['pass'] ?? $_GET['pass']);
+        $hwid = sanitize($_POST['hwid'] ?? $_GET['hwid']);
+
         $appid = $session_data['appid'];
 
         if (!check_app_enabled($appid)) 
@@ -71,7 +73,7 @@ switch ($_POST['type'] ?? $_GET['type'])
         }
 
 
-        $login_resp = login_application($appid, $user, $pass);
+        $login_resp = login_application($appid, $user, $pass, $hwid);
         if (!is_array($login_resp))
         {
             die(json_encode(array(

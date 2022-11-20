@@ -57,7 +57,7 @@ function check_ban_application($appid, $user)
     return $banned;
 }
 
-function login_application($appid, $user, $pass)
+function login_application($appid, $user, $pass, $hwid = NULL)
 {
     // get the mysql_link
     global $mysql_link;
@@ -118,12 +118,28 @@ function login_application($appid, $user, $pass)
         return 'password_mismatch';
     }
 
+    // check if HWID matches
+    // use the password_verify function because hwids are stored with BCrypt hashing
+    if (isset($hwid))
+    {
+        // no stored hwid, set the current one.
+        if (is_null($hwidd) || $hwidd == 0) 
+        {
+            $hashed_hwid = password_hash($hwid, PASSWORD_BCRYPT);
+            mysqli_query($mysql_link, "UPDATE application_users SET hwid = '$hashed_hwid' WHERE username = '$user' and application = '$appid'");
+        }
+        else if (password_verify($hwid, $hwidd) == false)
+        {
+            return 'hwid_mismatch';
+        }
+    }
+
     // update last login time
     $timestamp = time();
-    mysqli_query($mysql_link, "UPDATE application_users SET lastlogin = '$timestamp' WHERE username = '$user'");
+    mysqli_query($mysql_link, "UPDATE application_users SET lastlogin = '$timestamp' WHERE username = '$user' and application = '$appid'");
     
     // update the ip
-    mysqli_query($mysql_link, "UPDATE application_users SET ip = '$ip' WHERE username = '$user'");
+    mysqli_query($mysql_link, "UPDATE application_users SET ip = '$ip' WHERE username = '$user' and application = '$appid'");
     
     return array(
         "user" => $user,
