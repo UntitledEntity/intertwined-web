@@ -24,10 +24,6 @@ function open_session($appid)
     // get the timestamp
     $timestamp = time();
 
-    // clear invalid sessions whenever a session is opened or closed.
-    // probably should find a better way to do this.
-    mysqli_query($mysql_link, "DELETE FROM sessions WHERE opentime + 86400 > $timestamp");
-
     // open session
     $resp = mysqli_query($mysql_link, "INSERT INTO sessions (sessionid, ip, opentime, application) VALUES ('$sessionid', '$ip', '$timestamp', '$appid')");
     if ($resp === false)
@@ -47,10 +43,6 @@ function close_session($sessionid)
 
     // get the timestamp
     $timestamp = time();
-
-    // clear invalid sessions whenever a session is opened or closed.
-    // probably should find a better way to do this.
-    mysqli_query($mysql_link, "DELETE FROM sessions WHERE opentime + 86400 > $timestamp");
 
     $resp = mysqli_query($mysql_link, "DELETE FROM sessions WHERE sessionid = '$sessionid'");
 
