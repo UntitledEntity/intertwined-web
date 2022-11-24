@@ -132,11 +132,11 @@ if (isset($_POST['logout']))
                 </div>
 
                 <div class="wrap-input100 validate-input m-b-16" data-validate = "new password required">
-					<input class="input100" type="pass" name="pass" placeholder="New password">
+					<input class="input100" type="text" name="pass" placeholder="New password">
 					<span class="focus-input100"></span>
 				</div>
-
-                <div class="container-dash100-form-btn m-t-17">
+					
+				<div class="container-dash100-form-btn m-t-17">
 					<button name="resetpassword" class="dash100-form-btn">
 						Reset password
 					</button>
