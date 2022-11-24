@@ -11,6 +11,7 @@ Intertwined is a php-based open-source authentication service, based off of [php
 - Web Server
 - PHP
 - MySQL
+- Cron
 
 ## Assistance
 
