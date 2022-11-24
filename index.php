@@ -84,32 +84,33 @@
 				</div>					
 			</div>
 			
-			<div class="container header-container fade-in">
-				<div class="col-lg-5 order-lg-1 text-center">
-					<p class="header-subtitle">Privacy</p>
+			<div class="padding-25">
+				<div class="container header-container fade-in">
+					<div class="col-lg-5 order-lg-1 text-center">
+						<p class="header-subtitle">Privacy</p>
 
-					<p class="header-title-text">Intertwined's main priority is privacy. That's why we hash both your and your user's passwords with <a href="https://en.wikipedia.org/wiki/Bcrypt">Bcrypt</a>. Prioritize your users security with us.</p>
-				
-				</div>
-				<div class="col-lg-6 order-lg-2">
-					<div class="header-img-section">
-					    <img src="assets/images/bcrypt.png" alt="End-To-End">
+						<p class="header-title-text">Intertwined's main priority is privacy. That's why we hash both your and your user's passwords with <a href="https://en.wikipedia.org/wiki/Bcrypt">Bcrypt</a>. Prioritize your users security with us.</p>
+					</div>
+					<div class="col-lg-6 order-lg-2">
+						<div class="header-img-section">
+					    	<img src="assets/images/bcrypt.png" alt="End-To-End">
+						</div>
 					</div>
 				</div>
 			</div>
-
-			<br><br>
-
-			<div class="container header-container fade-in">
-				<div class="col-lg-5 order-lg-2 text-center">
-					<p class="header-subtitle">Ease of implementation</p>
+			
+			<div class="padding-25">
+				<div class="container header-container fade-in">
+					<div class="col-lg-5 order-lg-2 text-center">
+						<p class="header-subtitle">Ease of implementation</p>
 				
-					<p class="header-title-text">Our API can be implemented to multiple applications easily. </p>
-					<p class="header-title-text">We have <a href="docs">documentation</a> and <a href="https://github.com/UntitledEntity/intertwined-api-example">examples</a> for our API, to assist you in development when developing using Intertwined.</p>
-				</div>
-				<div class="col-lg-6 order-lg-1">
-					<div class="header-img-section">
-					    <img src="assets/images/implementation.jpg" alt="End-To-End">
+						<p class="header-title-text">Our API can be implemented to multiple applications easily. </p>
+						<p class="header-title-text">We have <a href="docs">documentation</a> and <a href="https://github.com/UntitledEntity/intertwined-api-example">examples</a> for our API, to assist you in development when developing using Intertwined.</p>
+					</div>
+					<div class="col-lg-6 order-lg-1">
+						<div class="header-img-section">
+					    	<img src="assets/images/implementation.jpg" alt="End-To-End">
+						</div>
 					</div>
 				</div>
 			</div>
