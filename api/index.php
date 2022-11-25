@@ -24,6 +24,15 @@ switch ($_POST['type'] ?? $_GET['type'])
             )));
         }
 
+        $hash = sanitize($_POST['hash'] ?? $_GET['hash']);
+        if (!verify_hash($appid, $hash))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Invalid hash."
+            )));
+        }
+
         if (!isset($appid))
         {
            die(json_encode(array(
@@ -55,6 +64,15 @@ switch ($_POST['type'] ?? $_GET['type'])
             die(json_encode(array(
                 "success" => false,
                 "error" => "Invalid session."
+            )));
+        }
+
+        $hash = sanitize($_POST['hash'] ?? $_GET['hash']);
+        if (!verify_hash($appid, $hash))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Invalid hash."
             )));
         }
 
@@ -103,6 +121,15 @@ switch ($_POST['type'] ?? $_GET['type'])
             )));
         }
 
+        $hash = sanitize($_POST['hash'] ?? $_GET['hash']);
+        if (!verify_hash($appid, $hash))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Invalid hash."
+            )));
+        }
+
         $user = sanitize($_POST['user'] ?? $_GET['user']);
         $pass = sanitize($_POST['pass'] ?? $_GET['pass']);
         $license = sanitize($_POST['license'] ?? $_GET['license']);
@@ -148,6 +175,15 @@ switch ($_POST['type'] ?? $_GET['type'])
             )));
         }
 
+        $hash = sanitize($_POST['hash'] ?? $_GET['hash']);
+        if (!verify_hash($appid, $hash))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Invalid hash."
+            )));
+        }
+
         $user = sanitize($_POST['user'] ?? $_GET['user']);
         $license = sanitize($_POST['license'] ?? $_GET['license']);
         $appid = $session_data['appid'];
@@ -176,6 +212,15 @@ switch ($_POST['type'] ?? $_GET['type'])
             die(json_encode(array(
                 "success" => false,
                 "error" => "Invalid session."
+            )));
+        }
+
+        $hash = sanitize($_POST['hash'] ?? $_GET['hash']);
+        if (!verify_hash($appid, $hash))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Invalid hash."
             )));
         }
 

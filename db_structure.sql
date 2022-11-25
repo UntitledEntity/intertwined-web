@@ -79,7 +79,9 @@ CREATE TABLE `user_applications` (
   `appid` varchar(70) DEFAULT NULL,
   `enckey` varchar(70) DEFAULT NULL,
   `owner` varchar(70) DEFAULT NULL,
-  `enabled` int(1) DEFAULT 1
+  `enabled` int(1) DEFAULT 1,
+  `hashcheck` int(1) DEFAULT 0,
+  `hash` varchar(255) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

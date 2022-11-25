@@ -33,9 +33,12 @@ if (isset($_POST['logout']))
 if (isset($_POST['apply'])) {
 
 	$enabled = sanitize($_POST['enabled']) == "true" ? 1 : 0;
+	$hashcheck = sanitize($_POST['hashcheck']) == "true" ? 1 : 0;
+	$hash = sanitize($_POST['hash']);
+
 	$appid = $appinfo['appid'];
 	
-	$result = mysqli_query($mysql_link, "UPDATE user_applications SET enabled = '$enabled' WHERE appid = '$appid'");
+	$result = mysqli_query($mysql_link, "UPDATE user_applications SET enabled = '$enabled', hashcheck = '$hashcheck', hash = '$hash' WHERE appid = '$appid'");
 }
 
 ?>
@@ -114,6 +117,19 @@ if (isset($_POST['apply'])) {
                         <option class="option100" value="false">False</option>
 					</select>
                 </div>
+
+				<span class="dash100-form-text">Hash integrity check</span>
+				<div class="wrap-select100 m-b-16">
+                    <select class="select100" name="hashcheck">
+                        <option class="option100" value="true">True</option>
+                        <option class="option100" value="false">False</option>
+					</select>
+                </div>
+
+				<div class="wrap-input100 validate-input m-b-16">
+					<input class="input100" type="text" name="hash" placeholder="Program hash">
+					<span class="focus-input100"></span>
+				</div>
 
 				<div class="container-dash100-form-btn m-t-17">
 					<button name="apply" class="dash100-form-btn">

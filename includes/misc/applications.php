@@ -57,6 +57,29 @@ function check_ban_application($appid, $user)
     return $banned;
 }
 
+function verify_hash($appid, $hash) 
+{
+    // get the mysql_link
+    global $mysql_link;
+
+    // sanitize
+    $hash = sanitize($hash);
+    $appid = sanitize($appid);
+
+    // get application
+    $result = mysqli_query($mysql_link, "SELECT * FROM application_users WHERE application = '$appid'");
+
+    // unable to find application
+    if (mysqli_num_rows($result) === 0)
+    {
+        return -1;
+    }
+
+    $application_data = mysqli_fetch_array($result);
+
+    return $application_data['hashcheck'] === 0 || $application_data['hash'] === $hash;
+}
+
 function login_application($appid, $user, $pass, $hwid = NULL)
 {
     // get the mysql_link
