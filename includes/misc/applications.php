@@ -67,7 +67,7 @@ function verify_hash($appid, $hash)
     $appid = sanitize($appid);
 
     // get application
-    $result = mysqli_query($mysql_link, "SELECT * FROM application_users WHERE application = '$appid'");
+    $result = mysqli_query($mysql_link, "SELECT * FROM user_applications WHERE appid = '$appid'");
 
     // unable to find application
     if (mysqli_num_rows($result) === 0)
@@ -76,7 +76,7 @@ function verify_hash($appid, $hash)
     }
 
     $application_data = mysqli_fetch_array($result);
-
+    
     return $application_data['hashcheck'] === 0 || $application_data['hash'] === $hash;
 }
 
