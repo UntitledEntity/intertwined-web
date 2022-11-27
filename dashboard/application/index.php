@@ -33,12 +33,13 @@ if (isset($_POST['logout']))
 if (isset($_POST['apply'])) {
 
 	$enabled = sanitize($_POST['enabled']) == "true" ? 1 : 0;
+	$iplock = sanitize($_POST['iplock']) == "true" ? 1 : 0;
 	$hashcheck = sanitize($_POST['hashcheck']) == "true" ? 1 : 0;
 	$hash = sanitize($_POST['hash']);
 
 	$appid = $appinfo['appid'];
 	
-	$result = mysqli_query($mysql_link, "UPDATE user_applications SET enabled = '$enabled', hashcheck = '$hashcheck', hash = '$hash' WHERE appid = '$appid'");
+	$result = mysqli_query($mysql_link, "UPDATE user_applications SET enabled = '$enabled', iplock = '$iplock', hashcheck = '$hashcheck', hash = '$hash' WHERE appid = '$appid'");
 }
 
 ?>
@@ -117,6 +118,15 @@ if (isset($_POST['apply'])) {
                         <option class="option100" value="false">False</option>
 					</select>
                 </div>
+
+				<span class="dash100-form-text">Ip lock</span>
+				<div class="wrap-select100 m-b-16">
+                    <select class="select100" name="iplock">
+                        <option class="option100" value="true">True</option>
+                        <option class="option100" value="false">False</option>
+					</select>
+                </div>
+
 
 				<span class="dash100-form-text">Hash integrity check</span>
 				<div class="wrap-select100 m-b-16">

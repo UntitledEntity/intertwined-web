@@ -110,8 +110,14 @@ function login_application($appid, $user, $pass, $hwid = NULL)
         $level = $row['level'];
         $banned = $row['banned'];
         $expiry = $row['expires'];
+        $ipp = $row['ip'];
     }
     
+    if ($ip != $ipp && get_application_params($appid)['iplock'] == true)
+    {
+        return 'invalid_ip';
+    }
+
     // check blacklist
     $result = mysqli_query($mysql_link, "SELECT * FROM blacklists WHERE ip = '$ip' or hwid='$hwidd' and application = '$appid'");
     if (mysqli_num_rows($result) >= 1)
@@ -319,6 +325,22 @@ function upgrade_application($appid, $user, $license)
         "level" => $level,
         "expiry" => $expiry
     );
+}
+
+function get_application_params($appid) 
+{
+    // get the mysql_link
+    global $mysql_link;
+
+    $appid = sanitize($appid);
+
+    $result = mysqli_query($mysql_link, "SELECT * FROM user_applications WHERE appid = '$appid'");
+    if (mysqli_num_rows($result) < 1)
+    {
+        return 'invalid_appid';
+    }
+
+    return mysqli_fetch_array($result);
 }
 
 function get_application($user)
