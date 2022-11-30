@@ -211,21 +211,15 @@ if (isset($_POST['logout']))
 	}
 
 	if (isset($_POST['ban'])) {
+		$user = sanitize($rows[$_POST['user']]['username']);
 
-		warning("Are you sure you want to ban this user? Please click again to ban this account.");
-        $_SESSION["timesclicked_ban"] += 1;
-    
-        if ($_SESSION["timesclicked_ban"] >= 2)
-        {
-			$user = sanitize($rows[$_POST['user']]['username']);
-
-    		mysqli_query($mysql_link, "UPDATE application_users SET banned = 1 WHERE username = '$user' and application = '$appid'");
-		}
+    	mysqli_query($mysql_link, "UPDATE application_users SET banned = 1 WHERE username = '$user' and application = '$appid'");
 	}
 
 	if (isset($_POST['unban'])) {
 		$user = sanitize($rows[$_POST['user']]['username']);
 
+		mysqli_query($mysql_link, "DELETE from blacklists WHERE user = '$user' and application = '$appid';");
 		mysqli_query($mysql_link, "UPDATE application_users SET banned = 0 WHERE username = '$user' and application = '$appid'");
 	}
 

@@ -43,7 +43,7 @@ function login($user,$pass)
     }
 
     // banned
-    if ($banned == true)
+    if ($banned)
     {
         blacklist($user, $ip);
         return 'banned';
@@ -164,7 +164,7 @@ function register($user, $pass, $license)
     return 'success';
 }
 
-function blacklist($user, $ip, $hwid = NULL)
+function blacklist($user, $ip, $hwid = NULL, $appid = NULL)
 {
     // get the mysql_link
     global $mysql_link;
@@ -180,7 +180,7 @@ function blacklist($user, $ip, $hwid = NULL)
         return 'blacklisted';
     }
 
-    $resp = mysqli_query($mysql_link, "INSERT INTO blacklists (user, ip, hwid) VALUES ('$user', '$ip', '$hwid')");
+    $resp = mysqli_query($mysql_link, "INSERT INTO blacklists (user, ip, hwid, application) VALUES ('$user', '$ip', '$hwid', '$appid')");
 
     if ($resp == false)
     {

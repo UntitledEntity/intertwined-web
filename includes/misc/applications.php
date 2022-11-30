@@ -93,6 +93,9 @@ function login_application($appid, $user, $pass, $hwid = NULL)
     $pass = sanitize($pass);
     $appid = sanitize($appid);
     
+    // get application paramaters
+    $appparams = get_application_params($appid);
+
     // find user
     $result = mysqli_query($mysql_link, "SELECT * FROM application_users WHERE username = '$user' and application = '$appid'");
     
@@ -113,7 +116,7 @@ function login_application($appid, $user, $pass, $hwid = NULL)
         $ipp = $row['ip'];
     }
     
-    if ($ip != $ipp && get_application_params($appid)['iplock'] == true)
+    if ($ip != $ipp && $appparams['iplock'])
     {
         return 'invalid_ip';
     }
@@ -129,9 +132,9 @@ function login_application($appid, $user, $pass, $hwid = NULL)
     }
 
     // banned
-    if ($banned == true)
+    if ($banned)
     {
-        blacklist($user, $ip);
+        blacklist($user, $ip, NULL, $appid);
         return 'banned';
     }
 
@@ -149,7 +152,7 @@ function login_application($appid, $user, $pass, $hwid = NULL)
 
     // check if HWID matches
     // use the password_verify function because hwids are stored with BCrypt hashing
-    if (isset($hwid))
+    if (isset($hwid) && $appparams['hwidlock'])
     {
         // no stored hwid, set the current one.
         if (is_null($hwidd) || $hwidd == 0) 

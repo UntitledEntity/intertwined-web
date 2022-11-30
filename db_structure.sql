@@ -81,6 +81,7 @@ CREATE TABLE `user_applications` (
   `owner` varchar(70) DEFAULT NULL,
   `enabled` int(1) DEFAULT 1,
   `iplock` int(1) DEFAULT 0,
+  `hwidlock` int(1) DEFAULT 0,
   `hashcheck` int(1) DEFAULT 0,
   `hash` varchar(255) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
