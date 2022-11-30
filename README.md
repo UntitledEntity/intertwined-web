@@ -16,7 +16,10 @@ Intertwined is a php-based open-source authentication service, based off of [php
 ## Assistance
 
 The Intertwined team will not assist you in setting up Intertwined on a web server. </br>
-If you need assistance with integrating Intertwined with your project and you have a valid subscription, you can contact me.
+
+The only acceptale instances in which the Intertwined team will assist you is: 
+- If you need assistance with integrating Intertwined with your project and you have a valid subscription, you can contact me.
+- If you have any inquiries about the code or general development revolving the Intertwined API
 
 ## License
 
