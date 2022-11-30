@@ -47,7 +47,7 @@
 				<ul class="navbar-nav menu-navbar-nav">
 
 					<li class="nav-item">
-						<a class="nav-link" href="docs.intertwined.solutions">
+						<a class="nav-link" href="https://docs.intertwined.solutions">
 							<p class="nav-link-menu">API documentation</p>
 						</a>
 					</li>
@@ -105,7 +105,7 @@
 						<p class="header-subtitle">Ease of implementation</p>
 				
 						<p class="header-title-text">Our API can be implemented to multiple applications easily. </p>
-						<p class="header-title-text">We have <a href="docs.intertwined.solutions">documentation</a> and <a href="https://github.com/UntitledEntity/intertwined-api-example">examples</a> for our API, to assist you in development when developing using Intertwined.</p>
+						<p class="header-title-text">We have <a href="https://docs.intertwined.solutions">documentation</a> and <a href="https://github.com/UntitledEntity/intertwined-api-example">examples</a> for our API, to assist you in development when developing using Intertwined.</p>
 					</div>
 					<div class="col-lg-6 order-lg-1">
 						<div class="header-img-section">
@@ -123,7 +123,7 @@
 					    
 						<h3 class="footer-subsection-title">Links</h3>
 						<ul class="list-unstyled footer-list-menu">
-							<li><a href="docs.intertwined.solutions">Documentation</a></li>
+							<li><a href="https://docs.intertwined.solutions">Documentation</a></li>
 							<li><a href="https://github.com/UntitledEntity/intertwined-web">Source code</a></li>
 							<li><a href="https://github.com/UntitledEntity/intertwined-api-example">API examples</a></li>
 						</ul>
