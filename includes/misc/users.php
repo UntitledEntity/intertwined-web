@@ -17,7 +17,7 @@ function login($user,$pass)
     $result = mysqli_query($mysql_link, "SELECT * FROM users WHERE username = '$user'");
     
     // unable to find user
-    if (mysqli_num_rows($result) === 0)
+    if (mysqli_num_rows($result) == 0)
     {
         return 'user_not_found';
     }
@@ -43,7 +43,7 @@ function login($user,$pass)
     }
 
     // banned
-    if ($banned === 1)
+    if ($banned == true)
     {
         blacklist($user, $ip);
         return 'banned';
@@ -56,7 +56,7 @@ function login($user,$pass)
     }
 
     // check if pass matches
-    if (password_verify($pass, $pw) === false)
+    if (password_verify($pass, $pw) == false)
     {
         return 'password_mismatch';
     }
@@ -148,13 +148,13 @@ function register($user, $pass, $license)
     $timestamp = time();
 
     $resp = mysqli_query($mysql_link, "INSERT INTO users (username, password, expires, level, ip, lastlogin) VALUES ('$user', '$hashed_pass', '$expiry', '$level', '$ip', '$timestamp')");
-    if ($resp === false)
+    if ($resp == false)
     {
         return mysqli_error($mysql_link);
     }
     
     $resp = mysqli_query($mysql_link, "UPDATE licenses SET applied = '1', usedate = '$timestamp', applieduser = '$user' WHERE license = '$license'");
-    if ($resp === false)
+    if ($resp == false)
     {
         return mysqli_error($mysql_link);
     }
@@ -182,14 +182,14 @@ function blacklist($user, $ip, $hwid = NULL)
 
     $resp = mysqli_query($mysql_link, "INSERT INTO blacklists (user, ip, hwid) VALUES ('$user', '$ip', '$hwid')");
 
-    if ($resp === false)
+    if ($resp == false)
     {
         return mysqli_error($mysql_link);
     }
 
     $resp = mysqli_query($mysql_link, "UPDATE users SET banned = '1' WHERE username = '$user' OR ip = '$ip'");
 
-    if ($resp === false)
+    if ($resp == false)
     {
         return mysqli_error($mysql_link);
     }
@@ -227,7 +227,7 @@ function delete_account($user)
     
     $resp = mysqli_query($mysql_link, "DELETE FROM users WHERE username = '$user'");
 
-    if ($resp === false)
+    if ($resp == false)
     {
         return mysqli_error($mysql_link);
     }
@@ -255,7 +255,7 @@ function change_level($user, $level)
     }
 
     $result = mysqli_query($mysql_link, "UPDATE users SET level = '$level' WHERE username = '$user'");
-    if ($result === false)
+    if ($result == false)
     {
         return mysqli_error($mysql_link);
     }

@@ -10,7 +10,7 @@ if (!isset($_SESSION["user_data"]))
 }
 
 $appinfo = get_application($_SESSION["user_data"]["user"]);
-if ($appinfo === 'no_application')
+if ($appinfo == 'no_application')
 {
 	create_application($_SESSION["user_data"]["user"]);
 	header('Location: '.$_SERVER['REQUEST_URI']);
@@ -22,7 +22,7 @@ $appid = $appinfo['appid'];
 $result = mysqli_query($mysql_link, "SELECT * FROM licenses WHERE application = '$appid'");
 
 // unable to find user
-if (mysqli_num_rows($result) === 0)
+if (mysqli_num_rows($result) == 0)
 {
     die("No licenses");
 }

@@ -10,7 +10,7 @@ if (!isset($_SESSION["user_data"]))
 }
 
 $appinfo = get_application($_SESSION["user_data"]["user"]);
-if ($appinfo === 'no_application')
+if ($appinfo == 'no_application')
 {
 	create_application($_SESSION["user_data"]["user"]);
 	header('Location: '.$_SERVER['REQUEST_URI']);
@@ -19,7 +19,7 @@ if ($appinfo === 'no_application')
 $appid = $appinfo['appid'];
 
 $showadmin = "none";
-if ($_SESSION["user_data"]["level"] === 5)
+if ($_SESSION["user_data"]["level"] == 5)
 {
     $showadmin = "dash100-form-text";
 }
@@ -113,7 +113,7 @@ if (isset($_POST['logout']))
                    	<select class="select100" name="user">
                         <?php 
 
-							if (mysqli_num_rows($result) === 0)
+							if (mysqli_num_rows($result) == 0)
 							{
 								echo "<option class=\"option100\" value=\"nousers\">No available users</option>";
 							}

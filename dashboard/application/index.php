@@ -10,14 +10,14 @@ if (!isset($_SESSION["user_data"]))
 }
 
 $appinfo = get_application($_SESSION["user_data"]["user"]);
-if ($appinfo === 'no_application')
+if ($appinfo == 'no_application')
 {
 	create_application($_SESSION["user_data"]["user"]);
 	header('Location: '.$_SERVER['REQUEST_URI']);
 }
 
 $showadmin = "none";
-if ($_SESSION["user_data"]["level"] === 5)
+if ($_SESSION["user_data"]["level"] == 5)
 {
     $showadmin = "dash100-form-text";
 }

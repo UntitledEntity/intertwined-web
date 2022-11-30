@@ -10,7 +10,7 @@ if (!isset($_SESSION["user_data"]))
 }
 
 $showadmin = "none";
-if ($_SESSION["user_data"]["level"] === 5)
+if ($_SESSION["user_data"]["level"] == 5)
 {
     $showadmin = "dash100-form-text";
 }

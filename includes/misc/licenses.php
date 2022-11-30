@@ -43,7 +43,7 @@ function gen_license($expiry, $level)
     $timestamp = time();
 
     $resp = mysqli_query($mysql_link, "INSERT INTO licenses (license, expires, level, created) VALUES ('$generated_license', '$expiry_time', '$level', '$timestamp')");
-    if ($resp === false)
+    if ($resp == false)
     {
         return mysqli_error($mysql_link);
     }
@@ -96,7 +96,7 @@ function generate_application_license($appid, $expiry, $level)
     $timestamp = time();
  
     $resp = mysqli_query($mysql_link, "INSERT INTO licenses (license, expires, level, created, application) VALUES ('$generated_license', '$expiry_time', '$level', '$timestamp', '$appid')");
-    if ($resp === false)
+    if ($resp == false)
     {
         return mysqli_error($mysql_link);
     }
@@ -112,7 +112,7 @@ function get_license($user)
     $user = sanitize($user);
     
     $result = mysqli_query($mysql_link, "SELECT * FROM licenses WHERE applieduser = '$user'");
-    if ($result === false)
+    if ($result == false)
     {
         return mysqli_error($mysql_link);
     }
