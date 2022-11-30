@@ -1,7 +1,7 @@
 <?php
 
 if (empty($_POST) && empty($_GET)) {
-  die(header("location: https://intertwined.solutions/docs"));  
+  die(header("location: https://docs.intertwined.solutions"));  
 }
 
 session_start();
