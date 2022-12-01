@@ -10,7 +10,7 @@ if (!isset($_SESSION["user_data"]))
 }
 
 $appinfo = get_application($_SESSION["user_data"]["user"]);
-if ($appinfo === 'no_application')
+if ($appinfo == 'no_application')
 {
 	create_application($_SESSION["user_data"]["user"]);
 	header('Location: '.$_SERVER['REQUEST_URI']);
@@ -19,7 +19,7 @@ if ($appinfo === 'no_application')
 $appid = $appinfo['appid'];
 
 $showadmin = "none";
-if ($_SESSION["user_data"]["level"] === 5)
+if ($_SESSION["user_data"]["level"] == 5)
 {
     $showadmin = "dash100-form-text";
 }
@@ -192,7 +192,7 @@ if (isset($_POST['logout']))
             return;
         }
 
-        if ($_POST['format'] === "json") 
+        if ($_POST['format'] == "json") 
         {
             $keys = array();
             for ($x = 1; $x <= $amount; $x++)
@@ -210,7 +210,7 @@ if (isset($_POST['logout']))
             {
                 $key = generate_application_license($appid, $expiry, $level);
     
-                if ($x === 1)
+                if ($x == 1)
                     $keys = $key;
                 else
                     $keys = $keys .= ", $key";
@@ -224,7 +224,7 @@ if (isset($_POST['logout']))
         </script>
         ';
 
-        if ($amount === 1)
+        if ($amount == 1)
             notif("Copied license to clipboard");
         else
             notif("Copied licenses to clipboard");

@@ -10,7 +10,7 @@ if (!isset($_SESSION["user_data"]))
 }
 
 $appinfo = get_application($_SESSION["user_data"]["user"]);
-if ($appinfo === 'no_application')
+if ($appinfo == 'no_application')
 {
 	create_application($_SESSION["user_data"]["user"]);
 	header('Location: '.$_SERVER['REQUEST_URI']);
@@ -19,7 +19,7 @@ if ($appinfo === 'no_application')
 $appid = $appinfo['appid'];
 
 $showadmin = "none";
-if ($_SESSION["user_data"]["level"] === 5)
+if ($_SESSION["user_data"]["level"] == 5)
 {
     $showadmin = "dash100-form-text";
 }
@@ -113,7 +113,7 @@ if (isset($_POST['logout']))
                    	<select class="select100" name="user">
                         <?php 
 
-							if (mysqli_num_rows($result) === 0)
+							if (mysqli_num_rows($result) == 0)
 							{
 								echo "<option class=\"option100\" value=\"nousers\">No available users</option>";
 							}
@@ -211,21 +211,15 @@ if (isset($_POST['logout']))
 	}
 
 	if (isset($_POST['ban'])) {
+		$user = sanitize($rows[$_POST['user']]['username']);
 
-		warning("Are you sure you want to ban this user? Please click again to ban this account.");
-        $_SESSION["timesclicked_ban"] += 1;
-    
-        if ($_SESSION["timesclicked_ban"] >= 2)
-        {
-			$user = sanitize($rows[$_POST['user']]['username']);
-
-    		mysqli_query($mysql_link, "UPDATE application_users SET banned = 1 WHERE username = '$user' and application = '$appid'");
-		}
+    	mysqli_query($mysql_link, "UPDATE application_users SET banned = 1 WHERE username = '$user' and application = '$appid'");
 	}
 
 	if (isset($_POST['unban'])) {
 		$user = sanitize($rows[$_POST['user']]['username']);
 
+		mysqli_query($mysql_link, "DELETE from blacklists WHERE user = '$user' and application = '$appid';");
 		mysqli_query($mysql_link, "UPDATE application_users SET banned = 0 WHERE username = '$user' and application = '$appid'");
 	}
 

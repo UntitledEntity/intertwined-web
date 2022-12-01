@@ -15,7 +15,7 @@ function create_application($owner)
     $enckey = md5(rand());
 
     $resp = mysqli_query($mysql_link, "INSERT INTO user_applications (appid, enckey, owner) VALUES ('$appid', '$enckey', '$owner')");
-    if ($resp === false)
+    if ($resp == false)
     {
         return false;
     }
@@ -47,7 +47,7 @@ function check_ban_application($appid, $user)
     $result = mysqli_query($mysql_link, "SELECT * FROM application_users WHERE username = '$user' and application = '$appid'");
     
     // unable to find user
-    if (mysqli_num_rows($result) === 0)
+    if (mysqli_num_rows($result) == 0)
     {
         return -1;
     }
@@ -55,6 +55,29 @@ function check_ban_application($appid, $user)
     $banned = mysqli_fetch_array($result)['banned'];
 
     return $banned;
+}
+
+function verify_hash($appid, $hash) 
+{
+    // get the mysql_link
+    global $mysql_link;
+
+    // sanitize
+    $hash = sanitize($hash);
+    $appid = sanitize($appid);
+
+    // get application
+    $result = mysqli_query($mysql_link, "SELECT * FROM user_applications WHERE appid = '$appid'");
+
+    // unable to find application
+    if (mysqli_num_rows($result) == 0)
+    {
+        return -1;
+    }
+
+    $application_data = mysqli_fetch_array($result);
+    
+    return $application_data['hashcheck'] == false || $application_data['hash'] === $hash;
 }
 
 function login_application($appid, $user, $pass, $hwid = NULL)
@@ -70,11 +93,14 @@ function login_application($appid, $user, $pass, $hwid = NULL)
     $pass = sanitize($pass);
     $appid = sanitize($appid);
     
+    // get application paramaters
+    $appparams = get_application_params($appid);
+
     // find user
     $result = mysqli_query($mysql_link, "SELECT * FROM application_users WHERE username = '$user' and application = '$appid'");
     
     // unable to find user
-    if (mysqli_num_rows($result) === 0)
+    if (mysqli_num_rows($result) == 0)
     {
         return 'user_not_found';
     }
@@ -87,8 +113,14 @@ function login_application($appid, $user, $pass, $hwid = NULL)
         $level = $row['level'];
         $banned = $row['banned'];
         $expiry = $row['expires'];
+        $ipp = $row['ip'];
     }
     
+    if ($ip != $ipp && $appparams['iplock'])
+    {
+        return 'invalid_ip';
+    }
+
     // check blacklist
     $result = mysqli_query($mysql_link, "SELECT * FROM blacklists WHERE ip = '$ip' or hwid='$hwidd' and application = '$appid'");
     if (mysqli_num_rows($result) >= 1)
@@ -100,9 +132,9 @@ function login_application($appid, $user, $pass, $hwid = NULL)
     }
 
     // banned
-    if ($banned === 1)
+    if ($banned)
     {
-        blacklist($user, $ip);
+        blacklist($user, $ip, NULL, $appid);
         return 'banned';
     }
 
@@ -113,14 +145,14 @@ function login_application($appid, $user, $pass, $hwid = NULL)
     }
 
     // check if pass matches
-    if (password_verify($pass, $pw) === false)
+    if (password_verify($pass, $pw) == false)
     {
         return 'password_mismatch';
     }
 
     // check if HWID matches
     // use the password_verify function because hwids are stored with BCrypt hashing
-    if (isset($hwid))
+    if (isset($hwid) && $appparams['hwidlock'])
     {
         // no stored hwid, set the current one.
         if (is_null($hwidd) || $hwidd == 0) 
@@ -163,7 +195,7 @@ function register_application($appid, $user, $pass, $license)
     $license = sanitize($license);
     $appid = sanitize($appid);
 
-    if ($pass === $user || strlen($pass) < 4)
+    if ($pass == $user || strlen($pass) < 4)
     {
         return 'invalid_pass';
     }
@@ -213,13 +245,13 @@ function register_application($appid, $user, $pass, $license)
     $timestamp = time();
 
     $resp = mysqli_query($mysql_link, "INSERT INTO application_users (username, password, expires, level, ip, lastlogin, application) VALUES ('$user', '$hashed_pass', '$expiry', '$level', '$ip', '$timestamp', '$appid')");
-    if ($resp === false)
+    if ($resp == false)
     {
         return mysqli_error($mysql_link);
     }
     
     $resp = mysqli_query($mysql_link, "UPDATE licenses SET applied = '1', usedate = '$timestamp', applieduser = '$user' WHERE license = '$license' and application = '$appid'");
-    if ($resp === false)
+    if ($resp == false)
     {
         return mysqli_error($mysql_link);
     }
@@ -280,14 +312,14 @@ function upgrade_application($appid, $user, $license)
     }
 
     $resp = mysqli_query($mysql_link, "UPDATE application_users SET level = '$level', expires = '$expiry' WHERE username = '$user' and application = '$appid'");
-    if ($resp === false)
+    if ($resp == false)
     {
         return mysqli_error($mysql_link);
     }
 
     $timestamp = time();
     $resp = mysqli_query($mysql_link, "UPDATE licenses SET applied = '1', usedate = '$timestamp', applieduser = '$user' WHERE license = '$license'");
-    if ($resp === false)
+    if ($resp == false)
     {
         return mysqli_error($mysql_link);
     }
@@ -296,6 +328,22 @@ function upgrade_application($appid, $user, $license)
         "level" => $level,
         "expiry" => $expiry
     );
+}
+
+function get_application_params($appid) 
+{
+    // get the mysql_link
+    global $mysql_link;
+
+    $appid = sanitize($appid);
+
+    $result = mysqli_query($mysql_link, "SELECT * FROM user_applications WHERE appid = '$appid'");
+    if (mysqli_num_rows($result) < 1)
+    {
+        return 'invalid_appid';
+    }
+
+    return mysqli_fetch_array($result);
 }
 
 function get_application($user)
@@ -342,7 +390,7 @@ function delete_application_account($user)
     
     $resp = mysqli_query($mysql_link, "DELETE FROM application_users WHERE username = '$user'");
 
-    if ($resp === false)
+    if ($resp == false)
     {
         return mysqli_error($mysql_link);
     }

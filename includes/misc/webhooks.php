@@ -12,7 +12,7 @@ function create_webhook($webhook_link)
 
     $resp = mysqli_query($mysql_link, "INSERT INTO webhooks (id, link) VALUES ('$webhook_id', '$webhook_link')");
 
-    if ($resp === false)
+    if ($resp == false)
     {
         return mysqli_error($mysql_link);
     }
@@ -47,7 +47,7 @@ function delete_webhook($webhook_id)
     $webhook_id = sanitize($webhook_id);  
      
     $result = mysqli_query($mysql_link, "DELETE FROM webhooks WHERE id = '$webhook_id'");
-    if ($result === false)
+    if ($result == false)
     {
         return mysqli_error($mysql_link);
     }

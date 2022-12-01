@@ -10,14 +10,14 @@ if (!isset($_SESSION["user_data"]))
 }
 
 $appinfo = get_application($_SESSION["user_data"]["user"]);
-if ($appinfo === 'no_application')
+if ($appinfo == 'no_application')
 {
 	create_application($_SESSION["user_data"]["user"]);
 	header('Location: '.$_SERVER['REQUEST_URI']);
 }
 
 $showadmin = "none";
-if ($_SESSION["user_data"]["level"] === 5)
+if ($_SESSION["user_data"]["level"] == 5)
 {
     $showadmin = "dash100-form-text";
 }
@@ -33,9 +33,14 @@ if (isset($_POST['logout']))
 if (isset($_POST['apply'])) {
 
 	$enabled = sanitize($_POST['enabled']) == "true" ? 1 : 0;
+	$iplock = sanitize($_POST['iplock']) == "true" ? 1 : 0;
+	$hwidlock = sanitize($_POST['hwidlock']) == "true" ? 1 : 0;
+	$hashcheck = sanitize($_POST['hashcheck']) == "true" ? 1 : 0;
+	$hash = sanitize($_POST['hash']);
+
 	$appid = $appinfo['appid'];
 	
-	$result = mysqli_query($mysql_link, "UPDATE user_applications SET enabled = '$enabled' WHERE appid = '$appid'");
+	$result = mysqli_query($mysql_link, "UPDATE user_applications SET enabled = '$enabled', iplock = '$iplock', hwidlock = '$hwidlock', hashcheck = '$hashcheck', hash = '$hash' WHERE appid = '$appid'");
 }
 
 ?>
@@ -114,6 +119,36 @@ if (isset($_POST['apply'])) {
                         <option class="option100" value="false">False</option>
 					</select>
                 </div>
+
+				<span class="dash100-form-text">Ip lock</span>
+				<div class="wrap-select100 m-b-16">
+                    <select class="select100" name="iplock">
+                        <option class="option100" value="true">True</option>
+                        <option class="option100" value="false">False</option>
+					</select>
+                </div>
+
+				<span class="dash100-form-text">HWID lock</span>
+				<div class="wrap-select100 m-b-16">
+                    <select class="select100" name="hwidlock">
+                        <option class="option100" value="true">True</option>
+                        <option class="option100" value="false">False</option>
+					</select>
+                </div>
+
+
+				<span class="dash100-form-text">Hash integrity check</span>
+				<div class="wrap-select100 m-b-16">
+                    <select class="select100" name="hashcheck">
+                        <option class="option100" value="true">True</option>
+                        <option class="option100" value="false">False</option>
+					</select>
+                </div>
+
+				<div class="wrap-input100 validate-input m-b-16">
+					<input class="input100" type="text" name="hash" placeholder="Program hash">
+					<span class="focus-input100"></span>
+				</div>
 
 				<div class="container-dash100-form-btn m-t-17">
 					<button name="apply" class="dash100-form-btn">

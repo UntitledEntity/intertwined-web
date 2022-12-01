@@ -26,7 +26,7 @@ function open_session($appid)
 
     // open session
     $resp = mysqli_query($mysql_link, "INSERT INTO sessions (sessionid, ip, opentime, application) VALUES ('$sessionid', '$ip', '$timestamp', '$appid')");
-    if ($resp === false)
+    if ($resp == false)
     {
         return mysqli_error($mysql_link);
     }
@@ -46,7 +46,7 @@ function close_session($sessionid)
 
     $resp = mysqli_query($mysql_link, "DELETE FROM sessions WHERE sessionid = '$sessionid'");
 
-    if ($resp === false)
+    if ($resp == false)
     {
         return mysqli_error($mysql_link);
     }

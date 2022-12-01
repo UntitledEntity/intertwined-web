@@ -1,7 +1,7 @@
 <?php
 
 if (empty($_POST) && empty($_GET)) {
-  die(header("location: https://intertwined.solutions/docs"));  
+  die(header("location: https://docs.intertwined.solutions"));  
 }
 
 session_start();
@@ -24,6 +24,15 @@ switch ($_POST['type'] ?? $_GET['type'])
             )));
         }
 
+        $hash = sanitize($_POST['hash'] ?? $_GET['hash']);
+        if (!verify_hash($appid, $hash))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Invalid hash."
+            )));
+        }
+
         if (!isset($appid))
         {
            die(json_encode(array(
@@ -33,7 +42,7 @@ switch ($_POST['type'] ?? $_GET['type'])
         }
 
         $sessionid = open_session($appid);
-        if ($sessionid === false)
+        if ($sessionid == false)
         {
             die(json_encode(array(
             "success" => false,
@@ -50,11 +59,20 @@ switch ($_POST['type'] ?? $_GET['type'])
         $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
 
         $session_data = check_session_open($sessionid);
-        if ($session_data === false || !isset($session_data))
+        if ($session_data == false || !isset($session_data))
         {
             die(json_encode(array(
                 "success" => false,
                 "error" => "Invalid session."
+            )));
+        }
+
+        $hash = sanitize($_POST['hash'] ?? $_GET['hash']);
+        if (!verify_hash($appid, $hash))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Invalid hash."
             )));
         }
 
@@ -95,11 +113,20 @@ switch ($_POST['type'] ?? $_GET['type'])
         $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
 
         $session_data = check_session_open($sessionid);
-        if ($session_data === false || !isset($session_data))
+        if ($session_data == false || !isset($session_data))
         {
             die(json_encode(array(
                 "success" => false,
                 "error" => "Invalid session."
+            )));
+        }
+
+        $hash = sanitize($_POST['hash'] ?? $_GET['hash']);
+        if (!verify_hash($appid, $hash))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Invalid hash."
             )));
         }
 
@@ -140,11 +167,20 @@ switch ($_POST['type'] ?? $_GET['type'])
         $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
 
         $session_data = check_session_open($sessionid);
-        if ($session_data === false || !isset($session_data))
+        if ($session_data == false || !isset($session_data))
         {
             die(json_encode(array(
                 "success" => false,
                 "error" => "Invalid session."
+            )));
+        }
+
+        $hash = sanitize($_POST['hash'] ?? $_GET['hash']);
+        if (!verify_hash($appid, $hash))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Invalid hash."
             )));
         }
 
@@ -171,11 +207,20 @@ switch ($_POST['type'] ?? $_GET['type'])
         $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
 
         $session_data = check_session_open($sessionid);
-        if ($session_data === false || !isset($session_data))
+        if ($session_data == false || !isset($session_data))
         {
             die(json_encode(array(
                 "success" => false,
                 "error" => "Invalid session."
+            )));
+        }
+
+        $hash = sanitize($_POST['hash'] ?? $_GET['hash']);
+        if (!verify_hash($appid, $hash))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Invalid hash."
             )));
         }
 
@@ -221,7 +266,7 @@ switch ($_POST['type'] ?? $_GET['type'])
         $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
         
         $session_data = check_session_open($sessionid);
-        if ($session_data === false || !isset($session_data))
+        if ($session_data == false || !isset($session_data))
         {
             die(json_encode(array(
                 "success" => false,

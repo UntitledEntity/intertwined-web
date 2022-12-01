@@ -30,7 +30,7 @@ switch ($_GET['type'])
         $result = mysqli_query($mysql_link, "SELECT * FROM application_users WHERE application = '$appid'");
 
         // unable to find user
-        if (mysqli_num_rows($result) === 0)
+        if (mysqli_num_rows($result) == 0)
         {
             die("No users");
         }
@@ -95,7 +95,7 @@ switch ($_GET['type'])
         $result = mysqli_query($mysql_link, "SELECT * FROM application_users WHERE username = '$user' and application = '$appid'");
 
         // unable to find user
-        if (mysqli_num_rows($result) === 0)
+        if (mysqli_num_rows($result) == 0)
         {
             die("User not found");
         }
