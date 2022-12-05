@@ -237,6 +237,16 @@ iframe {
   display: block;
 }
 
+.dash100-wrap-columns {
+  display: flex;
+}
+
+.dash100-column {
+  flex: 1;
+  padding: 20px;
+}
+
+
 /*------------------------------------------------------------------
 [ Select ]*/
 
@@ -264,6 +274,8 @@ iframe {
 
   border: 1px solid #ff4000c0;
   border-radius: 3px;
+
+  text-align-last: center;
 }
 /*------------------------------------------------------------------
 [ Focus Select ]*/
@@ -276,8 +288,11 @@ iframe {
   top: -1px;
   left: -1px;
   pointer-events: none;
+
   border: 1px solid #ff4000c0;
   border-radius: 3px;
+
+  text-align-last: center;
 
   visibility: hidden;
   opacity: 0;

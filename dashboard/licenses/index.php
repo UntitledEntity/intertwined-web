@@ -102,53 +102,61 @@ if (isset($_POST['logout']))
                 <span class="dash100-form-title">
 				    Licenses
 				</span>
+                
+                <div class="dash100-wrap-columns">
+                    
+					<div class="dash100-column">
+                        <div class="wrap-input100 validate-input m-b-16" data-validate = "Level required">
+                            <input class="input100" type="text" name="level" placeholder="Level">
+                            <span class="focus-input100"></span>
+                        </div>
 
-				<div class="wrap-input100 validate-input m-b-16" data-validate = "Level required">
-					<input class="input100" type="text" name="level" placeholder="Level">
-					<span class="focus-input100"></span>
-				</div>
 
+                        <span class="dash100-form-text">License expiration</span>
+                        <div class="wrap-select100 m-b-16">
+                            <select class="select100" name="expiration">
+                                <option class="option100" value="month">1 month</option>
+                                <option class="option100" value="half-year">6 months</option>
+                                <option class="option100" value="year">1 year</option>
+                                <option class="option100" value="never">Never</option>
+                            </select>
+                        </div>
 
-				<span class="dash100-form-text">License expiration</span>
-				<div class="wrap-select100 m-b-16">
-                    <select class="select100" name="expiration">
-                        <option class="option100" value="month">1 month</option>
-                        <option class="option100" value="half-year">6 months</option>
-						<option class="option100" value="year">1 year</option>
-						<option class="option100" value="never">Never</option>
-					</select>
+                        <div class="wrap-input100 validate-input m-b-16" data-validate = "Amount required">
+                            <input class="input100" type="text" name="amount" placeholder="Amount">
+                            <span class="focus-input100"></span>
+                        </div>
+
+                        <span class="dash100-form-text">Format</span>
+                        <div class="wrap-select100 m-b-16">
+                            <select class="select100" name="format">
+                                <option class="option100" value="text">Text</option>
+                                <option class="option100" value="json">JSON</option>
+                            </select>
+                        </div>
+
+                        <div class="container-dash100-form-btn m-t-17">
+                            <button name="genlicense" class="dash100-form-btn">
+                                Generate
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="dash100-column">
+                        <div class="container-dash100-form-btn m-t-17">
+                            <button name="downloadlicenses" class="dash100-form-btn">
+                                Download all licenses
+                            </button>
+                        </div>
+
+                        <div class="container-dash100-form-btn m-t-17">
+                            <button name="deleteunusedlicenses" class="dash100-form-btn">
+                                Delete unused licenses
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
-
-                <div class="wrap-input100 validate-input m-b-16" data-validate = "Amount required">
-					<input class="input100" type="text" name="amount" placeholder="Amount">
-					<span class="focus-input100"></span>
-				</div>
-
-                <span class="dash100-form-text">Format</span>
-				<div class="wrap-select100 m-b-16">
-                    <select class="select100" name="format">
-                        <option class="option100" value="text">Text</option>
-                        <option class="option100" value="json">JSON</option>
-					</select>
-                </div>
-
-                <div class="container-dash100-form-btn m-t-17">
-					<button name="genlicense" class="dash100-form-btn">
-						Generate
-					</button>
-				</div>
-
-                <div class="container-dash100-form-btn m-t-17">
-					<button name="downloadlicenses" class="dash100-form-btn">
-						Download all licenses
-					</button>
-				</div>
-
-                <div class="container-dash100-form-btn m-t-17">
-					<button name="deleteunusedlicenses" class="dash100-form-btn">
-						Delete unused licenses
-					</button>
-				</div>
 
             </form>
 

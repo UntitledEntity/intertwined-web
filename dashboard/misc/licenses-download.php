@@ -32,15 +32,12 @@ while ($r = mysqli_fetch_assoc($result)) {
     $rows[] = $r;
 }
 
-$data = preg_replace(
+$data = "";
 
-    '~[\r\n]+~',
-
-    "\r\n",
-
-    trim(json_encode($rows))
-
-);
+for ($i = 0; $i < count($rows); $i++) { 
+    $row = json_encode($rows[$i]);
+    $data .= "$row\n";
+}
 
 header('Content-Description: File Transfer');
 header('Content-Type: application/octet-stream');

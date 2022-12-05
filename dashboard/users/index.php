@@ -128,50 +128,53 @@ if (isset($_POST['logout']))
 					<span class="focus-select100"></span>
                 </div>
 
-                <div class="wrap-input100 validate-input m-b-16" data-validate = "new password required">
-					<input class="input100" type="text" name="pass" placeholder="New password">
-					<span class="focus-input100"></span>
-				</div>
-					
-				<div class="container-dash100-form-btn m-t-17">
-					<button name="resetpassword" class="dash100-form-btn">
-						Reset password
-					</button>
-				</div>
+				<div class="dash100-wrap-columns">
+					<div class="dash100-column">
+						<div class="wrap-input100 validate-input m-b-16" data-validate = "new password required">
+							<input class="input100" type="text" name="pass" placeholder="New password">
+							<span class="focus-input100"></span>
+						</div>
+							
+						<div class="container-dash100-form-btn m-t-17">
+							<button name="resetpassword" class="dash100-form-btn">
+								Reset password
+							</button>
+						</div>
 
-				</br>
+						</br>
 
-				<div class="wrap-input100 validate-input m-b-16" data-validate = "license">
-					<input class="input100" type="text" name="license" placeholder="License">
-					<span class="focus-input100"></span>
+						<div class="wrap-input100 validate-input m-b-16" data-validate = "license">
+							<input class="input100" type="text" name="license" placeholder="License">
+							<span class="focus-input100"></span>
+						</div>
+
+						<div class="container-dash100-form-btn m-t-17">
+							<button name="upgrade" class="dash100-form-btn">
+								Upgrade user
+							</button>
+						</div>
+					</div>
+
+					<div class="dash100-column">
+						<div class="container-dash100-form-btn m-t-17">
+							<button name="getdata" class="dash100-form-btn">
+								Copy userdata
+							</button>
+						</div>
+						
+						<div class="container-dash100-form-btn m-t-17">
+							<button name="ban" class="dash100-form-btn">
+								Ban
+							</button>
+						</div>
+
+						<div class="container-dash100-form-btn m-t-17">
+							<button name="unban" class="dash100-form-btn">
+								Unban
+							</button>
+						</div>
+					</div>
 				</div>
-
-				<div class="container-dash100-form-btn m-t-17">
-					<button name="upgrade" class="dash100-form-btn">
-						Upgrade user
-					</button>
-				</div>
-
-				<br>
-
-				<div class="container-dash100-form-btn m-t-17">
-					<button name="getdata" class="dash100-form-btn">
-						Copy userdata
-					</button>
-				</div>
-				
-				<div class="container-dash100-form-btn m-t-17">
-					<button name="ban" class="dash100-form-btn">
-						Ban
-					</button>
-				</div>
-
-				<div class="container-dash100-form-btn m-t-17">
-					<button name="unban" class="dash100-form-btn">
-						Unban
-					</button>
-				</div>
-
             </form>
 		</div>
 	</div>
