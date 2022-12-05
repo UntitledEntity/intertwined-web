@@ -34,8 +34,8 @@ $license_data = get_license($_SESSION["user_data"]["user"]);
 
 	<link rel="stylesheet" href="../assets/css/index-bootstrap.min.css">
 	
-	<link rel="stylesheet" type="text/css" href="css/main.css" />
-    <link rel="stylesheet" type="text/css" href="css/util.css" />
+	<link rel="stylesheet" type="text/css" href="misc/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="misc/css/util.css" />
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -48,18 +48,14 @@ $license_data = get_license($_SESSION["user_data"]["user"]);
 <body>
 	<div class="limiter">
 	    <div class="sidebar-dash100">
-	        <span class="dash100-form-title">
-				Dashboard
-			</span>
+			<img src="../../assets/images/favicon_img.png" width="150" height="150" class="sidebar-logo-dash100">
 			
 			<span class="dash100-form-text"> 
 				Welcome, <?php echo $_SESSION["user_data"]["user"]; ?>.
 			</span>
 			
-            <a href="stats" class="dash100-form-text">Server stats</a>
             <a href="application" class="dash100-form-text">Application</a>
             <a href="licenses" class="dash100-form-text">Licenses</a>
-			<a href="files" class="dash100-form-text">Files</a>
 			<a href="users" class="dash100-form-text">Users</a>
             <a href="admin" class='<?php echo $showadmin; ?>'>Admin</a>
             
