@@ -23,6 +23,4 @@ define("LOG_RGSTR", 1);
 define("LOG_ALL", 2);
 define("LOG_ERR", 3);
 
-define("DISCORD", "")
-
 ?>

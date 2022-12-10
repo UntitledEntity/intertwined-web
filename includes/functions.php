@@ -44,23 +44,33 @@ function randomstring($length = 8) {
 
 function discord_webhook($content) 
 {
-  $post_data = json_encode([
-
-    "content" => $content,
-    "tts" => false
-
+  $webhookurl = "";
+  
+  $json_data = json_encode([
+      // Message
+      "content" => $content,
+      
+      // Username
+      "username" => "Intertwined alerts",
+  
+      // Text-to-speech
+      "tts" => false,
+  
   ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
-
-  $curl = curl_init( DISCORD );
-  curl_setopt( $curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
-  curl_setopt( $curl, CURLOPT_POST, 1);
-  curl_setopt( $curl, CURLOPT_POSTFIELDS, $post_data);
-  curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, 1);
-  curl_setopt( $curl, CURLOPT_HEADER, 0);
-  curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
-  curl_close( $curl );
+  
+  
+  $ch = curl_init( $webhookurl );
+  curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+  curl_setopt( $ch, CURLOPT_POST, 1);
+  curl_setopt( $ch, CURLOPT_POSTFIELDS, $json_data);
+  curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1);
+  curl_setopt( $ch, CURLOPT_HEADER, 0);
+  curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1);
+  
+  $response = curl_exec( $ch );
+  
+  curl_close( $ch );
 }
-
 
 function notification($msg, $type) 
 {
