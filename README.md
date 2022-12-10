@@ -13,6 +13,8 @@ Intertwined is a php-based open-source authentication service, based off of [php
 - MySQL
 - Cron
 
+Add your MYSQL connection information [here](https://github.com/UntitledEntity/intertwined-web/blob/main/includes/mysql_connect.php#L10) and [here](https://github.com/UntitledEntity/intertwined-web/blob/main/includes/clearsessions.php#L3)
+
 ## Assistance
 
 The Intertwined team will not assist you in setting up Intertwined on a web server. </br>
