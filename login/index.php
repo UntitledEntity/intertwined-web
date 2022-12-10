@@ -60,7 +60,7 @@ if (isset($_SESSION["user_data"]))
 						<span class="focus-input100"></span>
 					</div>
 					
-					<img class="captcha-image" src="../includes/captcha.php">
+					<img class="captcha-image" src="../assets/php/captcha.php">
 					
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Captcha is required">
 						<input class="input100" type="text" name="captcha" placeholder="Captcha (if new I.P address)">
@@ -91,7 +91,7 @@ if (isset($_SESSION["user_data"]))
 			$ipp = mysqli_fetch_array($result)['ip'];
 			if ($ip !== $ipp) 
 			{
-				admin_log("TEST", LOG_NRML);
+				admin_log("IP mismatch detected for " . $_POST['user'] . " on IP" . $ip . " with the stored IP ". $ipp, LOG_USR);
 				
 				if (!strlen($_POST['captcha'])) 
 				{
@@ -115,9 +115,11 @@ if (isset($_SESSION["user_data"]))
                     notification("The provided username is incorrect. Please check your spelling.", NOTIF_ERR);
 					return;
                 case 'blacklisted':
+					admin_log($_POST['user'] . "attempted to login with the blacklisted ip " . $ip, LOG_USR);
                     notification("The IP you are trying to login to from has been blacklisted due to breaking TOS.", NOTIF_ERR);
 					return;
 				case 'banned':
+					admin_log($ip . " attempted to login to the banned account " . $_POST['user'], LOG_USR);
                     notification("The account you are trying to login to has been banned due to breaking TOS.", NOTIF_ERR);
 					return;
                 case 'subscription_expired':
@@ -131,6 +133,7 @@ if (isset($_SESSION["user_data"]))
                 	notification("You have successfully logged in.", NOTIF_OK);
                 default:
 					notification("There has been an error logging in. If this persists, please contact an administrator", NOTIF_ERR);
+					admin_log($resp, LOG_ERR);
 					return;
             }
             

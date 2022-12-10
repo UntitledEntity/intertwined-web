@@ -65,7 +65,7 @@ if (isset($_SESSION["user_data"]))
 						<span class="focus-input100"></span>
 					</div>
 					
-					<img class="captcha-image" src="../includes/captcha.php">
+					<img class="captcha-image" src="../assets/php/captcha.php">
 
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Captcha is required">
 						<input class="input100" type="text" name="captcha" placeholder="Captcha">
@@ -121,6 +121,7 @@ if (isset($_SESSION["user_data"]))
                 	notification("You have successfully registered.", NOTIF_OK);
                 default:
 					notification("There has been an error registering. If this persists, please contact an administrator", NOTIF_ERR);
+					admin_log($resp, LOG_ERR);
 					return;
             }
         }

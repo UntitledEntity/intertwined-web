@@ -42,6 +42,25 @@ function randomstring($length = 8) {
     return $ret;
 }
 
+function discord_webhook($content) 
+{
+  $post_data = json_encode([
+
+    "content" => $content,
+    "tts" => false
+
+  ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+
+  $curl = curl_init( DISCORD );
+  curl_setopt( $curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+  curl_setopt( $curl, CURLOPT_POST, 1);
+  curl_setopt( $curl, CURLOPT_POSTFIELDS, $post_data);
+  curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, 1);
+  curl_setopt( $curl, CURLOPT_HEADER, 0);
+  curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
+  curl_close( $curl );
+}
+
 
 function notification($msg, $type) 
 {
@@ -101,12 +120,46 @@ function notification($msg, $type)
   }
 }
 
-// TODO: Improve/fix this
 function admin_log($msg, $type) 
 {
+  $timestamp = date('Y-m-d H:i:s', time());
+
+  $file = "";
+  $output = "";
+
+  switch($type) {
+    case LOG_ERR:
+      $output = "[" . $timestamp . "] ERROR >> " . $msg;
+      $file = "err.log";
+
+      // Send a notification to a discord server. Fastest way to get the attention of the staff members. 
+      // Dont send any critical information because discord isn't secure enough IMO.
+      discord_webhook("Error detected.");
+
+    case LOG_ALL: 
+      $output = "[" . $timestamp . "] ALL >> " . $msg;
+      $file = "all.log";
+
+    case LOG_USR:
+      $output = "[" . $timestamp . "] USER >> " . $msg;
+      $file = "users.log";
+
+    case LOG_RGSTR:
+      $output = "[" . $timestamp . "] REGISTER >> " . $msg;
+      $file = "users.log";
+  }
+
+  // log to all.log, this file holds all of the logs and is backed up weekly.
   $log_file = fopen("../logs/all.log", "a");
-  fwrite($log_file, "$msg\n");
+  fwrite($log_file, "$output\n");
   fclose($log_file);
+
+  // log to type-specific file.
+  if ($type != LOG_ALL) {
+    $log_file = fopen("../logs/" . $file, "a");
+    fwrite($log_file, "$output\n");
+    fclose($log_file);
+  }
     
 }
 
