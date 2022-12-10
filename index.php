@@ -114,6 +114,22 @@
 					</div>
 				</div>
 			</div>
+			
+			<div class="padding-25">
+				<div class="container header-container fade-in">
+					<div class="col-lg-5 order-lg-1 text-center">
+						<p class="header-subtitle">Open Source</p>
+				
+						<p class="header-title-text">We are open-source, which allows our customers to have a deeper and more trusting understanding of how our code works.</p>
+					</div>
+					<div class="col-lg-6 order-lg-2">
+						<div class="header-img-section">
+					    	<img src="assets/images/open-source.png" alt="End-To-End">
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</div>
 
 		<div class="footer-section">
