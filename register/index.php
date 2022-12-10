@@ -90,7 +90,7 @@ if (isset($_SESSION["user_data"]))
 	    if (isset($_POST['register']))
         {
 			if ($_POST['captcha'] !== $_SESSION["captcha"]){
-				error("Invalid Captcha.");
+				notification("Invalid Captcha.", NOTIF_ERR);
 				return;
 			}
 
@@ -99,28 +99,28 @@ if (isset($_SESSION["user_data"]))
             switch ($resp)
             {
                 case 'invalid_pass':
-                    error("Password may not be under 4 characters and cannot be the same as the username.");
+                    notification("Password may not be under 4 characters and cannot be the same as the username.", NOTIF_ERR);
 					return;
                 case 'user_already_taken':
-                    error("The provided username is already in use.");
+                    notification("The provided username is already in use.", NOTIF_ERR);
 					return;
                 case 'blacklisted':
-                    error("The IP you are trying to register from has been blacklisted due to breaking TOS.");
+                    notification("The IP you are trying to register from has been blacklisted due to breaking TOS.", NOTIF_ERR);
 					return;
                 case 'invalid_license':
-                    error("The license you have provided is incorrect. Please check your spelling.");
+                    notification("The license you have provided is incorrect. Please check your spelling.", NOTIF_ERR);
 					return;
                 case 'expired_license':
-                    error("The license you have provided is expired.");
+                    notification("The license you have provided is expired.", NOTIF_ERR);
 					return;
                 case 'invalid_level':
-                    error("The license you have provided is invalid. Please contact an administrator.");
+                    notification("The license you have provided is invalid. Please contact an administrator.", NOTIF_ERR);
 					return;
 				case 'success':
 					echo "<meta http-equiv='Refresh' Content='2; url=../login/'>";
-                	notif("You have successfully registered.");
+                	notification("You have successfully registered.", NOTIF_OK);
                 default:
-                    error("There has been an error registering. If this persists, please contact an administrator");
+					notification("There has been an error registering. If this persists, please contact an administrator", NOTIF_ERR);
 					return;
             }
         }

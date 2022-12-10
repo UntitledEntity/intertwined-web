@@ -42,70 +42,72 @@ function randomstring($length = 8) {
     return $ret;
 }
 
-function error($msg)
+
+function notification($msg, $type) 
 {
-echo '
-                <script type=\'text/javascript\'>
-                
-                const notyf = new Notyf();
-                notyf
-                  .error({
-                    message: \'' . addslashes($msg) . '\',
-                    duration: 3500,
-                    dismissible: true
-                  });                
-                
-                </script>
-                ';
+  switch($type) {
+
+    case NOTIF_ERR:
+      echo '
+        <script type=\'text/javascript\'>
+        
+        const notyf = new Notyf();
+        notyf
+          .error({
+            message: \'' . addslashes($msg) . '\',
+            duration: 3500,
+            dismissible: true
+          });                
+        
+        </script>
+      ';
+      break;
+    case NOTIF_WARN:
+      echo '
+        <script type=\'text/javascript\'>
+                            
+        const notyf = new Notyf({
+          types: [
+            {
+              type: \'info\',
+              background: \'orange\',
+              icon: false
+            }
+          ]
+        });
+
+        notyf.open({
+          type: \'info\',
+          message: \'' . addslashes($msg) . '\',
+        });
+                            
+        </script>
+      ';     
+      break;
+    case NOTIF_OK:
+      echo '
+        <script type=\'text/javascript\'>
+                            
+        const notyf = new Notyf();
+        notyf
+          .success({
+            message: \'' . addslashes($msg) . '\',
+            duration: 3500,
+            dismissible: true
+          });                
+      
+        </script>
+      ';     
+  }
 }
 
-function notif($msg)
-{
-    echo '<script type=\'text/javascript\'>
-                            
-                            const notyf = new Notyf();
-                            notyf
-                              .success({
-                                message: \'' . addslashes($msg) . '\',
-                                duration: 3500,
-                                dismissible: true
-                              });                
-                            
-                            </script>
-                            ';     
-}
-
-function warning($msg)
-{
-    echo '<script type=\'text/javascript\'>
-                            
-const notyf = new Notyf({
-  types: [
-    {
-      type: \'info\',
-      background: \'orange\',
-      icon: false
-    }
-  ]
-});
-                               notyf.open({
-                                    type: \'info\',
-                                    message: \'' . addslashes($msg) . '\',
-                               });
-                            
-                            </script>
-                            ';     
-}
-
-function log_msg($file, $msg)
+// TODO: Improve/fix this
+function admin_log($msg, $type) 
 {
   $log_file = fopen("../logs/all.log", "a");
   fwrite($log_file, "$msg\n");
   fclose($log_file);
     
-  $log_file = fopen("../logs/$file", "a");
-  fwrite($log_file, "$msg\n");
-  fclose($log_file);
 }
 
 // global ip variable

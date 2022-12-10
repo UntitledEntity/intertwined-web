@@ -182,19 +182,19 @@ if (isset($_POST['logout']))
         $amount = sanitize($_POST['amount']);
         if (!isset($level) || !isset($amount))
         {
-            error("One or more fields are missing.");
+            notification("One or more fields are missing.", NOTIF_ERR);
             return;
         }
 
         if (!is_numeric($level) || $level < 1)
         {
-            error("Level must be numeric");
+            notification("Level must be numeric", NOTIF_ERR);
             return;
         }
 
         if (!is_numeric($amount) || $amount < 1 || $amount > 50)
         {
-            error("Invalid amount.");
+            notification("Invalid amount.", NOTIF_ERR);
             return;
         }
 
@@ -230,10 +230,7 @@ if (isset($_POST['logout']))
         </script>
         ';
 
-        if ($amount == 1)
-            notif("Copied license to clipboard");
-        else
-            notif("Copied licenses to clipboard");
+        notification("Copied license(s) to clipboard", NOTIF_OK);
     }
 
     if (isset($_POST['deleteunusedlicenses']))

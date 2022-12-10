@@ -91,18 +91,18 @@ if (isset($_SESSION["user_data"]))
 			$ipp = mysqli_fetch_array($result)['ip'];
 			if ($ip !== $ipp) 
 			{
-				log_msg("login.log", "" . $_POST['user'] . ": Stored IP ($ipp) does not match request IP $ip");
-
+				admin_log("TEST", LOG_NRML);
+				
 				if (!strlen($_POST['captcha'])) 
 				{
-					error("Ip adress mismatch. Please complete captcha.");
+					notification("Ip adress mismatch. Please complete captcha.", NOTIF_ERR);
 					$_SESSION['captcha_needed'] = true;
 					echo "<meta http-equiv='Refresh' Content='2; >";
 					return;	
 				}
 
 				if ($_POST['captcha'] !== $_SESSION["captcha"]){
-					error("Invalid Captcha.");
+					notification("Invalid Captcha.", NOTIF_ERR);
 					return;
 				}
 			}
@@ -112,25 +112,25 @@ if (isset($_SESSION["user_data"]))
             switch ($resp)
             {
                 case 'user_not_found':
-                    error("The provided username is incorrect. Please check your spelling.");
+                    notification("The provided username is incorrect. Please check your spelling.", NOTIF_ERR);
 					return;
                 case 'blacklisted':
-                    error("The IP you are trying to login to from has been blacklisted due to breaking TOS.");
+                    notification("The IP you are trying to login to from has been blacklisted due to breaking TOS.", NOTIF_ERR);
 					return;
 				case 'banned':
-                    error("The account you are trying to login to has been banned due to breaking TOS.");
+                    notification("The account you are trying to login to has been banned due to breaking TOS.", NOTIF_ERR);
 					return;
                 case 'subscription_expired':
-                    error("Your subscription has expired.");
+                    notification("Your subscription has expired.", NOTIF_ERR);
 					return;
                 case 'password_mismatch':
-                    error("The provided password is incorrect. Please check your spelling.");
+                    notification("The provided password is incorrect. Please check your spelling.", NOTIF_ERR);
 					return;
 				case 'success':
 					echo "<meta http-equiv='Refresh' Content='2; url=../dashboard/'>";
-                	notif("You have successfully logged in.");
+                	notification("You have successfully logged in.", NOTIF_OK);
                 default:
-                    error("There has been an error logging in. If this persists, please contact an administrator");
+					notification("There has been an error logging in. If this persists, please contact an administrator", NOTIF_ERR);
 					return;
             }
             

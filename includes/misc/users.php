@@ -79,7 +79,7 @@ function login($user,$pass)
 
     if ($user !== "basic_example")
     {
-        log_msg("../logs/logins.log", "$user logged in with the IP $ip");   
+        //log_msg("../logs/logins.log", "$user logged in with the IP $ip");   
     }
     
     return 'success';
@@ -159,7 +159,7 @@ function register($user, $pass, $license)
         return mysqli_error($mysql_link);
     }
     
-    log_msg("../logs/registers.log", "$user registered (License: $license, IP: $ip)");   
+    //log_msg("../logs/registers.log", "$user registered (License: $license, IP: $ip)");   
 
     return 'success';
 }

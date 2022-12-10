@@ -107,7 +107,7 @@ $license_data = get_license($_SESSION["user_data"]["user"]);
 
     if (isset($_POST['deleteaccount']))
     {
-        warning("Are you sure you want to delete your account? Please click again to delete your account.");
+        notification("Are you sure you want to delete your account? Please click again to delete your account.", NOTIF_WARN);
         $_SESSION["timesclicked_delete"] += 1;
     
         if ($_SESSION["timesclicked_delete"] >= 2)

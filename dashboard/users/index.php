@@ -193,7 +193,7 @@ if (isset($_POST['logout']))
     		mysqli_query($mysql_link, "UPDATE application_users SET password = '$password' WHERE username = '$user' and application = '$appid'");
 		}
 		else {
-			error("Password field empty");
+			notification("Password field empty", NOTIF_ERR);
 		}
 	}
 
@@ -207,7 +207,7 @@ if (isset($_POST['logout']))
         	</script>
         	';
 
-		notif("User data copied to clipboard");
+		notification("User data copied to clipboard", NOTIF_OK);
 	}
 
 	if (isset($_POST['ban'])) {
