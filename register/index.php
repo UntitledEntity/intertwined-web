@@ -121,7 +121,7 @@ if (isset($_SESSION["user_data"]))
                 	notification("You have successfully registered.", NOTIF_OK);
                 default:
 					notification("There has been an error registering. If this persists, please contact an administrator", NOTIF_ERR);
-					admin_log($resp, LOG_ERR);
+					admin_log($resp, LOG_ERRR);
 					return;
             }
         }

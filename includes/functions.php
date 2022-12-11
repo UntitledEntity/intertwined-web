@@ -138,13 +138,13 @@ function admin_log($msg, $type)
   $output = "";
 
   switch($type) {
-    case LOG_ERR:
+    case LOG_ERRR:
       $output = "[" . $timestamp . "] ERROR >> " . $msg;
       $file = "err.log";
 
       // Send a notification to a discord server. Fastest way to get the attention of the staff members. 
       // Dont send any critical information because discord isn't secure enough IMO.
-      discord_webhook("Error detected.");
+      discord_webhook("[" . $timestamp . "] Error detected.");
 
     case LOG_ALL: 
       $output = "[" . $timestamp . "] ALL >> " . $msg;

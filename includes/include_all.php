@@ -9,7 +9,7 @@ include 'misc/webhooks.php';
 
 function error_handler($errno, $errstr, $errfile, $errline)
 {
-  admin_log("[" . $errno . "]" . $errstr . ". Located at line " . $errline . " in " . $errfile, LOG_ERR);
+  admin_log("[" . $errno . "]" . $errstr . ". Located at line " . $errline . " in " . $errfile, LOG_ERRR);
 }
 
 set_error_handler("error_handler");
@@ -21,6 +21,6 @@ define("NOTIF_WARN", 2);
 define("LOG_USR", 0);
 define("LOG_RGSTR", 1);
 define("LOG_ALL", 2);
-define("LOG_ERR", 3);
+define("LOG_ERRR", 3);
 
 ?>
