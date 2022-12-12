@@ -81,6 +81,7 @@ if (isset($_POST['apply'])) {
                 Welcome, <?php echo $_SESSION["user_data"]["user"]; ?>.
             </span>
 
+			<a href="../" class="dash100-form-text">Home</a>
             <a href="../application" class="dash100-form-text">Application</a>
             <a href="../licenses" class="dash100-form-text">Licenses</a>
             <a href="../users" class="dash100-form-text">Users</a>
