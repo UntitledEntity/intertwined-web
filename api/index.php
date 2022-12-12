@@ -276,8 +276,8 @@ switch ($_POST['type'] ?? $_GET['type'])
         if ($resp !== 'deleted')
         { 
             die(json_encode(array(
-            "success" => false,
-            "error" => $resp
+                "success" => false,
+                "error" => $resp
             )));
         }
 

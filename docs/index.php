@@ -8,19 +8,19 @@
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
-	<link rel="shortcut icon" href="../assets/images/favicon.ico" type="image/x-icon">
-	<link rel="icon" type="image/icon" href="../assets/images/favicon.ico">
+	<link rel="shortcut icon" href="https://intertwined.solutions/assets/images/favicon.ico" type="image/x-icon">
+	<link rel="icon" type="image/icon" href="https://intertwined.solutions/assets/images/favicon.ico">
 	<meta content="Intertwined helps you set up your web servers securely, safely, and easily" name="description" />
 
-	<link rel="stylesheet" href="../assets/css/index-bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="../assets/css/index-style.css" />
-    <link rel="stylesheet" type="text/css" href="../assets/css/index-accordian.css" />
+	<link rel="stylesheet" href="https://intertwined.solutions/assets/css/index-bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://intertwined.solutions/assets/css/index-style.css" />
+    <link rel="stylesheet" type="text/css" href="https://intertwined.solutions/assets/css/index-accordian.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800&display=swap">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800&display=swap">
 	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 	
-	<script src="../assets/javascript/smoothscroll.js"></script>
+	<script src="https://intertwined.solutions/assets/javascript/smoothscroll.js"></script>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -90,10 +90,11 @@
 						<br>
 
 						<p class="header-subtitle">Parameters</p>
-						<p class="header-title-text"><b>{ 'type': "init", 'appid': "XXXXXXXX" }</b></p>
+						<p class="header-title-text"><b>{ 'type': "init", 'appid': "XXXXXXXX", 'hash': "hash" }</b></p>
 						
 						<p class="header-title-text"><b>appid</b> - Your unique application ID, which can be found on the 'application' tab of the dashboard.</p>
-						
+						<p class="header-title-text"><b>hash</b> - <b>OPTIONAL</b> - The hash to verify.</p>
+
 						<br>
 
 						<p class="header-subtitle">Returns</p>
@@ -120,12 +121,13 @@
 
 						<p class="header-subtitle">Parameters</p>
 
-						<p class="header-title-text"><b>{ 'type': "login", 'sid': "XXXXXXXX", 'user': "username", 'pass': "password", 'hwid': "hwid" }</b></p>
+						<p class="header-title-text"><b>{ 'type': "login", 'sid': "XXXXXXXX", 'hash': "hash", 'user': "username", 'pass': "password", 'hwid': "hwid" }</b></p>
 						
 						<p class="header-title-text"><b>sid</b> - The session ID which is returned when 'init' is called.</p>
+						<p class="header-title-text"><b>hash</b> - <b>OPTIONAL</b> - The hash to verify.</p>
 						<p class="header-title-text"><b>user</b> - The username of the user you are trying to validiate.</p>
 						<p class="header-title-text"><b>pass</b> - The password of the user you are trying to validiate.</p>
-						<p class="header-title-text"><b>hwid</b> - <b>NOT MANDATORY</b> - The HWID of the person you are attempting to validate. If this is the first login, this HWID will be stored.</p>
+						<p class="header-title-text"><b>hwid</b> - <b>OPTIONAL</b> - The HWID of the person you are attempting to validate. If this is the first login, this HWID will be stored.</p>
 
 						<br>
 
@@ -140,6 +142,7 @@
 						
 						<p class="header-title-text"><b>Application disabled</b> - The application was disabled by the owner on the 'application' dashboard tab.</p>
 						<p class="header-title-text"><b>Invalid session</b> - The session ID you provided is invalid.</p>
+						<p class="header-title-text"><b>Invalid hash</b> - The hash you provided is invalid.</p>
 						<p class="header-title-text"><b>blacklisted</b> - The IP or HWID you are calling from is blacklisted.</p>
 						<p class="header-title-text"><b>banned</b> - The user is banned.</p>
 						<p class="header-title-text"><b>subscription_expired</b> - The user's subscription has expired. </p>
@@ -158,9 +161,10 @@
 		        
 						<p class="header-subtitle">Parameters</p>
 
-						<p class="header-title-text"><b>{ 'type': "register", 'sid': "XXXXXXXX", 'user': "username", 'pass': "password", 'license': "license" }</b></p>
+						<p class="header-title-text"><b>{ 'type': "register", 'sid': "XXXXXXXX", 'hash': "hash", 'user': "username", 'pass': "password", 'license': "license" }</b></p>
 						
 						<p class="header-title-text"><b>sid</b> - The session ID which is returned when 'init' is called.</p>
+						<p class="header-title-text"><b>hash</b> - <b>OPTIONAL</b> - The hash to verify.</p>
 						<p class="header-title-text"><b>user</b> - The username of the user you are trying to register.</p>
 						<p class="header-title-text"><b>pass</b> - The password of the user you are trying to register.</p>
 						<p class="header-title-text"><b>license</b> - The license you are trying to register from.</p>
@@ -178,6 +182,7 @@
 						
 						<p class="header-title-text"><b>Application disabled</b> - The application was disabled by the owner on the 'application' dashboard tab.</p>
 						<p class="header-title-text"><b>Invalid session</b> - The session ID you provided is invalid.</p>
+						<p class="header-title-text"><b>Invalid hash</b> - The hash you provided is invalid.</p>
 						<p class="header-title-text"><b>blacklisted</b> - The IP or HWID you are calling from is blacklisted.</p>
 						<p class="header-title-text"><b>password_mismatch</b> - The password that you've provided is the same as the user or is less than 4 characters.</p>
 						<p class="header-title-text"><b>user_already_taken</b> - The username you've provided is already taken by a user in the same application.</p>
@@ -199,9 +204,10 @@
 		        
 						<p class="header-subtitle">Parameters</p>
 
-						<p class="header-title-text"><b>{ 'type': "upgrade", 'sid': "XXXXXXXX", 'user': "username", 'license': "license" }</b></p>
+						<p class="header-title-text"><b>{ 'type': "upgrade", 'sid': "XXXXXXXX", 'hash': "hash", 'user': "username", 'license': "license" }</b></p>
 						
 						<p class="header-title-text"><b>sid</b> - The session ID which is returned when 'init' is called.</p>
+						<p class="header-title-text"><b>hash</b> - <b>OPTIONAL</b> - The hash to verify.</p>
 						<p class="header-title-text"><b>user</b> - The username of the user you are trying to.</p>
 						<p class="header-title-text"><b>license</b> - The license you are trying to upgrade with.</p>
 
@@ -218,6 +224,7 @@
 
 						<p class="header-title-text"><b>Application disabled</b> - The application was disabled by the owner on the 'application' dashboard tab.</p>
 						<p class="header-title-text"><b>Invalid session</b> - The session ID you provided is invalid.</p>
+						<p class="header-title-text"><b>Invalid hash</b> - The hash you provided is invalid.</p>
 						<p class="header-title-text"><b>user_not_found</b> - The username that you've provided is invalid.</p>
 						<p class="header-title-text"><b>invalid_license</b> - The license you've provided doesn't exist.</p>
 						<p class="header-title-text"><b>license_already_used</b> - The license you've provided has already been claimed.</p>
@@ -226,12 +233,42 @@
 	
 					</div>
 					
+					<div id="webhook">
+						<br></br>
+					
+						<h1 class="header-title">Webhook</h1>
+		            	<p class="header-title-text">Call a webhook</p>
+		            
+		            	<br>
+
+						<p class="header-subtitle">Parameters</p>
+						<p class="header-title-text"><b>{ 'type': "webhook", 'sid': "XXXXXXXX", 'hash': "hash", 'whid': "webhook ID" }</b></p>
+						
+						<p class="header-title-text"><b>sid</b> - The session ID which is returned when 'init' is called.</p>
+						<p class="header-title-text"><b>hash</b> - <b>OPTIONAL</b> - The hash to verify.</p>
+						<p class="header-title-text"><b>whid</b> - The webhook ID which is returned when you upload a link.</p>
+
+						<br>
+
+						<p class="header-subtitle">Returns</p>
+
+						<p class="header-title-text">{ 'success': true, 'response': "response from link." }</p>
+						<p class="header-title-text">{ 'success': false, 'error': "Lorem Ipsum" }</p>
+
+						<br>
+
+						<p class="header-subtitle">Errors</p>
+
+						<p class="header-title-text"><b>Invalid session</b> - The session ID you provided is invalid.</p>
+						<p class="header-title-text"><b>Invalid hash</b> - The hash you provided is invalid.</p>
+					</div>
+
 					<div id="check_validity">
 
 						<br></br>
 					
 						<h1 class="header-title">Check Validity</h1>
-						<p class="header-title-text">Checks the validity of a session.</p>
+						<p class="header-title-text">Checks if the <a href="#login">login</a> function has been called a session..</p>
 				
 						<br>
 			
