@@ -51,10 +51,8 @@ function check_ban_application($appid, $user)
     {
         return -1;
     }
-
-    $banned = mysqli_fetch_array($result)['banned'];
-
-    return $banned;
+    
+    return mysqli_fetch_array($result)['banned'];
 }
 
 function verify_hash($appid, $hash) 
@@ -367,18 +365,7 @@ function get_application($user)
     }
     
     // get session data
-    while ($row = mysqli_fetch_array($result))
-    {
-        $appid = $row['appid'];
-        $enckey = $row['enckey'];
-        $enabled = $row['enabled'];
-    }
-    
-    return array(
-        "appid" => $appid,
-        "enckey" => $enckey,
-        "enabled" => $enabled 
-    );
+    return mysqli_fetch_array($result);
 }
 
 function delete_application_account($user)

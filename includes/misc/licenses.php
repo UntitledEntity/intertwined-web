@@ -89,7 +89,7 @@ function generate_application_license($appid, $expiry, $level)
             $expiry_time = strtotime('+1 years', time());
             break;
         case 'never':
-            $expiry_time = strtotime('+3827 years', time());
+            $expiry_time = strtotime('+5 years', time());
             break;
     }
  
@@ -122,18 +122,7 @@ function get_license($user)
         return 'invalid_user';
     }
 
-    while ($row = mysqli_fetch_array($result))
-    {
-        $expiry = $row['expires'];
-        $level = $row['level'];
-        $license = $row['license'];
-    }
-
-    return array(
-        "expiry" => $expiry,
-        "level" => $level,
-        "license" => $license
-    );
+    return mysqli_fetch_array($result);
 }
 
 function get_license_data($license)
@@ -149,18 +138,7 @@ function get_license_data($license)
         return false;
     }
 
-    while ($row = mysqli_fetch_array($result))
-    {
-        $expiry = $row['expires'];
-        $level = $row['level'];
-        $applieduser = $row['applieduser'];
-    }
-
-    return array(
-        "expiry" => $expiry,
-        "level" => intval($level),
-        "applieduser" => $applieduser
-    );
+    return mysqli_fetch_array($result);
 }
 
 ?>
