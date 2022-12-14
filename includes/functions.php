@@ -145,18 +145,22 @@ function admin_log($msg, $type)
       // Send a notification to a discord server. Fastest way to get the attention of the staff members. 
       // Dont send any critical information because discord isn't secure enough IMO.
       discord_webhook("[" . $timestamp . "] Error detected.");
+      break;
 
     case LOG_ALL: 
       $output = "[" . $timestamp . "] ALL >> " . $msg;
       $file = "all.log";
+      break;
 
     case LOG_USR:
       $output = "[" . $timestamp . "] USER >> " . $msg;
       $file = "users.log";
+      break;
 
     case LOG_RGSTR:
       $output = "[" . $timestamp . "] REGISTER >> " . $msg;
-      $file = "users.log";
+      $file = "registers.log";
+      break;
   }
 
   // log to all.log, this file holds all of the logs and is backed up weekly.
