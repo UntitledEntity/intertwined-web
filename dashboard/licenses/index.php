@@ -161,7 +161,7 @@ if (isset($_POST['logout']))
 
             </form>
 
-				<span class="dash100-form-text"><?php echo $licenses; ?></span>
+			<?php if ($_SESSION["user_data"]["level"] == 5) { echo "<span class='dash100-form-text'>$licenses</span>"; } ?> 
 		</div>
 	</div>
 </body>
