@@ -14,7 +14,7 @@ if (!isset($license))
 
 $license_data = get_license_data($license);
 
-if (!isset($license_data))
+if (!$license_data)
 {
     die("Invalid license.");
 }
@@ -49,7 +49,7 @@ switch ($_GET['type'])
             die("No user");
         }
 
-        die(delete_application_account($user));
+        die(delete_application_account($user, $appid));
 
     case 'genlicense':
         $appid = $application['appid'];

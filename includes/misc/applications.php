@@ -368,14 +368,14 @@ function get_application($user)
     return mysqli_fetch_array($result);
 }
 
-function delete_application_account($user)
+function delete_application_account($user, $appid)
 {
     // get the mysql_link
     global $mysql_link;
 
     $user = sanitize($user);
     
-    $resp = mysqli_query($mysql_link, "DELETE FROM application_users WHERE username = '$user'");
+    $resp = mysqli_query($mysql_link, "DELETE FROM application_users WHERE username = '$user' and appid = '$appid'");
 
     if ($resp == false)
     {
