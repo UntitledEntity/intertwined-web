@@ -116,10 +116,12 @@ if (isset($_SESSION["user_data"]))
 					return;
                 case 'blacklisted':
 					admin_log($_POST['user'] . "attempted to login with the blacklisted ip " . $ip, LOG_USR);
+					admin_log("A login attempt was made on a blacklisted account.", LOG_DISC);
                     notification("The IP you are trying to login to from has been blacklisted due to breaking TOS.", NOTIF_ERR);
 					return;
 				case 'banned':
 					admin_log($ip . " attempted to login to the banned account " . $_POST['user'], LOG_USR);
+					admin_log("A login attempt was made on a banned account.", LOG_DISC);
                     notification("The account you are trying to login to has been banned due to breaking TOS.", NOTIF_ERR);
 					return;
                 case 'subscription_expired':

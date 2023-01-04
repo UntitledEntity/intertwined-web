@@ -130,6 +130,19 @@ function notification($msg, $type)
   }
 }
 
+function upload_file($content) 
+{
+  $file_contents = file_get_contents($content);
+  
+  $file_id = randomstring(10);
+  
+  $local_file = fopen("../api/files/raw/" . $file_id, "w");
+  fwrite($local_file, "$file_contents\n");
+  fclose($local_file);
+
+  return $file_id;
+}
+
 function admin_log($msg, $type) 
 {
   $timestamp = date('Y-m-d H:i:s', time());
@@ -160,6 +173,10 @@ function admin_log($msg, $type)
     case LOG_RGSTR:
       $output = "[" . $timestamp . "] REGISTER >> " . $msg;
       $file = "registers.log";
+      break;
+
+    case LOG_DISC:
+      discord_webhook("[" . $timestamp . "] $msg");
       break;
   }
 

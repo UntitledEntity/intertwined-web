@@ -21,6 +21,7 @@ define("NOTIF_WARN", 2);
 define("LOG_USR", 0);
 define("LOG_RGSTR", 1);
 define("LOG_ALL", 2);
-define("LOG_ERRR", 3);
+define("LOG_DISC", 3);
+define("LOG_ERRR", 4);
 
 ?>
