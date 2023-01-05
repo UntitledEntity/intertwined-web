@@ -71,6 +71,7 @@
 			<div class="container header-container fade-in">
 				<div class="col-lg-6 header-title-section text-center">
 					<h1 class="header-title">API documentation</h1>
+					<p class="header-subtitle">See manager API documentation <a href="manager.php">here</a></p>
 					<p class="header-title-text"><a href="https://github.com/UntitledEntity/intertwined-api-example">Python examples</a></p>
 				</div>
 			</div>

@@ -38,32 +38,6 @@
 </head>
 
 <body>
-
-	<nav id="navbar" class="navbar fixed-top navbar-expand-lg navbar-header navbar-mobile">
-		<div class="navbar-container container">
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
-			<div id="top"></div>
-			<div class="collapse navbar-collapse justify-content-around" id="navbarNav">
-				<ul class="navbar-nav menu-navbar-nav">
-					<li class="nav-item">
-						<a class="nav-link" href="#init">
-							<p class="nav-link-menu">Init</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#login">
-							<p class="nav-link-menu">Login</p></p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#close">
-							<p class="nav-link-menu">Close</p></p>
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
 	
     <div class="wrapper">
 		
