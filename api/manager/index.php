@@ -23,6 +23,34 @@ $application = get_application($license_data['applieduser']);
 
 switch ($_GET['type'])
 {
+    case 'setstatus':
+        $appid = $application['appid'];
+
+        $input = sanitize($_GET['status']);
+        if (!isset($input)) 
+        {
+            die(json_encode(array(
+                "status" => "ERR",
+                "response" => "Critical error: Parameter 'status' was not provided."
+            )));
+        }
+
+        if (!is_numeric($input)) {
+            die(json_encode(array(
+                "status" => "ERR",
+                "response" => "Critical error: Parameter 'status' must be 1 or 0."
+            )));
+        }
+        
+        mysqli_query($mysql_link, "UPDATE user_applications SET enabled = $input WHERE appid = '$appid'");
+    
+       
+
+        die(json_encode(array(
+            "status" => "OK",
+            "response" => "Successfully updated status."
+        )));
+
     case 'getusers':
         $appid = $application['appid'];
 
@@ -32,7 +60,10 @@ switch ($_GET['type'])
         // unable to find user
         if (mysqli_num_rows($result) == 0)
         {
-            die("No users");
+            die(json_encode(array(
+                "status" => "ERR",
+                "response" => "Critical error: No users in application."
+            )));
         }
 
         $rows = array();
@@ -40,16 +71,28 @@ switch ($_GET['type'])
             $rows[] = $r;
         }
 
-        die(json_encode($rows));
+
+        die(json_encode(array(
+            "status" => "OK",
+            "response" => $rows
+        )));
 
     case 'deleteuser':
         $user = sanitize($_GET['user']);
         if (!isset($user))
         {
-            die("No user");
+            die(json_encode(array(
+                "status" => "ERR",
+                "response" => "Critical error: Parameter 'user' was not provided."
+            )));
         }
 
-        die(delete_application_account($user, $appid));
+        $resp = delete_application_account($user, $appid);
+
+        die(json_encode(array(
+            "status" => "OK",
+            "response" => $resp
+        )));
 
     case 'genlicense':
         $appid = $application['appid'];
@@ -58,19 +101,25 @@ switch ($_GET['type'])
         $level = sanitize($_GET['level']);
 
         $amount = sanitize($_GET['amount']);
-        if (!isset($amount))
+        if (!isset($amount) || $amount < 0)
         {
             $amount = 1;
         }
 
         if (!is_numeric($amount))
         {
-            die("Invalid amount format (must be numeric)");
+            die(json_encode(array(
+                "status" => "ERR",
+                "response" => "Critical error: 'Amount' Parameter must be numeric, please provide a numeric format."
+            )));
         }
 
         if ($amount > 100)
         {
-            die("There is a max amount of 100.");
+            die(json_encode(array(
+                "status" => "ERR",
+                "response" => "Critical error: Maximum amounts of licenses generated at once is 100."
+            )));
         }
 
         $keys = array();
@@ -80,7 +129,10 @@ switch ($_GET['type'])
             array_push($keys, $key);
         }
 
-        die(json_encode($keys));
+        die(json_encode(array(
+            "status" => "OK",
+            "response" => $keys
+        )));
 
     case 'userdata':
         $appid = $application['appid'];
@@ -88,7 +140,10 @@ switch ($_GET['type'])
         $user = sanitize($_GET['user']);
         if (!isset($user))
         {
-            die("No user");
+            die(json_encode(array(
+                "status" => "ERR",
+                "response" => "Critical error: Parameter 'user' was not provided."
+            )));
         }
 
         // find user
@@ -105,7 +160,10 @@ switch ($_GET['type'])
             $rows[] = $r;
         }
 
-        die(json_encode($rows));
+        die(json_encode(array(
+            "status" => "OK",
+            "response" => $rows
+        )));
 
     case 'closesession':
         $appid = $application['appid'];
@@ -113,7 +171,10 @@ switch ($_GET['type'])
         $sid = sanitize($_GET['sessionid']);
         if (!isset($sid))
         {
-            die("No session id");
+            die(json_encode(array(
+                "status" => "ERR",
+                "response" => "Critical error: Parameter 'sessionid' was not provided."
+            )));
         }
 
         close_session($sid);
@@ -122,7 +183,10 @@ switch ($_GET['type'])
         $link = sanitize($_GET['link']);
         if (!isset($link))
         {
-            die("No link");
+            die(json_encode(array(
+                "status" => "ERR",
+                "response" => "Critical error: Parameter 'link' was not provided."
+            )));
         }
 
         die(create_webhook($link));
@@ -131,13 +195,19 @@ switch ($_GET['type'])
         $whid = sanitize($_GET['id']);
         if (!isset($whid))
         {
-            die("No webhook id");
+            die(json_encode(array(
+                "status" => "ERR",
+                "response" => "Critical error: Parameter 'id' was not provided."
+            )));
         }
 
         $link = get_webhook($whid);
         if (!isset($link))
         {
-            die("Invalid webhook");
+            die(json_encode(array(
+                "status" => "ERR",
+                "response" => "Critical error: Webhook not found. Please check the parameter 'id'."
+            )));
         }
 
 
@@ -149,6 +219,16 @@ switch ($_GET['type'])
         $response = curl_exec($ch);
 
         curl_close($ch);
+        
+
+        die(json_encode(array(
+            "status" => "OK",
+            "response" => "Successfully called webhook.",
+            "wh" => array(
+                "status" => curl_getinfo($ch, CURLINFO_RESPONSE_CODE),
+                "response" => $response
+            )
+        )));
 
         die($response);
 
@@ -156,22 +236,39 @@ switch ($_GET['type'])
         $whid = sanitize($_GET['id']);
         if (!isset($whid))
         {
-            die("No webhook id");
+            die(json_encode(array(
+                "status" => "ERR",
+                "response" => "Critical error: Parameter 'id' was not provided."
+            )));
         }
 
-        die(delete_webhook($whid));
+        die(json_encode(array(
+            "status" => "OK",
+            "response" => delete_webhook($whid)
+        )));
 
     case 'getwebhook':
         $whid = sanitize($_GET['id']);
         if (!isset($whid))
         {
-            die("No webhook id");
+            die(json_encode(array(
+                "status" => "ERR",
+                "response" => "Critical error: Parameter 'id' was not provided."
+            )));
         }
+
+        die(json_encode(array(
+            "status" => "OK",
+            "response" => delete_webhook($whid)
+        )));
 
         die(get_webhook($whid));
 
     default:
-        die("Invalid type");
+        die(json_encode(array(
+                "status" => "ERR",
+                "response" => "Critical error: Parameter 'type' was not provided."
+    )));
 }
 
 ?>

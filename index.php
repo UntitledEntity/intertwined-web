@@ -93,7 +93,7 @@
 					</div>
 					<div class="col-lg-6 order-lg-2">
 						<div class="header-img-section">
-					    	<img src="assets/images/bcrypt.png" alt="End-To-End">
+					    	<img src="assets/images/bcrypt.png" alt="Bcrypt">
 						</div>
 					</div>
 				</div>
@@ -109,7 +109,7 @@
 					</div>
 					<div class="col-lg-6 order-lg-1">
 						<div class="header-img-section">
-					    	<img src="assets/images/implementation.jpg" alt="End-To-End">
+					    	<img src="assets/images/implementation.jpg" alt="Example">
 						</div>
 					</div>
 				</div>
@@ -124,7 +124,7 @@
 					</div>
 					<div class="col-lg-6 order-lg-2">
 						<div class="header-img-section">
-					    	<img src="assets/images/open-source.png" alt="End-To-End">
+					    	<img src="assets/images/open-source.png" alt="Open-src">
 						</div>
 					</div>
 				</div>
