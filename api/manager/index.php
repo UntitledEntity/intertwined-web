@@ -179,6 +179,11 @@ switch ($_GET['type'])
 
         close_session($sid);
 
+        die(json_encode(array(
+            "status" => "OK",
+            "response" => "Successfully closed session."
+        )));
+
     case 'createwebhook':
         $link = sanitize($_GET['link']);
         if (!isset($link))
@@ -189,7 +194,10 @@ switch ($_GET['type'])
             )));
         }
 
-        die(create_webhook($link));
+        die(json_encode(array(
+            "status" => "OK",
+            "response" => create_webhook($link)
+        )));
 
     case 'callwebhook':
         $whid = sanitize($_GET['id']);
@@ -217,20 +225,23 @@ switch ($_GET['type'])
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         $response = curl_exec($ch);
+        
+        if ($response === false) 
+        {
+            die(json_encode(array(
+                "status" => "ERR",
+                "response" => "Critical error: Failed to connect to the provided webhook",
+                "wh" => curl_error($ch)
+            )));
+        }
 
         curl_close($ch);
         
-
         die(json_encode(array(
             "status" => "OK",
             "response" => "Successfully called webhook.",
-            "wh" => array(
-                "status" => curl_getinfo($ch, CURLINFO_RESPONSE_CODE),
-                "response" => $response
-            )
+            "wh" => $response
         )));
-
-        die($response);
 
     case 'deletewebhook':
         $whid = sanitize($_GET['id']);
@@ -259,10 +270,8 @@ switch ($_GET['type'])
 
         die(json_encode(array(
             "status" => "OK",
-            "response" => delete_webhook($whid)
+            "response" => get_webhook($whid)
         )));
-
-        die(get_webhook($whid));
 
     default:
         die(json_encode(array(
