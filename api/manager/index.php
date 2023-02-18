@@ -35,7 +35,7 @@ switch ($_GET['type'])
             )));
         }
 
-        if (!is_numeric($input)) {
+        if (!is_numeric($input) || ($input < 0 || $input > 1)) {
             die(json_encode(array(
                 "status" => "ERR",
                 "response" => "Critical error: Parameter 'status' must be 1 or 0."
@@ -43,8 +43,6 @@ switch ($_GET['type'])
         }
         
         mysqli_query($mysql_link, "UPDATE user_applications SET enabled = $input WHERE appid = '$appid'");
-    
-       
 
         die(json_encode(array(
             "status" => "OK",

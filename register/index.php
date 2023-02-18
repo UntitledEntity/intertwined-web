@@ -72,6 +72,8 @@ if (isset($_SESSION["user_data"]))
 						<span class="focus-input100"></span>
 					</div>
 
+					<p class="header-title-text">By registering, you agree to the TOS and privacy clause.</p>
+
 					<div class="container-login100-form-btn m-t-17">
 						<button name="register" class="login100-form-btn">
 							Register
