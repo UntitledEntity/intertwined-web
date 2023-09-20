@@ -1,5 +1,7 @@
 <?php
 
+//TODO: Improve this (add it to TCP Client?)
+
 $mysql_link = mysqli_connect("localhost", "root", "password", "main");
 
 if ($mysql_link == false)

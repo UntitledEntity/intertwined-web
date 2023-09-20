@@ -1,6 +1,9 @@
 <?php
 session_start(); 
 
+//Display errors
+//ini_set ('display_errors', 1); ini_set ('display_startup_errors', 1); error_reporting (E_ALL); 
+
 require '../includes/mysql_connect.php';
 include '../includes/include_all.php';
 
@@ -108,7 +111,7 @@ if (isset($_SESSION["user_data"]))
 			}
 
             $resp = login($_POST['user'], $_POST['pass']);
-           
+			
             switch ($resp)
             {
                 case 'user_not_found':
@@ -131,8 +134,8 @@ if (isset($_SESSION["user_data"]))
                     notification("The provided password is incorrect. Please check your spelling.", NOTIF_ERR);
 					return;
 				case 'success':
-					echo "<meta http-equiv='Refresh' Content='2; url=../dashboard/'>";
-                	notification("You have successfully logged in.", NOTIF_OK);
+					header("location: ../dashboard/");
+					return;
                 default:
 					notification("There has been an error logging in. If this persists, please contact an administrator", NOTIF_ERR);
 					admin_log($resp, LOG_ERRR);

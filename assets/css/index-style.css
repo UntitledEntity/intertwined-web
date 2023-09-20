@@ -225,7 +225,7 @@ button:focus{
         margin-top: 40px;
     }
     .navbar-collapse{
-        background-color: rgba(255,255,255,1);
+        background-color: #152238;
         color: #505050;
         padding-bottom: 20px;
         padding-top: 20px;
@@ -235,11 +235,11 @@ button:focus{
         color: #505050;
     }
     .nav-link-number{
-        color: #fff;
+        color: #152238;
         display: none;
     }
     .nav-link-menu{
-        color: #fff;
+        color: #152238;
     }
     .learn-more-btn-section{
         justify-content: center;

@@ -44,7 +44,7 @@ function randomstring($length = 8) {
 
 function discord_webhook($content) 
 {
-  $webhookurl = "";
+  $webhookurl = "REDACTED";
   
   $json_data = json_encode([
       // Message
@@ -144,7 +144,7 @@ function admin_log($msg, $type)
 
       // Send a notification to a discord server. Fastest way to get the attention of the staff members. 
       // Dont send any critical information because discord isn't secure enough IMO.
-      discord_webhook("[" . $timestamp . "] Error detected.");
+      discord_webhook("[" . $timestamp . "] Error detected: $msg");
       break;
 
     case LOG_ALL: 
@@ -166,6 +166,12 @@ function admin_log($msg, $type)
       discord_webhook("[" . $timestamp . "] $msg");
       break;
   }
+
+  /*
+  When moving from beta dir to main dir, remember to update the perms for the logs directory.
+  chown www-data -R /var/www/html/logs 
+  Thanks: https://stackoverflow.com/a/64633818
+  */
 
   // log to all.log, this file holds all of the logs and is backed up weekly.
   $log_file = fopen("../logs/all.log", "a");

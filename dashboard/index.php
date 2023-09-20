@@ -48,7 +48,7 @@ $license_data = get_license($_SESSION["user_data"]["user"]);
 <body>
 	<div class="limiter">
 	    <div class="sidebar-dash100">
-			<img src="../../assets/images/favicon_img.png" width="150" height="150" class="sidebar-logo-dash100">
+			<img src="../assets/images/favicon_img.png" width="150" height="150" class="sidebar-logo-dash100">
 			
 			<span class="dash100-form-text"> 
 				Welcome, <?php echo $_SESSION["user_data"]["user"]; ?>.

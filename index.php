@@ -52,6 +52,11 @@
 						</a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link" href="https://github.com/UntitledEntity/intertwined-web">
+							<p class="nav-link-menu">Source code</p>
+						</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link" href="login">
 							<p class="nav-link-menu">Login</p></p>
 						</a>

@@ -172,7 +172,7 @@ if (isset($_POST['logout']))
 
     if (isset($_POST['downloadlicenses']))
     {
-        echo "<meta http-equiv='Refresh' Content='0; url=https://intertwined.solutions/dashboard/misc/licenses-download.php'>";
+        echo "<meta http-equiv='Refresh' Content='0; url=../misc/licenses-download.php'>";
     }
 
     if (isset($_POST['genlicense']))
