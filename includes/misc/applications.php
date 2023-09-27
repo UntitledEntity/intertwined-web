@@ -34,6 +34,17 @@ function check_app_enabled($appid)
     return mysqli_num_rows($result) > 0;
 }
 
+function get_app_owner($appid) 
+{    
+    global $mysql_link;
+
+    $appid = sanitize($appid);
+
+    $result = mysqli_query($mysql_link, "SELECT * FROM user_applications WHERE appid = '$appid'");
+    
+    return mysqli_fetch_array($result)['owner'];
+}
+
 function check_ban_application($appid, $user)
 {
     // get the mysql_link
@@ -173,7 +184,7 @@ function login_application($appid, $user, $pass, $hwid = NULL)
     
     return array(
         "user" => $user,
-        "expiry" => $expiry,
+        "expiry" => intval($expiry),
         "level" => intval($level),
         "ip" => $ip
     );;

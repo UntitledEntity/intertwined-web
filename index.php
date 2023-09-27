@@ -114,7 +114,7 @@
 					</div>
 					<div class="col-lg-6 order-lg-1">
 						<div class="header-img-section">
-					    	<img src="assets/images/implementation.jpg" alt="Example">
+					    	<img src="assets/images/implementation.png" alt="Example">
 						</div>
 					</div>
 				</div>

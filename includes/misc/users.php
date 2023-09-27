@@ -164,14 +164,14 @@ function register($user, $pass, $license)
     return 'success';
 }
 
-function blacklist($user, $ip, $hwid = NULL, $appid = NULL)
+function blacklist($user, $ip, $appid = NULL)
 {
     // get the mysql_link
     global $mysql_link;
 
     // sanitize
     $ip = sanitize($ip);
-    $hwid = sanitize($hwid);
+    $hwid = NULL;
 
     // check if there's a blacklist on the ip we're registering from
     $result = mysqli_query($mysql_link, "SELECT * FROM blacklists WHERE ip = '$ip'");
@@ -180,20 +180,22 @@ function blacklist($user, $ip, $hwid = NULL, $appid = NULL)
         return 'blacklisted';
     }
 
-    $resp = mysqli_query($mysql_link, "INSERT INTO blacklists (user, ip, hwid, application) VALUES ('$user', '$ip', '$hwid', '$appid')");
+    $resp = mysqli_query($mysql_link, "INSERT INTO blacklists (ip, hwid, application) VALUES ('$ip', '$hwid', '$appid')");
 
     if ($resp == false)
     {
         return mysqli_error($mysql_link);
     }
 
-    $resp = mysqli_query($mysql_link, "UPDATE users SET banned = '1' WHERE username = '$user' OR ip = '$ip'");
+    if (isset($user)) {
+        $resp = mysqli_query($mysql_link, "UPDATE users SET banned = '1' WHERE username = '$user' OR ip = '$ip'");
 
-    if ($resp == false)
-    {
-        return mysqli_error($mysql_link);
+        if ($resp == false)
+        {
+            return mysqli_error($mysql_link);
+        }
     }
-
+    
     return 'blacklisted';
 }
 

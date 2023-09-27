@@ -141,4 +141,103 @@ function get_license_data($license)
     return mysqli_fetch_array($result);
 }
 
+function get_user_license($license, $appid) {
+    // get the mysql_link
+    global $mysql_link;
+
+    $license = sanitize($license);
+    $appid = sanitize($appid);
+
+    $result = mysqli_query($mysql_link, "SELECT * FROM licenses WHERE application = '$appid' and license = '$license'");
+    if ($result == false)
+    {
+        return mysqli_error($mysql_link);
+    }
+  
+    if (mysqli_num_rows($result) < 1)
+    {
+        return 'invalid_license';
+    }
+
+    $user = mysqli_fetch_array($result)['applieduser'];
+
+    if (!isset($user))
+        return 'no_user';
+
+    return mysqli_fetch_array($result)['applieduser'];
+}
+
+function check_application_license($license, $appid, $hwid = NULL) {
+    // get the mysql_link
+    global $mysql_link;
+
+    // get the ip
+    global $ip;
+
+    $license = sanitize($license);
+    $appid = sanitize($appid);
+
+    // get application paramaters
+    $appparams = get_application_params($appid);
+
+    $result = mysqli_query($mysql_link, "SELECT * FROM licenses WHERE application = '$appid' and license = '$license'");
+    if ($result == false)
+    {
+        return mysqli_error($mysql_link);
+    }
+  
+    if (mysqli_num_rows($result) < 1)
+    {
+        return 'invalid_license';
+    }
+
+    while ($row = mysqli_fetch_array($result))
+    {
+        $expiry = $row['expires'];
+        $ipp = $row['ip'];
+        $hwidd = $row['hwid'];
+        $level = $row['level'];
+        $banned = $row['banned'];
+    }
+
+    if ($banned) {
+        blacklist(NULL, $ip);
+        return 'banned';
+    }
+
+    if ($appparams['hwidlock'] && $hwid != $hwidd) {
+        // no stored hwid, set the current one.
+        if (is_null($hwidd) || $hwidd == 0) 
+        {
+            $hashed_hwid = password_hash($hwid, PASSWORD_BCRYPT);
+            mysqli_query($mysql_link, "UPDATE licenses SET hwid = '$hashed_hwid' WHERE application = '$appid' and license = '$license'");
+        }
+        else if (password_verify($hwid, $hwidd) == false)
+        {
+            return 'hwid_mismatch';
+        }
+    }
+
+    if ($appparams['iplock'] && $ip != $ipp) {
+        return 'invalid_ip';
+    }
+
+    $timestamp =  time();
+
+    if ($expiry <= $timestamp){
+        return 'license_expired';
+    }
+
+    mysqli_query($mysql_link, "UPDATE licenses SET ip = '$ip' WHERE application = '$appid' and license = '$license'");
+    mysqli_query($mysql_link, "UPDATE licenses SET lastlogin = '$timestamp' WHERE application = '$appid' and license = '$license'");
+
+    return array(
+        "license" => $license,
+        "expiry" => intval($expiry),
+        "ip" => $ip,
+        "level" => intval($level)
+    );
+
+}
+
 ?>

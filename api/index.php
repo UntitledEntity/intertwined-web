@@ -9,6 +9,8 @@ session_start();
 require '../includes/mysql_connect.php';
 include '../includes/include_all.php';
 
+// TODO: authentification lock for webhook function and file function
+// TODO 2: file function
 
 switch ($_POST['type'] ?? $_GET['type'])
 {
@@ -108,6 +110,57 @@ switch ($_POST['type'] ?? $_GET['type'])
         )));
 
 
+    case 'loginlicense':
+
+        $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
+
+        $session_data = check_session_open($sessionid);
+        if ($session_data == false || !isset($session_data))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Invalid session."
+            )));
+        }
+
+        $hash = sanitize($_POST['hash'] ?? $_GET['hash']);
+        if (!verify_hash($appid, $hash))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Invalid hash."
+            )));
+        }
+
+        $appid = $session_data['appid'];
+
+        if (!check_app_enabled($appid)) 
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Application disabled."
+            )));
+        }
+
+        $hwid = sanitize($_POST['hwid'] ?? $_GET['hwid']);
+        $license =  sanitize($_POST['license'] ?? $_GET['license']);
+
+        $check_resp = check_application_license($license, $appid, $hwid);
+        if (!is_array($check_resp))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => $check_resp
+            )));
+        }
+
+        validate_session($sessionid);
+
+        die(json_encode(array(
+            "success" => true,
+            "data" => $check_resp
+        )));
+
     case 'register':
 
         $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
@@ -134,7 +187,6 @@ switch ($_POST['type'] ?? $_GET['type'])
         $pass = sanitize($_POST['pass'] ?? $_GET['pass']);
         $license = sanitize($_POST['license'] ?? $_GET['license']);
         $appid = $session_data['appid'];
-
 
         if (!check_app_enabled($appid)) 
         {
@@ -188,6 +240,14 @@ switch ($_POST['type'] ?? $_GET['type'])
         $license = sanitize($_POST['license'] ?? $_GET['license']);
         $appid = $session_data['appid'];
 
+        if (!check_app_enabled($appid)) 
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Application disabled."
+            )));
+        }
+
         $upgrade = upgrade_application($appid, $user, $license);
         if (!is_array($upgrade)) 
         {
@@ -215,6 +275,24 @@ switch ($_POST['type'] ?? $_GET['type'])
             )));
         }
 
+        $appid = $session_data['appid'];
+
+        if (!check_app_enabled($appid))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "App is disabled."
+            )));
+        }
+
+        if (get_application_params($appid)['authlock'] && !check_session_valid($sessionid))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Session is not authenticated."
+            )));
+        }
+    
         $hash = sanitize($_POST['hash'] ?? $_GET['hash']);
         if (!verify_hash($appid, $hash))
         {
@@ -226,21 +304,37 @@ switch ($_POST['type'] ?? $_GET['type'])
 
         $webhookid = sanitize($_POST['whid'] ?? $_GET['whid']);
 
-        $link = get_webhook($webhookid);
+        $link = get_webhook($webhookid, $session_data['appid']);
 
+        // TODO: make this a function, ugly code
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, $link);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
+        
         $response = curl_exec($ch);
 
         curl_close($ch);
 
-        die(json_encode(array(
-            "success" => true,
-            "response" => $response
-        )));
+        // Prevent returning server IP
+        if (strstr($response, $_SERVER['SERVER_ADDR'])) {
+            blacklist(get_app_owner($appid), $ip, $appid);
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Response contains data which should not be returned."
+            )));
+        }
+
+        if (sanitize($_POST['raw'] ?? $_GET['raw'])) {
+            header('Content-type: text/plain'); // Preserve newlines when returning 
+            die($response);
+        }
+        else {
+            die(json_encode(array(
+                "success" => true,
+                "response" => $response
+            )));
+        }
 
     case 'check_validity':
         $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
@@ -285,6 +379,8 @@ switch ($_POST['type'] ?? $_GET['type'])
             "success" => true,
             "message" => "successfully closed session."
         )));
+
+        
 
     default:
         die("Invalid type");

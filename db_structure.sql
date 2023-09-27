@@ -44,12 +44,16 @@ CREATE TABLE `licenses` (
   `expires` int(10) DEFAULT NULL,
   `level` int(1) DEFAULT NULL,
   `applied` tinyint(1) DEFAULT NULL,
+  `banned` int(1) DEFAULT 0,
+  `ip` varchar(70) DEFAULT NULL,
+  `hwid` varchar(70) DEFAULT NULL,
   `usedate` int(10) DEFAULT NULL,
+  `lastlogin` int(12) DEFAULT NULL,
   `applieduser` varchar(70) DEFAULT NULL,
   `created` int(10) DEFAULT NULL,
   `license` varchar(70) DEFAULT NULL,
   `application` varchar(70) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -82,9 +86,10 @@ CREATE TABLE `user_applications` (
   `enabled` int(1) DEFAULT 1,
   `iplock` int(1) DEFAULT 0,
   `hwidlock` int(1) DEFAULT 0,
+  `authlock` int(1) DEFAULT 0,
   `hashcheck` int(1) DEFAULT 0,
   `hash` varchar(255) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

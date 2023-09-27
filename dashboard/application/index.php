@@ -30,19 +30,25 @@ if (isset($_POST['logout']))
     die();
 }
 
+$appid = $appinfo['appid'];
+
 if (isset($_POST['apply'])) {
 
 	$enabled = sanitize($_POST['enabled']) == "true" ? 1 : 0;
 	$iplock = sanitize($_POST['iplock']) == "true" ? 1 : 0;
+	$authlock = sanitize($_POST['authlock']) == "true" ? 1 : 0;
 	$hwidlock = sanitize($_POST['hwidlock']) == "true" ? 1 : 0;
 	$hashcheck = sanitize($_POST['hashcheck']) == "true" ? 1 : 0;
 	$hash = sanitize($_POST['hash']);
-
-	$appid = $appinfo['appid'];
 	
-	$result = mysqli_query($mysql_link, "UPDATE user_applications SET enabled = '$enabled', iplock = '$iplock', hwidlock = '$hwidlock', hashcheck = '$hashcheck', hash = '$hash' WHERE appid = '$appid'");
+	$result = mysqli_query($mysql_link, "UPDATE user_applications SET enabled = '$enabled', iplock = '$iplock', authlock = '$authlock', hwidlock = '$hwidlock', hashcheck = '$hashcheck', hash = '$hash' WHERE appid = '$appid'");
 }
 
+$application_enabled = get_application_params($appid)['enabled'];
+$application_iplock = get_application_params($appid)['iplock'];
+$application_authlock = get_application_params($appid)['authlock'];
+$application_hwidlock = get_application_params($appid)['hwidlock'];
+$application_hashcheck = get_application_params($appid)['hashcheck'];
 ?>
 
 <!DOCTYPE html>
@@ -85,6 +91,7 @@ if (isset($_POST['apply'])) {
             <a href="../application" class="dash100-form-text">Application</a>
             <a href="../licenses" class="dash100-form-text">Licenses</a>
             <a href="../users" class="dash100-form-text">Users</a>
+			<a href="../webhooks" class="dash100-form-text">Webhooks</a>
             <a href="../admin" class='<?php echo $showadmin; ?>'>Admin</a>
 
                     
@@ -115,24 +122,32 @@ if (isset($_POST['apply'])) {
 				<span class="dash100-form-text">Enabled</span>
 				<div class="wrap-select100 m-b-16">
                     <select class="select100" name="enabled">
-                        <option class="option100" value="true">True</option>
-                        <option class="option100" value="false">False</option>
+                        <option class="option100" value="true" <?= $application_enabled == 1 ? ' selected="selected"' : '';?>>True</option>
+                        <option class="option100" value="false" <?= $application_enabled == 0 ? ' selected="selected"' : '';?>>False</option>
 					</select>
                 </div>
 
 				<span class="dash100-form-text">Ip lock</span>
 				<div class="wrap-select100 m-b-16">
                     <select class="select100" name="iplock">
-                        <option class="option100" value="true">True</option>
-                        <option class="option100" value="false">False</option>
+                        <option class="option100" value="true" <?= $application_iplock == 1 ? ' selected="selected"' : '';?>>True</option>
+                        <option class="option100" value="false" <?= $application_iplock == 0 ? ' selected="selected"' : '';?>>False</option>
+					</select>
+                </div>
+
+				<span class="dash100-form-text">Auth lock</span>
+				<div class="wrap-select100 m-b-16">
+                    <select class="select100" name="authlock">
+                        <option class="option100" value="true" <?= $application_authlock == 1 ? ' selected="selected"' : '';?>>True</option>
+                        <option class="option100" value="false" <?= $application_authlock == 0 ? ' selected="selected"' : '';?>>False</option>
 					</select>
                 </div>
 
 				<span class="dash100-form-text">HWID lock</span>
 				<div class="wrap-select100 m-b-16">
                     <select class="select100" name="hwidlock">
-                        <option class="option100" value="true">True</option>
-                        <option class="option100" value="false">False</option>
+                        <option class="option100" value="true" <?= $application_hwidlock == 1 ? ' selected="selected"' : '';?>>True</option>
+                        <option class="option100" value="false" <?= $application_hwidlock == 0 ? ' selected="selected"' : '';?>>False</option>
 					</select>
                 </div>
 
@@ -140,8 +155,8 @@ if (isset($_POST['apply'])) {
 				<span class="dash100-form-text">Hash integrity check</span>
 				<div class="wrap-select100 m-b-16">
                     <select class="select100" name="hashcheck">
-                        <option class="option100" value="true">True</option>
-                        <option class="option100" value="false">False</option>
+                        <option class="option100" value="true" <?= $application_hashcheck == 1 ? ' selected="selected"' : '';?>>True</option>
+                        <option class="option100" value="false" <?= $application_hashcheck == 0 ? ' selected="selected"' : '';?>>False</option>
 					</select>
                 </div>
 
@@ -163,5 +178,13 @@ if (isset($_POST['apply'])) {
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+<script> 
+
+$(document).ready(function() {
+	$('select')
+})
+
+</script>
 
 </html>
