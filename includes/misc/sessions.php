@@ -59,6 +59,9 @@ function check_session_open($sessionid)
     // get the mysql_link
     global $mysql_link;
 
+    // get the ip
+    global $ip;
+
     $sessionid = sanitize($sessionid);  
 
     // check session
@@ -73,8 +76,14 @@ function check_session_open($sessionid)
     {
         $appid = $row['application'];
         $opentime = $row['opentime'];
+        $ipp = $row['ip'];
     }
     
+    // Verify the person connecting is the same person
+    if ($ipp != $ip) {
+        return false;
+    }
+
     return array(
         "appid" => $appid,
         "opentime" => $opentime

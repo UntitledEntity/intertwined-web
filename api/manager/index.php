@@ -20,11 +20,12 @@ if (!$license_data)
 }
 
 $application = get_application($license_data['applieduser']);
+$appid = $application['appid'];
 
 switch ($_GET['type'])
 {
     case 'setstatus':
-        $appid = $application['appid'];
+        
 
         $input = sanitize($_GET['status']);
         if (!isset($input)) 
@@ -50,7 +51,7 @@ switch ($_GET['type'])
         )));
 
     case 'getusers':
-        $appid = $application['appid'];
+        
 
         // find user
         $result = mysqli_query($mysql_link, "SELECT * FROM application_users WHERE application = '$appid'");
@@ -93,7 +94,7 @@ switch ($_GET['type'])
         )));
 
     case 'genlicense':
-        $appid = $application['appid'];
+        
 
         $expiry = sanitize($_GET['expiry']);
         $level = sanitize($_GET['level']);
@@ -133,7 +134,7 @@ switch ($_GET['type'])
         )));
 
     case 'userdata':
-        $appid = $application['appid'];
+        
 
         $user = sanitize($_GET['user']);
         if (!isset($user))
@@ -164,7 +165,7 @@ switch ($_GET['type'])
         )));
 
     case 'closesession':
-        $appid = $application['appid'];
+        
 
         $sid = sanitize($_GET['sessionid']);
         if (!isset($sid))
@@ -194,7 +195,7 @@ switch ($_GET['type'])
 
         die(json_encode(array(
             "status" => "OK",
-            "response" => create_webhook($link)
+            "response" => create_webhook($link, $appid)
         )));
 
     case 'callwebhook':
@@ -207,7 +208,7 @@ switch ($_GET['type'])
             )));
         }
 
-        $link = get_webhook($whid);
+        $link = get_webhook($whid, $appid);
         if (!isset($link))
         {
             die(json_encode(array(
@@ -253,7 +254,7 @@ switch ($_GET['type'])
 
         die(json_encode(array(
             "status" => "OK",
-            "response" => delete_webhook($whid)
+            "response" => delete_webhook($whid, $appid)
         )));
 
     case 'getwebhook':
@@ -268,7 +269,7 @@ switch ($_GET['type'])
 
         die(json_encode(array(
             "status" => "OK",
-            "response" => get_webhook($whid)
+            "response" => get_webhook($whid, $appid)
         )));
 
     default:

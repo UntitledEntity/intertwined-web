@@ -71,7 +71,7 @@ The official documentation for the intertwined API v1.0.0 (Unencrypted)
 
         Application disabled - The application was disabled by the owner on the 'application' dashboard tab.
 
-        Invalid session - The session ID you provided is invalid.
+        Incorrect session ID - The session ID you provided is invalid.
 
         Invalid hash - The hash you provided is invalid.
 
@@ -122,7 +122,7 @@ The official documentation for the intertwined API v1.0.0 (Unencrypted)
 
         Application disabled - The application was disabled by the owner on the 'application' dashboard tab.
 
-        Invalid session - The session ID you provided is invalid.
+        Incorrect session ID - The session ID you provided is invalid.
 
         Invalid hash - The hash you provided is invalid.
 
@@ -174,7 +174,7 @@ The official documentation for the intertwined API v1.0.0 (Unencrypted)
 
         Application disabled - The application was disabled by the owner on the 'application' dashboard tab.
 
-        Invalid session - The session ID you provided is invalid.
+        Incorrect session ID - The session ID you provided is invalid.
 
         Invalid hash - The hash you provided is invalid.
 
@@ -215,4 +215,4 @@ The official documentation for the intertwined API v1.0.0 (Unencrypted)
 
     Possible errors:
 
-        Invalid session - The session ID you provided is invalid.
+        Incorrect session ID - The session ID you provided is invalid.

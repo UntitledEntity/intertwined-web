@@ -142,7 +142,7 @@
 						<p class="header-subtitle">Errors</p>
 						
 						<p class="header-title-text"><b>Application disabled</b> - The application was disabled by the owner on the 'application' dashboard tab.</p>
-						<p class="header-title-text"><b>Invalid session</b> - The session ID you provided is invalid.</p>
+						<p class="header-title-text"><b>Incorrect session ID</b> - The session ID you provided is invalid.</p>
 						<p class="header-title-text"><b>Invalid hash</b> - The hash you provided is invalid.</p>
 						<p class="header-title-text"><b>blacklisted</b> - The IP or HWID you are calling from is blacklisted.</p>
 						<p class="header-title-text"><b>banned</b> - The user is banned.</p>
@@ -182,7 +182,7 @@
 						<p class="header-subtitle">Errors</p>
 						
 						<p class="header-title-text"><b>Application disabled</b> - The application was disabled by the owner on the 'application' dashboard tab.</p>
-						<p class="header-title-text"><b>Invalid session</b> - The session ID you provided is invalid.</p>
+						<p class="header-title-text"><b>Incorrect session ID</b> - The session ID you provided is invalid.</p>
 						<p class="header-title-text"><b>Invalid hash</b> - The hash you provided is invalid.</p>
 						<p class="header-title-text"><b>blacklisted</b> - The IP or HWID you are calling from is blacklisted.</p>
 						<p class="header-title-text"><b>password_mismatch</b> - The password that you've provided is the same as the user or is less than 4 characters.</p>
@@ -224,7 +224,7 @@
 						<p class="header-subtitle">Errors</p>
 
 						<p class="header-title-text"><b>Application disabled</b> - The application was disabled by the owner on the 'application' dashboard tab.</p>
-						<p class="header-title-text"><b>Invalid session</b> - The session ID you provided is invalid.</p>
+						<p class="header-title-text"><b>Incorrect session ID</b> - The session ID you provided is invalid.</p>
 						<p class="header-title-text"><b>Invalid hash</b> - The hash you provided is invalid.</p>
 						<p class="header-title-text"><b>user_not_found</b> - The username that you've provided is invalid.</p>
 						<p class="header-title-text"><b>invalid_license</b> - The license you've provided doesn't exist.</p>
@@ -260,7 +260,7 @@
 
 						<p class="header-subtitle">Errors</p>
 
-						<p class="header-title-text"><b>Invalid session</b> - The session ID you provided is invalid.</p>
+						<p class="header-title-text"><b>Incorrect session ID</b> - The session ID you provided is invalid.</p>
 						<p class="header-title-text"><b>Invalid hash</b> - The hash you provided is invalid.</p>
 					</div>
 
@@ -290,7 +290,7 @@
 							
 						<p class="header-subtitle">Errors</p>
 
-						<p class="header-title-text"><b>Invalid session</b> - The session ID you provided is invalid.</p>
+						<p class="header-title-text"><b>Incorrect session ID</b> - The session ID you provided is invalid.</p>
 
 					</div>
 
@@ -318,7 +318,7 @@
 
 						<p class="header-subtitle">Errors</p>
 
-						<p class="header-title-text"><b>Invalid session</b> - The session ID you provided is invalid.</p>
+						<p class="header-title-text"><b>Incorrect session ID</b> - The session ID you provided is invalid.</p>
 						
 					</div>
 

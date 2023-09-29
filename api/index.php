@@ -12,6 +12,15 @@ include '../includes/include_all.php';
 // TODO: authentification lock for webhook function and file function
 // TODO 2: file function
 
+$hash = sanitize($_POST['hash'] ?? $_GET['hash']);
+if (!verify_hash($appid, $hash))
+{
+    die(json_encode(array(
+        "success" => false,
+        "error" => "Invalid hash."
+    )));
+}
+
 switch ($_POST['type'] ?? $_GET['type'])
 {
     case 'init':
@@ -23,15 +32,6 @@ switch ($_POST['type'] ?? $_GET['type'])
             die(json_encode(array(
                 "success" => false,
                 "error" => "Application disabled."
-            )));
-        }
-
-        $hash = sanitize($_POST['hash'] ?? $_GET['hash']);
-        if (!verify_hash($appid, $hash))
-        {
-            die(json_encode(array(
-                "success" => false,
-                "error" => "Invalid hash."
             )));
         }
 
@@ -65,24 +65,15 @@ switch ($_POST['type'] ?? $_GET['type'])
         {
             die(json_encode(array(
                 "success" => false,
-                "error" => "Invalid session."
+                "error" => "Incorrect session ID."
             )));
         }
 
-        $hash = sanitize($_POST['hash'] ?? $_GET['hash']);
-        if (!verify_hash($appid, $hash))
-        {
-            die(json_encode(array(
-                "success" => false,
-                "error" => "Invalid hash."
-            )));
-        }
+        $appid = $session_data['appid'];
 
         $user = sanitize($_POST['user'] ?? $_GET['user']);
         $pass = sanitize($_POST['pass'] ?? $_GET['pass']);
         $hwid = sanitize($_POST['hwid'] ?? $_GET['hwid']);
-
-        $appid = $session_data['appid'];
 
         if (!check_app_enabled($appid)) 
         {
@@ -119,16 +110,7 @@ switch ($_POST['type'] ?? $_GET['type'])
         {
             die(json_encode(array(
                 "success" => false,
-                "error" => "Invalid session."
-            )));
-        }
-
-        $hash = sanitize($_POST['hash'] ?? $_GET['hash']);
-        if (!verify_hash($appid, $hash))
-        {
-            die(json_encode(array(
-                "success" => false,
-                "error" => "Invalid hash."
+                "error" => "Incorrect session ID."
             )));
         }
 
@@ -170,16 +152,7 @@ switch ($_POST['type'] ?? $_GET['type'])
         {
             die(json_encode(array(
                 "success" => false,
-                "error" => "Invalid session."
-            )));
-        }
-
-        $hash = sanitize($_POST['hash'] ?? $_GET['hash']);
-        if (!verify_hash($appid, $hash))
-        {
-            die(json_encode(array(
-                "success" => false,
-                "error" => "Invalid hash."
+                "error" => "Incorrect session ID."
             )));
         }
 
@@ -223,16 +196,7 @@ switch ($_POST['type'] ?? $_GET['type'])
         {
             die(json_encode(array(
                 "success" => false,
-                "error" => "Invalid session."
-            )));
-        }
-
-        $hash = sanitize($_POST['hash'] ?? $_GET['hash']);
-        if (!verify_hash($appid, $hash))
-        {
-            die(json_encode(array(
-                "success" => false,
-                "error" => "Invalid hash."
+                "error" => "Incorrect session ID."
             )));
         }
 
@@ -271,7 +235,7 @@ switch ($_POST['type'] ?? $_GET['type'])
         {
             die(json_encode(array(
                 "success" => false,
-                "error" => "Invalid session."
+                "error" => "Incorrect session ID."
             )));
         }
 
@@ -290,15 +254,6 @@ switch ($_POST['type'] ?? $_GET['type'])
             die(json_encode(array(
                 "success" => false,
                 "error" => "Session is not authenticated."
-            )));
-        }
-    
-        $hash = sanitize($_POST['hash'] ?? $_GET['hash']);
-        if (!verify_hash($appid, $hash))
-        {
-            die(json_encode(array(
-                "success" => false,
-                "error" => "Invalid hash."
             )));
         }
 
@@ -344,7 +299,7 @@ switch ($_POST['type'] ?? $_GET['type'])
         {
             die(json_encode(array(
                 "success" => false,
-                "error" => "Invalid session."
+                "error" => "Incorrect session ID."
             )));
         }
 
@@ -361,7 +316,7 @@ switch ($_POST['type'] ?? $_GET['type'])
         {
             die(json_encode(array(
                 "success" => false,
-                "error" => "Invalid session."
+                "error" => "Incorrect session ID."
             )));
         }
 
@@ -380,6 +335,7 @@ switch ($_POST['type'] ?? $_GET['type'])
             "message" => "successfully closed session."
         )));
 
+            
         
 
     default:
