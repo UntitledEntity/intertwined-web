@@ -137,6 +137,21 @@
 
 		</div>
 
+		<div class="discord">
+			<div class="container header-container fade-in">
+					<div class="col-lg-5 order-lg-1 text-center">
+						<p class="header-subtitle">Discord</p>
+				
+						<p class="header-title-text">We have a discord server for support, which you can contact us at or our community for help.</p>
+					</div>
+					<div class="col-lg-6 order-lg-2">
+						<div class="header-img-section">
+							<iframe src="https://discord.com/widget?id=1157392974729183346&theme=dark" width="500" height="350" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+						</div>
+					</div>				
+			</div>
+		</div>
+
 		<div class="footer-section">
 			<div class="container footer-container">
 				<div class="col-lg-3 col-md-6 footer-subsection">

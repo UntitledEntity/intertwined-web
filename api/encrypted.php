@@ -5,7 +5,8 @@ session_start();
 require '../includes/mysql_connect.php';
 include '../includes/include_all.php';
 
-// Intertwined web encrypted API v0.2.0
+// Intertwined web encrypted API v0.2.1
+// TODO: Documentation
 
 function encrypt($in, $key, $iv) {
     $keyhash = substr(hash('sha256', $key), 0, 32);
@@ -26,6 +27,35 @@ if (!isset($IV))
         "success" => false,
         "error" => "No IV was sent."
     )));
+}
+
+// Do this globally so we don't have to do it in every single case
+$enckey = "";
+$appid = "";
+if ((isset($_POST['sid']) || isset($_GET['sid'])) ||
+ (($_POST['type'] ?? $_GET['type']) != bin2hex('init') && ($_POST['type'] ?? $_GET['type']) != bin2hex('close'))) {
+    
+    $sessionid = hex2bin(sanitize($_POST['sid'] ?? $_GET['sid']));
+
+    $session_data = check_session_open($sessionid);
+    if ($session_data == false || !isset($session_data))
+    {
+        die(json_encode(array(
+            "success" => false,
+            "error" => "Incorrect session ID."
+        )));
+    }
+    
+    $appid = $session_data['appid'];
+    $enckey = get_application_params($appid)['enckey'];
+
+    if (!check_app_enabled($appid)) 
+    {
+        die(encrypt(json_encode(array(
+           "success" => false,
+            "error" => "Application disabled."
+        )), $enckey, $IV));
+    }
 }
 
 switch ($_POST['type'] ?? $_GET['type'])
@@ -75,32 +105,8 @@ switch ($_POST['type'] ?? $_GET['type'])
             "sessionid" => $sessionid
         )), $enckey, $IV));
 
-        break;
-
     case bin2hex('login'):
     
-        $sessionid = hex2bin(sanitize($_POST['sid'] ?? $_GET['sid']));
-
-        $session_data = check_session_open($sessionid);
-        if ($session_data == false || !isset($session_data))
-        {
-            die(json_encode(array(
-                "success" => false,
-                "error" => "Incorrect session ID."
-            )));
-        }
-        
-        $appid = $session_data['appid'];
-        $enckey = get_application_params($appid)['enckey'];
-
-        if (!check_app_enabled($appid)) 
-        {
-            die(encrypt(json_encode(array(
-                "success" => false,
-                "error" => "Application disabled."
-            )), $enckey, $IV));
-        }
-
         $user = decrypt(sanitize($_POST['user'] ?? $_GET['user']), $enckey, $IV);
         $pass = decrypt(sanitize($_POST['pass'] ?? $_GET['pass']), $enckey, $IV);
         $hwid = decrypt(sanitize($_POST['hwid'] ?? $_GET['hwid']), $enckey, $IV);
@@ -122,31 +128,8 @@ switch ($_POST['type'] ?? $_GET['type'])
             "data" => $login_resp
         )), $enckey, $IV));
 
-        break;
 
     case bin2hex('loginlicense'):
-    
-        $sessionid = hex2bin(sanitize($_POST['sid'] ?? $_GET['sid']));
-
-        $session_data = check_session_open($sessionid);
-        if ($session_data == false || !isset($session_data))
-        {
-            die(json_encode(array(
-                "success" => false,
-                "error" => "Incorrect session ID."
-            )));
-        }
-        
-        $appid = $session_data['appid'];
-        $enckey = get_application_params($appid)['enckey'];
-
-        if (!check_app_enabled($appid)) 
-        {
-            die(encrypt(json_encode(array(
-                "success" => false,
-                "error" => "Application disabled."
-            )), $enckey, $IV));
-        }
 
         $license = decrypt(sanitize($_POST['license'] ?? $_GET['license']), $enckey, $IV);
         $hwid = decrypt(sanitize($_POST['hwid'] ?? $_GET['hwid']), $enckey, $IV);
@@ -167,31 +150,7 @@ switch ($_POST['type'] ?? $_GET['type'])
             "data" => $login_resp
         )), $enckey, $IV));
 
-        break;
-
     case bin2hex('register'):
-    
-        $sessionid = hex2bin(sanitize($_POST['sid'] ?? $_GET['sid']));
-    
-        $session_data = check_session_open($sessionid);
-        if ($session_data == false || !isset($session_data))
-        {
-            die(json_encode(array(
-                "success" => false,
-                "error" => "Incorrect session ID."
-            )));
-        }
-            
-        $appid = $session_data['appid'];
-        $enckey = get_application_params($appid)['enckey'];
-  
-        if (!check_app_enabled($appid)) 
-        {
-            die(encrypt(json_encode(array(
-                "success" => false,
-                "error" => "Application disabled."
-            )), $enckey, $IV));
-        }
     
         $user = decrypt(sanitize($_POST['user'] ?? $_GET['user']), $enckey, $IV);
         $pass = decrypt(sanitize($_POST['pass'] ?? $_GET['pass']), $enckey, $IV);
@@ -215,32 +174,8 @@ switch ($_POST['type'] ?? $_GET['type'])
             "success" => true,
             "data" => $userdata
         )), $enckey, $IV));
-    
-        break;
 
     case bin2hex('upgrade'):
-    
-        $sessionid = hex2bin(sanitize($_POST['sid'] ?? $_GET['sid']));
-    
-        $session_data = check_session_open($sessionid);
-        if ($session_data == false || !isset($session_data))
-        {
-            die(json_encode(array(
-                "success" => false,
-                "error" => "Incorrect session ID."
-            )));
-        }
-            
-        $appid = $session_data['appid'];
-        $enckey = get_application_params($appid)['enckey'];
-  
-        if (!check_app_enabled($appid)) 
-        {
-            die(encrypt(json_encode(array(
-                "success" => false,
-                "error" => "Application disabled."
-            )), $enckey, $IV));
-        }
     
         $user = decrypt(sanitize($_POST['user'] ?? $_GET['user']), $enckey, $IV);
         $license = decrypt(sanitize($_POST['license'] ?? $_GET['license']), $enckey, $IV);
@@ -258,33 +193,9 @@ switch ($_POST['type'] ?? $_GET['type'])
             "success" => true,
             "upgrade_data" => $upgrade_resp
         )), $enckey, $IV));
-    
-        break;
 
     case bin2hex('webhook'):
-    
-        $sessionid = hex2bin(sanitize($_POST['sid'] ?? $_GET['sid']));
-    
-        $session_data = check_session_open($sessionid);
-        if ($session_data == false || !isset($session_data))
-        {
-            die(json_encode(array(
-                "success" => false,
-                "error" => "Incorrect session ID."
-            )));
-        }
-            
-        $appid = $session_data['appid'];
-        $enckey = get_application_params($appid)['enckey'];
-  
-        if (!check_app_enabled($appid)) 
-        {
-            die(encrypt(json_encode(array(
-                "success" => false,
-                "error" => "Application disabled."
-            )), $enckey, $IV));
-        }
-
+        
         if (get_application_params($appid)['authlock'] && !check_session_valid($sessionid))
         {
             die(json_encode(array(
@@ -297,16 +208,7 @@ switch ($_POST['type'] ?? $_GET['type'])
 
         $link = get_webhook($webhookid, $session_data['appid']);
 
-        // TODO: make this a function, ugly code
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $link);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        
-        $response = curl_exec($ch);
-
-        curl_close($ch);
-
+        $response = request($link);
 
         // Prevent returning server IP
         if (strstr($response, $_SERVER['SERVER_ADDR'])) {
@@ -327,9 +229,6 @@ switch ($_POST['type'] ?? $_GET['type'])
                 "response" => $response
             )), $enckey, $IV));
         }
-    
-        break;
-
 
   case bin2hex('check_validity'):
     
@@ -348,8 +247,6 @@ switch ($_POST['type'] ?? $_GET['type'])
             "success" => true,
             "validity" => $valid
         )), $enckey, $IV));
-    
-        break;
 
     case bin2hex('close'):
     
@@ -382,8 +279,6 @@ switch ($_POST['type'] ?? $_GET['type'])
             "message" => "successfully closed session"
         )), $enckey, $IV));
     
-        break;
-
     default:
       die("Invalid");
 }

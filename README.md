@@ -6,16 +6,12 @@ Intertwined is a php-based open-source authentication service, based off of [php
 
 ![Landing Page](https://files.catbox.moe/yioynm.PNG)
 
-## Requirements
+## What we're running
 
-- Web Server
-- PHP
+- OVH VPS
+- PHP 8.2
 - MySQL
-- Cron
-
-Add your MYSQL connection information [here](https://github.com/UntitledEntity/intertwined-web/blob/main/includes/mysql_connect.php#L10) and [here](https://github.com/UntitledEntity/intertwined-web/blob/main/includes/clearsessions.php#L3)
-
-Add your discord webhook URL [here](https://github.com/UntitledEntity/intertwined-web/blob/main/includes/functions.php#L47) for alerts when an error is detected.
+- Cloudflare
 
 ## Assistance
 
