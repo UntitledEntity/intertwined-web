@@ -117,6 +117,8 @@ if (isset($_POST['logout']))
                         <span class="dash100-form-text">License expiration</span>
                         <div class="wrap-select100 m-b-16">
                             <select class="select100" name="expiration">
+                                <option class="option100" value="week">1 week</option>
+                                <option class="option100" value="2week">2 weeks</option>
                                 <option class="option100" value="month">1 month</option>
                                 <option class="option100" value="half-year">6 months</option>
                                 <option class="option100" value="year">1 year</option>
@@ -142,9 +144,7 @@ if (isset($_POST['logout']))
                                 Generate
                             </button>
                         </div>
-                    </div>
 
-                    <div class="dash100-column">
                         <div class="container-dash100-form-btn m-t-17">
                             <button name="downloadlicenses" class="dash100-form-btn">
                                 Download all licenses
@@ -158,11 +158,47 @@ if (isset($_POST['logout']))
                         </div>
                     </div>
 
+                    <div class="dash100-column">
+                        <span class="dash100-form-text">Licenses</span>
+                        <div class="wrap-select100 m-b-16">
+                            <select class="select100" name="license">
+                                <?php 
+
+                                    if (mysqli_num_rows($result) == 0)
+                                    {
+                                        echo "<option class=\"option100\" value=\"nolicenses\">No available licenses</option>";
+                                    }
+
+
+                                    for ($i = 0; $i < count($rows); $i++) {
+                                        $row = $rows[$i];     
+                                        $license = $row['license'];
+
+                                        echo "<option class=\"option100\" value=\"$i\">$license</option>";
+                                    }
+
+                                ?>
+                            </select>
+                            <span class="focus-select100"></span>
+                        </div>
+
+                        <div class="container-dash100-form-btn m-t-17">
+                            <button name="deletelicense" class="dash100-form-btn">
+                                Delete license
+                            </button>
+                        </div>
+
+                        <div class="container-dash100-form-btn m-t-17">
+                            <button name="copylicensedata" class="dash100-form-btn">
+                                Copy license data
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
 
             </form>
 
-			<?php if ($_SESSION["user_data"]["level"] == 5) { echo "<span class='dash100-form-text'>$licenses</span>"; } ?> 
 		</div>
 	</div>
 </body>
@@ -174,6 +210,24 @@ if (isset($_POST['logout']))
     if (isset($_POST['downloadlicenses']))
     {
         echo "<meta http-equiv='Refresh' Content='0; url=../misc/licenses-download.php'>";
+    }
+
+    if (isset($_POST['copylicensedata']))
+    {
+        echo '<script type=\'text/javascript\'>
+
+        navigator.clipboard.writeText(\'' . addslashes(json_encode($rows[$_POST['license']])) . '\')
+
+        </script>
+        ';
+
+        notification("Copied license data to clipboard", NOTIF_OK);
+    }
+
+    if (isset($_POST['deletelicense']))
+    {
+        $license = sanitize($rows[$_POST['license']]['license']);
+        notification(delete_application_license($license, $appid), NOTIF_OK);
     }
 
     if (isset($_POST['genlicense']))

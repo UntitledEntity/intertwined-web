@@ -79,6 +79,12 @@ function generate_application_license($appid, $expiry, $level)
  
     switch ($expiry)
     {
+        case 'week':
+            $expiry_time = strtotime("+1 week", time());
+            break;
+        case '2week':
+            $expiry_time = strtotime("+2 week", time());
+            break;
         case 'month':
             $expiry_time = strtotime("+1 months", time());
             break;

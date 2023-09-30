@@ -385,7 +385,8 @@ function delete_application_account($user, $appid)
     global $mysql_link;
 
     $user = sanitize($user);
-    
+    $appid = sanitize($appid);
+
     $resp = mysqli_query($mysql_link, "DELETE FROM application_users WHERE username = '$user' and appid = '$appid'");
 
     if ($resp == false)
@@ -395,5 +396,24 @@ function delete_application_account($user, $appid)
 
     return 'deleted';
 }
+
+function delete_application_license($license, $appid)
+{
+    // get the mysql_link
+    global $mysql_link;
+
+    $license = sanitize($license);
+    $appid = sanitize($appid);
+    
+    $resp = mysqli_query($mysql_link, "DELETE FROM licenses WHERE license = '$license' and application = '$appid'");
+
+    if ($resp == false)
+    {
+        return mysqli_error($mysql_link);
+    }
+
+    return 'deleted';
+}
+
 
 ?>
