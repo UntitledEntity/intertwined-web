@@ -183,6 +183,18 @@ if (isset($_POST['logout']))
                         </div>
 
                         <div class="container-dash100-form-btn m-t-17">
+                            <button name="resetip" class="dash100-form-btn">
+                                Reset IP
+                            </button>
+                        </div>
+
+                        <div class="container-dash100-form-btn m-t-17">
+                            <button name="resethwid" class="dash100-form-btn">
+                                Reset HWID
+                            </button>
+                        </div>
+
+                        <div class="container-dash100-form-btn m-t-17">
                             <button name="deletelicense" class="dash100-form-btn">
                                 Delete license
                             </button>
@@ -191,6 +203,12 @@ if (isset($_POST['logout']))
                         <div class="container-dash100-form-btn m-t-17">
                             <button name="copylicensedata" class="dash100-form-btn">
                                 Copy license data
+                            </button>
+                        </div>
+
+                        <div class="container-dash100-form-btn m-t-17">
+                            <button name="copylicense" class="dash100-form-btn">
+                                Copy license
                             </button>
                         </div>
                     </div>
@@ -224,10 +242,37 @@ if (isset($_POST['logout']))
         notification("Copied license data to clipboard", NOTIF_OK);
     }
 
+    if (isset($_POST['copylicense']))
+    {
+        echo '<script type=\'text/javascript\'>
+
+        navigator.clipboard.writeText(\'' . addslashes($rows[$_POST['license']]['license']) . '\')
+
+        </script>
+        ';
+
+        notification("Copied license to clipboard", NOTIF_OK);
+    }
+
+
     if (isset($_POST['deletelicense']))
     {
         $license = sanitize($rows[$_POST['license']]['license']);
         notification(delete_application_license($license, $appid), NOTIF_OK);
+    }
+
+    if (isset($_POST['resethwid']))
+    {
+        $license = sanitize($rows[$_POST['license']]['license']);
+
+        mysqli_query($mysql_link, "UPDATE licenses SET hwid = NULL WHERE license = '$license' and application = '$appid'");
+    }
+
+    if (isset($_POST['resethwid']))
+    {
+        $license = sanitize($rows[$_POST['license']]['license']);
+
+        mysqli_query($mysql_link, "UPDATE licenses SET ip = NULL WHERE license = '$license' and application = '$appid'");
     }
 
     if (isset($_POST['genlicense']))

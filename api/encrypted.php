@@ -58,6 +58,17 @@ if ((isset($_POST['sid']) || isset($_GET['sid'])) ||
     }
 }
 
+function die_with_header($str, $enckey) {
+
+    global $IV;
+
+    $rethash = hash_hmac('sha256', $IV . "." . $str, $enckey);
+    header("returnhash: $rethash");
+
+    die($str);
+
+}
+
 switch ($_POST['type'] ?? $_GET['type'])
 {
     case bin2hex('init'):
@@ -66,9 +77,9 @@ switch ($_POST['type'] ?? $_GET['type'])
 
         if (!isset($appid))
         {
-           die(json_encode(array(
-            "success" => false,
-            "error" => "No application id was sent."
+            die(json_encode(array(
+                "success" => false,
+                "error" => "No application id was sent."
             )));
         }
 
@@ -100,10 +111,10 @@ switch ($_POST['type'] ?? $_GET['type'])
             )), $enckey, $IV));
         }
 
-        die(encrypt(json_encode(array(
+        die_with_header(encrypt(json_encode(array(
             "success" => true,
             "sessionid" => $sessionid
-        )), $enckey, $IV));
+        )), $enckey, $IV), $enckey);
 
     case bin2hex('login'):
     
@@ -115,18 +126,18 @@ switch ($_POST['type'] ?? $_GET['type'])
         $login_resp = login_application($appid, $user, $pass, $hwid);
         if (!is_array($login_resp))
         { 
-            die(encrypt(json_encode(array(
+            die_with_header(encrypt(json_encode(array(
                 "success" => false,
                 "error" => $login_resp
-            )), $enckey, $IV));
+            )), $enckey, $IV), $enckey);
         }
 
         validate_session($sessionid);
 
-        die(encrypt(json_encode(array(
+        die_with_header(encrypt(json_encode(array(
             "success" => true,
             "data" => $login_resp
-        )), $enckey, $IV));
+        )), $enckey, $IV), $enckey);
 
 
     case bin2hex('loginlicense'):
@@ -137,18 +148,18 @@ switch ($_POST['type'] ?? $_GET['type'])
         $login_resp = check_application_license($license, $appid, $hwid);
         if (!is_array($login_resp))
         { 
-            die(encrypt(json_encode(array(
+            die_with_header(encrypt(json_encode(array(
                 "success" => false,
                 "error" => $login_resp
-            )), $enckey, $IV));
+            )), $enckey, $IV), $enckey);
         }
 
         validate_session($sessionid);
 
-        die(encrypt(json_encode(array(
+        die_with_header(encrypt(json_encode(array(
             "success" => true,
             "data" => $login_resp
-        )), $enckey, $IV));
+        )), $enckey, $IV), $enckey);
 
     case bin2hex('register'):
     
@@ -160,20 +171,20 @@ switch ($_POST['type'] ?? $_GET['type'])
         $register_resp = register_application($appid, $user, $pass, $license);
         if ($register_resp !== 'success')
         { 
-            die(encrypt(json_encode(array(
+            die_with_header(encrypt(json_encode(array(
                 "success" => false,
                 "error" => $register_resp
-            )), $enckey, $IV));
+            )), $enckey, $IV), $enckey);
         }
         
         $userdata = login_application($appid, $user, $pass);
 
         validate_session($sessionid);
         
-        die(encrypt(json_encode(array(
+        die_with_header(encrypt(json_encode(array(
             "success" => true,
             "data" => $userdata
-        )), $enckey, $IV));
+        )), $enckey, $IV), $enckey);
 
     case bin2hex('upgrade'):
     
@@ -183,25 +194,25 @@ switch ($_POST['type'] ?? $_GET['type'])
         $upgrade_resp = upgrade_application($appid, $user, $license);
         if (!is_array($upgrade)) 
         {
-            die(json_encode(array(
+            die_with_header(json_encode(array(
                 "success" => false,
                 "error" => $upgrade
-            )));
+            )), $enckey);
         }
         
-        die(encrypt(json_encode(array(
+        die_with_header(encrypt(json_encode(array(
             "success" => true,
             "upgrade_data" => $upgrade_resp
-        )), $enckey, $IV));
+        )), $enckey, $IV), $enckey);
 
     case bin2hex('webhook'):
         
         if (get_application_params($appid)['authlock'] && !check_session_valid($sessionid))
         {
-            die(json_encode(array(
+            die_with_header(json_encode(array(
                 "success" => false,
                 "error" => "Session is not authenticated."
-            )));
+            )), $enckey);
         }
 
         $webhookid = decrypt(sanitize($_POST['whid'] ?? $_GET['whid']), $enckey, $IV);
@@ -213,21 +224,21 @@ switch ($_POST['type'] ?? $_GET['type'])
         // Prevent returning server IP
         if (strstr($response, $_SERVER['SERVER_ADDR'])) {
             blacklist(get_app_owner($appid), $ip, $appid);
-            die(json_encode(array(
+            die_with_header(json_encode(array(
                 "success" => false,
                 "error" => "Response contains data which should not be returned."
-            )));
+            )), $enckey);
         }
 
         if (sanitize($_POST['raw'] ?? $_GET['raw'])) {
             header('Content-type: text/plain'); // Preserve newlines when returning 
-            die(encrypt($response, $enckey, $IV));
+            die_with_header(encrypt($response, $enckey, $IV), $enckey);
         }
         else {
-            die(encrypt(json_encode(array(
+            die_with_header(encrypt(json_encode(array(
                 "success" => true,
                 "response" => $response
-            )), $enckey, $IV));
+            )), $enckey, $IV), $enckey);
         }
 
   case bin2hex('check_validity'):
@@ -237,16 +248,16 @@ switch ($_POST['type'] ?? $_GET['type'])
         $valid = check_session_valid($sessionid);
         if ($valid == -1 || !isset($sessionid))
         {
-            die(json_encode(array(
+            die_with_header(json_encode(array(
                 "success" => false,
                 "error" => "Incorrect session ID."
-            )));
+            )), $enckey);
         }
 
-        die(encrypt(json_encode(array(
+        die_with_header(encrypt(json_encode(array(
             "success" => true,
             "validity" => $valid
-        )), $enckey, $IV));
+        )), $enckey, $IV), $enckey);
 
     case bin2hex('close'):
     
@@ -268,16 +279,16 @@ switch ($_POST['type'] ?? $_GET['type'])
         
         if ($resp !== 'deleted')
         { 
-            die(encrypt(json_encode(array(
+            die_with_header(encrypt(json_encode(array(
                 "success" => false,
                 "error" => $resp
-            )), $enckey, $IV));
+            )), $enckey, $IV), $enckey);
         }
 
-        die(encrypt(json_encode(array(
+        die_with_header(encrypt(json_encode(array(
             "success" => true,
             "message" => "successfully closed session"
-        )), $enckey, $IV));
+        )), $enckey, $IV), $enckey);
     
     default:
       die("Invalid");
