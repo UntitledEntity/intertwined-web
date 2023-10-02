@@ -5,7 +5,7 @@ session_start();
 require '../includes/mysql_connect.php';
 include '../includes/include_all.php';
 
-// Intertwined web encrypted API v0.2.1
+// Intertwined web encrypted API v0.2.2
 // TODO: Documentation
 
 function encrypt($in, $key, $iv) {
@@ -27,6 +27,21 @@ if (!isset($IV))
         "success" => false,
         "error" => "No IV was sent."
     )));
+}
+
+function die_with_header($str, $enckey) {
+
+    // Get the IV
+    global $IV;
+
+    // Salt the return hash with the IV
+    $rethash = hash_hmac('sha256', $IV . "." . $str, $enckey);
+
+    // Set the header
+    // CURLOPT_HEADER or whatever itterates through every header so we could just chcek if buf.substr(0, 10) == 'returnhash'
+    header("returnhash: $rethash");
+
+    die($str);
 }
 
 // Do this globally so we don't have to do it in every single case
@@ -51,22 +66,11 @@ if ((isset($_POST['sid']) || isset($_GET['sid'])) ||
 
     if (!check_app_enabled($appid)) 
     {
-        die(encrypt(json_encode(array(
+        die_with_header(encrypt(json_encode(array(
            "success" => false,
             "error" => "Application disabled."
-        )), $enckey, $IV));
+        )), $enckey, $IV), $enckey);
     }
-}
-
-function die_with_header($str, $enckey) {
-
-    global $IV;
-
-    $rethash = hash_hmac('sha256', $IV . "." . $str, $enckey);
-    header("returnhash: $rethash");
-
-    die($str);
-
 }
 
 switch ($_POST['type'] ?? $_GET['type'])
