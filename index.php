@@ -96,7 +96,7 @@
 					<div class="col-lg-5 order-lg-1 text-center">
 						<p class="header-subtitle">Privacy</p>
 
-						<p class="header-title-text">Intertwined's main priority is privacy. That's why we hash both your and your user's passwords & HWID's with <a href="https://en.wikipedia.org/wiki/Bcrypt">Bcrypt</a>, and we have an extensive encrypted API to secure your data transmission from client to server. Prioritize your users security with us.</p>
+						<p class="header-title-text">Intertwined's main priority is privacy. That's why we hash both your and your user's passwords & HWID's with <a href="https://en.wikipedia.org/wiki/Bcrypt">Bcrypt</a>, and we have an extensive encrypted API to secure your data transmission from client to server. </p>
 					</div>
 					<div class="col-lg-6 order-lg-2">
 						<div class="header-img-section">
@@ -144,26 +144,15 @@
 				
 						<p class="header-title-text">With the use of our encrypted API, with utilization of AES256 and SHA256, we allow for you to use end-to-end encryption and more of our built-in security features with our extensive API. </p>
 					</div>
-				</div>
-			</div>
 
-		</div>
-
-		<div class="discord">
-			<div class="padding-25">
-				<div class="container header-container fade-in">
-						<div class="col-lg-5 order-lg-1 text-center">
-							<p class="header-subtitle">Discord</p>
-					
-							<p class="header-title-text">We have a discord server for support, which you can contact us at or our community for help.</p>
+					<div class="col-lg-6 order-lg-2">
+						<div class="header-img-section">
+					    	<img src="assets/images/end-to-end.png" alt="Open-src">
 						</div>
-						<div class="col-lg-6 order-lg-2">
-							<div class="header-img-section">
-								<iframe src="https://discord.com/widget?id=1157392974729183346&theme=dark" width="500" height="350" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-							</div>
-						</div>				
+					<div>
 				</div>
 			</div>
+
 		</div>
 
 		<div class="footer-section">
@@ -210,7 +199,12 @@
 						<ul class="list-unstyled footer-list-menu">
 							<li><a href="credits">Credits</a></li>
 						</ul>
-						
+					</div>
+				</div>
+
+				<div class="col-lg-3 col-md-6 footer-subsection">
+					<div class="footer-subsection-2-1">
+						<iframe src="https://discord.com/widget?id=1157392974729183346&theme=dark" width="250" height="300" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>	
 					</div>
 				</div>
 
