@@ -88,7 +88,8 @@ CREATE TABLE `user_applications` (
   `hwidlock` int(1) DEFAULT 0,
   `authlock` int(1) DEFAULT 0,
   `hashcheck` int(1) DEFAULT 0,
-  `hash` varchar(255) DEFAULT NULL
+  `hash` varchar(255) DEFAULT NULL,
+  `version` varchar(5) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

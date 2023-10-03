@@ -40,8 +40,9 @@ if (isset($_POST['apply'])) {
 	$hwidlock = sanitize($_POST['hwidlock']) == "true" ? 1 : 0;
 	$hashcheck = sanitize($_POST['hashcheck']) == "true" ? 1 : 0;
 	$hash = sanitize($_POST['hash']);
+	$version = sanitize($_POST['version']);
 	
-	$result = mysqli_query($mysql_link, "UPDATE user_applications SET enabled = '$enabled', iplock = '$iplock', authlock = '$authlock', hwidlock = '$hwidlock', hashcheck = '$hashcheck', hash = '$hash' WHERE appid = '$appid'");
+	$result = mysqli_query($mysql_link, "UPDATE user_applications SET enabled = '$enabled', iplock = '$iplock', authlock = '$authlock', hwidlock = '$hwidlock', hashcheck = '$hashcheck', hash = '$hash', version = '$version' WHERE appid = '$appid'");
 }
 
 $application_enabled = get_application_params($appid)['enabled'];
@@ -162,6 +163,11 @@ $application_hashcheck = get_application_params($appid)['hashcheck'];
 
 				<div class="wrap-input100 validate-input m-b-16">
 					<input class="input100" type="text" name="hash" placeholder="Program hash">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input m-b-16">
+					<input class="input100" type="text" name="version" placeholder="Version">
 					<span class="focus-input100"></span>
 				</div>
 

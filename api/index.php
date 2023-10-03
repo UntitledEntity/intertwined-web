@@ -43,6 +43,15 @@ switch ($_POST['type'] ?? $_GET['type'])
             )));
         }
 
+        $appver = get_application_params($appid)['version'];
+        $version = sanitize($_POST['ver'] ?? $_GET['ver']);
+        if (!isset($version) || $appver != $version) {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Invalid version."
+            )));
+        }
+
         $sessionid = open_session($appid);
         if ($sessionid == false)
         {

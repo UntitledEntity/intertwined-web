@@ -106,13 +106,24 @@ switch ($_POST['type'] ?? $_GET['type'])
             )));
         }
 
+        $appver = get_application_params($appid)['version'];
+        
+        $version = decrypt(sanitize($_POST['ver'] ?? $_GET['ver']), $enckey, $IV);
+
+        if (!isset($version) || $appver != $version) {
+            die_with_header(encrypt(json_encode(array(
+                "success" => false,
+                "error" => "Invalid version."
+            )), $enckey, $IV), $enckey);
+        }
+
         $sessionid = open_session($appid);
         if ($sessionid == false)
         {
-            die(encrypt(json_encode(array(
+            die_with_header(encrypt(json_encode(array(
             "success" => false,
             "error" => "Unable to open session."
-            )), $enckey, $IV));
+            )), $enckey, $IV), $enckey);
         }
 
         die_with_header(encrypt(json_encode(array(
