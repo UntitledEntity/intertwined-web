@@ -3,8 +3,10 @@
 require '../../includes/mysql_connect.php';
 include '../../includes/include_all.php';
 
-if (!isset($_SESSION["user_data"]))
+if (!isset($_SESSION["user_data"]) || $_SESSION["user_data"]["ip"] != $ip)
 {
+	session_destroy();
+	unset($_SESSION["user_data"]);
 	header("location: ../");
 	die();
 }
