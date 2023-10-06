@@ -174,13 +174,13 @@ function admin_log($msg, $type)
   */
 
   // log to all.log, this file holds all of the logs and is backed up weekly.
-  $log_file = fopen("../logs/all.log", "a");
+  $log_file = fopen("/var/www/html/logs/all.log", "a");
   fwrite($log_file, "$output\n");
   fclose($log_file);
 
   // log to type-specific file.
   if ($type != LOG_ALL) {
-    $log_file = fopen("../logs/" . $file, "a");
+    $log_file = fopen("/var/www/html/logs/" . $file, "a");
     fwrite($log_file, "$output\n");
     fclose($log_file);
   }
