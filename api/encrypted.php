@@ -132,6 +132,17 @@ switch ($_POST['type'] ?? $_GET['type'])
         )), $enckey, $IV), $enckey);
 
     case bin2hex('login'):
+
+        $sessionid = hex2bin(sanitize($_POST['sid'] ?? $_GET['sid']));
+    
+        $session_data = check_session_open($sessionid);
+        if ($session_data == false || !isset($session_data))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Incorrect session ID."
+            )));
+        }
     
         $user = decrypt(sanitize($_POST['user'] ?? $_GET['user']), $enckey, $IV);
         $pass = decrypt(sanitize($_POST['pass'] ?? $_GET['pass']), $enckey, $IV);
@@ -157,6 +168,17 @@ switch ($_POST['type'] ?? $_GET['type'])
 
     case bin2hex('loginlicense'):
 
+        $sessionid = hex2bin(sanitize($_POST['sid'] ?? $_GET['sid']));
+    
+        $session_data = check_session_open($sessionid);
+        if ($session_data == false || !isset($session_data))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Incorrect session ID."
+            )));
+        }
+
         $license = decrypt(sanitize($_POST['license'] ?? $_GET['license']), $enckey, $IV);
         $hwid = decrypt(sanitize($_POST['hwid'] ?? $_GET['hwid']), $enckey, $IV);
         
@@ -178,6 +200,17 @@ switch ($_POST['type'] ?? $_GET['type'])
 
     case bin2hex('register'):
     
+        $sessionid = hex2bin(sanitize($_POST['sid'] ?? $_GET['sid']));
+    
+        $session_data = check_session_open($sessionid);
+        if ($session_data == false || !isset($session_data))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Incorrect session ID."
+            )));
+        }
+
         $user = decrypt(sanitize($_POST['user'] ?? $_GET['user']), $enckey, $IV);
         $pass = decrypt(sanitize($_POST['pass'] ?? $_GET['pass']), $enckey, $IV);
         $license = decrypt(sanitize($_POST['license'] ?? $_GET['license']), $enckey, $IV);
@@ -203,6 +236,17 @@ switch ($_POST['type'] ?? $_GET['type'])
 
     case bin2hex('upgrade'):
     
+        $sessionid = hex2bin(sanitize($_POST['sid'] ?? $_GET['sid']));
+    
+        $session_data = check_session_open($sessionid);
+        if ($session_data == false || !isset($session_data))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Incorrect session ID."
+            )));
+        }
+
         $user = decrypt(sanitize($_POST['user'] ?? $_GET['user']), $enckey, $IV);
         $license = decrypt(sanitize($_POST['license'] ?? $_GET['license']), $enckey, $IV);
     
@@ -272,6 +316,52 @@ switch ($_POST['type'] ?? $_GET['type'])
         die_with_header(encrypt(json_encode(array(
             "success" => true,
             "validity" => $valid
+        )), $enckey, $IV), $enckey);
+
+    case bin2hex('get_var'):
+    
+        $sessionid = hex2bin(sanitize($_POST['sid'] ?? $_GET['sid']));
+    
+        $session_data = check_session_open($sessionid);
+        if ($session_data == false || !isset($session_data))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Incorrect session ID."
+            )));
+        }
+
+        $appid = $session_data['appid'];
+        $enckey = get_application_params($appid)['enckey'];
+
+        if (get_application_params($appid)['authlock'] && !check_session_valid($sessionid))
+        {
+            die_with_header(json_encode(array(
+                "success" => false,
+                "error" => "Session is not authenticated."
+            )), $enckey);
+        }
+
+        $var_id = decrypt(sanitize($_POST['var_id'] ?? $_GET['var_id']), $enckey, $IV);
+        if (!isset($var_id))
+        {
+            die_with_header(encrypt(json_encode(array(
+                "success" => false,
+                "error" => "No variable ID."
+            )), $enckey, $IV), $enckey);
+        }
+
+        $var = get_var($var_id, $appid);
+        if ($var == 'invalid_appid' || $var == 'no_value' || $var == 'bad_mysql') {
+            die_with_header(encrypt(json_encode(array(
+                "success" => false,
+                "error" => $var
+            )), $enckey, $IV), $enckey);
+        }
+        
+        die_with_header(encrypt(json_encode(array(
+            "success" => true,
+            "var" => $var
         )), $enckey, $IV), $enckey);
 
     case bin2hex('close'):

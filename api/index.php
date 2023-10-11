@@ -236,6 +236,52 @@ switch ($_POST['type'] ?? $_GET['type'])
         )));
 
 
+    case 'get_var':
+    
+        $sessionid = hex2bin(sanitize($_POST['sid'] ?? $_GET['sid']));
+    
+        $session_data = check_session_open($sessionid);
+        if ($session_data == false || !isset($session_data))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Incorrect session ID."
+            )));
+        }
+
+        $appid = $session_data['appid'];
+
+        if (get_application_params($appid)['authlock'] && !check_session_valid($sessionid))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Session is not authenticated."
+            )));
+        }
+
+        $var_id = sanitize($_POST['var_id'] ?? $_GET['var_id']);
+        if (!isset($var_id))
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "No variable ID."
+            )));
+        }
+
+        $var = get_var($var_id, $appid);
+        if ($var == 'invalid_appid' || $var == 'no_value' || $var == 'bad_mysql') {
+            die(json_encode(array(
+                "success" => false,
+                "error" => $var
+            )));
+        }
+        
+        die(json_encode(array(
+            "success" => true,
+            "var" => $var
+        )));
+
+
     case 'webhook':
         $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
 

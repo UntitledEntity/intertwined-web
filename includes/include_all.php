@@ -6,6 +6,7 @@ include 'misc/licenses.php';
 include 'misc/sessions.php';
 include 'misc/users.php';
 include 'misc/webhooks.php';
+include 'misc/misc.php';
 
 function error_handler($errno, $errstr, $errfile, $errline)
 {

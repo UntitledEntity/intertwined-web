@@ -95,6 +95,7 @@ $application_hashcheck = get_application_params($appid)['hashcheck'];
             <a href="../licenses" class="dash100-form-text">Licenses</a>
             <a href="../users" class="dash100-form-text">Users</a>
 			<a href="../webhooks" class="dash100-form-text">Webhooks</a>
+			<a href="../variables" class="dash100-form-text">Variables</a>
             <a href="../admin" class='<?php echo $showadmin; ?>'>Admin</a>
 
                     

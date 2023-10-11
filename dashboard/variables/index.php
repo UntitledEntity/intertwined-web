@@ -26,7 +26,7 @@ if ($_SESSION["user_data"]["level"] == 5)
     $showadmin = "dash100-form-text";
 }
 
-$result = mysqli_query($mysql_link, "SELECT * FROM webhooks WHERE appid = '$appid'");
+$result = mysqli_query($mysql_link, "SELECT * FROM variables WHERE appid = '$appid'");
 
 $rows = array();
 while ($r = mysqli_fetch_assoc($result)) {
@@ -90,6 +90,7 @@ if (isset($_POST['logout']))
             <a href="../licenses" class="dash100-form-text">Licenses</a>
             <a href="../users" class="dash100-form-text">Users</a>
 			<a href="../webhooks" class="dash100-form-text">Webhooks</a>
+			<a href="../variables" class="dash100-form-text">Variables</a>
             <a href="../admin" class='<?php echo $showadmin; ?>'>Admin</a>
 
                     
@@ -106,25 +107,25 @@ if (isset($_POST['logout']))
 			<form method="post">
 
                 <span class="dash100-form-title">
-				    Webhooks
+				    Variables
 				</span>
 
-                <span class="dash100-form-text">Select Webhook ID</span>
+                <span class="dash100-form-text">Select variable id</span>
 				<div class="wrap-select100 m-b-16">
-                   	<select class="select100" name="webhook" id="webhook">
+                   	<select class="select100" name="variable" id="variable">
                         <?php 
 
 							if (mysqli_num_rows($result) == 0)
 							{
-								echo "<option class=\"option100\" value=\"nousers\">No available ID</option>";
+								echo "<option class=\"option100\" var_value=\"novars\">No available ID</option>";
 							}
 
 
                             for ($i = 0; $i < count($rows); $i++) {
                                 $row = $rows[$i];     
-                                $whid = $row['id'];
-								$link = $row['link'];
-                                echo "<option class=\"option100\" value=\"$i\" link=\"$link\">$whid</option>";
+                                $var_id = $row['id'];
+								$value = $row['value'];
+                                echo "<option class=\"option100\" value=\"$i\" var_value=\"$value\">$var_id</option>";
                             }
 
                         ?>
@@ -132,27 +133,27 @@ if (isset($_POST['logout']))
 					<span class="focus-select100"></span>
                 </div>
 
-				<span class="dash100-form-text">Selected webhook link: <span id="selectedlink"></span></span>
+				<span class="dash100-form-text">Selected variable value: <span id="selectedvar"></span></span>
 
 				<div class="dash100-wrap-columns">
 					<div class="dash100-column">
 						
-						<div class="wrap-input100 validate-input m-b-16" data-validate = "new link required">
-							<input class="input100" type="text" name="link" placeholder="New link">
+						<div class="wrap-input100 validate-input m-b-16" data-validate = "new value">
+							<input class="input100" type="text" name="value" placeholder="New Value">
 							<span class="focus-input100"></span>
 						</div>
 							
 						
 
 						<div class="container-dash100-form-btn m-t-17">
-							<button name="setlink" class="dash100-form-btn">
-								Set Link
+							<button name="setvalue" class="dash100-form-btn">
+								Set Value
 							</button>
 						</div>
 
 						<div class="container-dash100-form-btn m-t-17">
-							<button name="makewebhook" class="dash100-form-btn">
-								Create Webhook
+							<button name="makevar" class="dash100-form-btn">
+								Create Variable
 							</button>
 						</div>
 					</div>
@@ -165,26 +166,27 @@ if (isset($_POST['logout']))
 
 <script>
 
-	const Webhook = document.getElementById('webhook');
-	const SelectedLink = document.getElementById('selectedlink');
+    const Variable = document.getElementById('variable');
+	const SelectedVar = document.getElementById('selectedvar');
 
-	const Selected = Webhook.selectedIndex;
+	const Selected = Variable.selectedIndex;
 
 	// Do it once to set it to the array(0) link
-	const CurrentLink = Webhook.options[Selected].getAttribute('link');
-	SelectedLink.textContent = CurrentLink;
+	const CurrentVar = Variable.options[Selected].getAttribute('var_value');
+	SelectedVar.textContent = CurrentVar;
 
-	Webhook.addEventListener('change', function () {
-		const Selected = Webhook.selectedIndex;
+	Variable.addEventListener('change', function () {
+		const Selected = Variable.selectedIndex;
 
 		if (Selected >= 0) {
-			const CurrentLink = Webhook.options[Selected].getAttribute('link');
-			SelectedLink.textContent = CurrentLink;
+			const CurrentVar = Variable.options[Selected].getAttribute('var_value');
+			SelectedVar.textContent = CurrentVar;
 		} 
 		else {
-			SelectedLink.textContent = '';
+			SelectedVar.textContent = '';
 		}
 	});
+			
 					
 </script>
 
@@ -193,22 +195,21 @@ if (isset($_POST['logout']))
 
 <!-- Button functions -->
 <?php
-	if (isset($_POST['setlink'])) 
+	if (isset($_POST['setvalue'])) 
 	{
-		if (isset($_POST['link'])) {
-			$link = sanitize($_POST['link']);
-			$whid = sanitize($rows[$_POST['webhook']]['id']);
-			echo $whid;
+		if (isset($_POST['value'])) {
+			$value = sanitize($_POST['value']);
+			$var_id = sanitize($rows[$_POST['variable']]['id']);
 
-    		mysqli_query($mysql_link, "UPDATE webhooks SET link = '$link' WHERE appid = '$appid' and id = '$whid'");
+    		mysqli_query($mysql_link, "UPDATE variables SET value = '$value' WHERE appid = '$appid' and id = '$var_id'");
 		}
 		else {
-			notification("Password field empty", NOTIF_ERR);
+			notification("Value field empty", NOTIF_ERR);
 		}
 	}
 
-    if (isset($_POST['makewebhook'])){
-        create_webhook($_POST['link'],$appid);
+    if (isset($_POST['makevar'])){
+        create_variable($appid, $_POST['value']);
     }
 ?>
 
