@@ -25,6 +25,6 @@ The only acceptale instances in which the Intertwined team will assist you is:
 
 > Copyright (c) 2022 Jacob Gluska/UntitledEntity
 
-This project is licensed under the [GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/) - see the [LICENSE](https://github.com/UntitledEntity/intertwined-web/blob/main/LICENSE) file for details.
+This project is licensed under the [GNU Affero General Public License v3.0](https://www.gnu.org/licenses/agpl-3.0.en.htm) - see the [LICENSE](https://github.com/UntitledEntity/intertwined-web/blob/main/LICENSE) file for details.
 
 ### Please note, that this license only applies to the code in this repository. This license does not apply to the Intertwined brand.
