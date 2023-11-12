@@ -23,7 +23,7 @@ The only acceptale instances in which the Intertwined team will assist you is:
 
 ## License
 
-> Copyright (c) 2022 Jacob Gluska/UntitledEntity
+> Copyright (c) 2023 Jacob Gluska/UntitledEntity
 
 This project is licensed under the [GNU Affero General Public License v3.0](https://www.gnu.org/licenses/agpl-3.0.en.htm) - see the [LICENSE](https://github.com/UntitledEntity/intertwined-web/blob/main/LICENSE) file for details.
 
