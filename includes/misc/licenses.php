@@ -207,7 +207,7 @@ function check_application_license($license, $appid, $hwid = NULL) {
     }
 
     if ($banned) {
-        blacklist(NULL, $ip);
+        blacklist(NULL, $ip, $appid);
         return 'banned';
     }
 
@@ -224,7 +224,7 @@ function check_application_license($license, $appid, $hwid = NULL) {
         }
     }
 
-    if ($appparams['iplock'] && $ip != $ipp) {
+    if ($appparams['iplock'] && isset($ipp) && $ip != $ipp) {
         return 'invalid_ip';
     }
 

@@ -125,7 +125,7 @@ function login_application($appid, $user, $pass, $hwid = NULL)
         $ipp = $row['ip'];
     }
     
-    if ($ip != $ipp && $appparams['iplock'])
+    if ($ip != $ipp && isset($ipp) && $appparams['iplock'])
     {
         return 'invalid_ip';
     }

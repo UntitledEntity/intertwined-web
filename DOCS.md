@@ -81,15 +81,71 @@ The official documentation for the intertwined API v1.0.0 (Unencrypted)
 
         subscription_expired - The user's subscription has expired.
 
-        user_not_found - The username that you've provied is invalid.
+        user_not_found - The username that you've provided is invalid.
 
         password_mismatch - The password that you've provided is invalid. 
 
+        invalid_ip - The IP you are connecting from does not match the stored one.
+        
+        hwid_mismatch - The HWD you uploaded from does not match the stored one.
+
+### LoginLicense
+
+    Validate user credentials and get user data.
+    
+    Parameters (JSON):
+    { 
+        "type": "loginlicense", 
+        "sid": "XXXXXXXX", // Unique ID returned after calling the Init function
+        "hash": "hash", // OPTIONAL - Hash to verify
+        "license": "license", // license you're attempting to verify
+        "hwid": "hwid" // OPTIONAL - HWID of the user you're attempting to verify. If this is the first time you are validating this user, this hwid will be recorded.
+    }
+
+    Responses (JSON):
+
+        Successful response: 
+        {
+            "success": true, 
+            "data": { 
+                "license": "license", 
+                "expiry": "XXXXXXXXXX", 
+                "level": 1, 
+                "ip": "255.255.255.255" 
+            } 
+        }
+
+        Failed Response:
+        {
+            "success": false,
+            "error": "Lorem Ipsum"
+        }
+
+    Possible Errors:
+
+        Application disabled - The application was disabled by the owner on the 'application' dashboard tab.
+
+        Incorrect session ID - The session ID you provided is invalid.
+
+        Invalid hash - The hash you provided is invalid.
+
+        blacklisted - The IP or HWID you are calling from is blacklisted.
+
+        banned - The license is banned.
+
+        license_expired - The license's subscription has expired.
+
+        invalid_license - The license that you've provided is invalid.
+
+        invalid_ip - The IP you are connecting from does not match the stored one.
+        
+        hwid_mismatch - The HWD you uploaded from does not match the stored one.
+        
 ### Register
 
     Registers a user and logs them in using the provided credentials.
     
-    Paramaters (JSON):
+    Parameters (JSON):
     { 
         "type": "register",
         "sid": "XXXXXXXX", // Unique ID returned after calling the Init function
@@ -144,7 +200,7 @@ The official documentation for the intertwined API v1.0.0 (Unencrypted)
     
     Upgrades a users level and extends their expiry using a license.
 
-    Paramaters (JSON):
+    Parameters (JSON):
     { 
         'type': "upgrade", 
         'sid': "XXXXXXXX", // Unique ID returned after calling the Init function
@@ -188,12 +244,76 @@ The official documentation for the intertwined API v1.0.0 (Unencrypted)
 
         invalid_level - The level of the license is less than the level of the user.
 
+### Webhook
+
+    Calls a webhook URL and returns the content if successful.
+
+    Parameters (JSON):
+    {
+        "type": "webhook", 
+        "sid": "XXXXXXXX", // Unique ID returned after calling the Init function
+        "hash": "hash", // OPTIONAL - Hash to verify
+        "whid": "XXXXXXXX" // Webhook ID for the webhook.
+    }
+
+    Responses:
+
+        Successful response:
+        {
+            'success': true, 
+            "response": "content"
+        }
+
+        Failed response:
+        {
+            'success': false,
+            "error": "lorem ipsum"
+        }
+
+    Possible errors:
+
+        Incorrect session ID - The session ID you provided is invalid.
+        Invalid hash - The hash you provided is invalid.
+        Session is not authenticated - 'Login' or 'LoginLicense' has not been successfully executed for this session. (Optional security, configurable in dashboard)
+        
+### Variables
+
+    Gets a server-variables data.
+
+    Parameters (JSON):
+    {
+        "type": "get_var", 
+        "sid": "XXXXXXXX", // Unique ID returned after calling the Init function
+        "hash": "hash", // OPTIONAL - Hash to verify
+        "var_id": "XXXXXXXX" // Variable ID for the variable.
+    }
+
+    Responses:
+
+        Successful response:
+        {
+            'success': true, 
+            "var": "data"
+        }
+
+        Failed response:
+        {
+            'success': false,
+            "error": "lorem ipsum"
+        }
+
+    Possible errors:
+
+        Incorrect session ID - The session ID you provided is invalid.
+        Invalid hash - The hash you provided is invalid.
+        Session is not authenticated - 'Login' or 'LoginLicense' has not been successfully executed for this session. (Optional security, configurable in dashboard)
+
 
 ### Check Validity
 
     Checks if the login function has been called for a session.
 
-    Paramaters (JSON):
+    Parameters (JSON):
     {
         "type": "check_validity", 
         'sid': "XXXXXXXX" 

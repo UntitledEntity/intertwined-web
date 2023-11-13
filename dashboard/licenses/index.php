@@ -271,7 +271,7 @@ if (isset($_POST['logout']))
         mysqli_query($mysql_link, "UPDATE licenses SET hwid = NULL WHERE license = '$license' and application = '$appid'");
     }
 
-    if (isset($_POST['resethwid']))
+    if (isset($_POST['resetip']))
     {
         $license = sanitize($rows[$_POST['license']]['license']);
 

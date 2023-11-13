@@ -325,16 +325,7 @@ switch ($_POST['type'] ?? $_GET['type'])
         $response = curl_exec($ch);
 
         curl_close($ch);
-
-        // Prevent returning server IP
-        if (strstr($response, $_SERVER['SERVER_ADDR'])) {
-            blacklist(get_app_owner($appid), $ip, $appid);
-            die(json_encode(array(
-                "success" => false,
-                "error" => "Response contains data which should not be returned."
-            )));
-        }
-
+        
         if (sanitize($_POST['raw'] ?? $_GET['raw'])) {
             header('Content-type: text/plain'); // Preserve newlines when returning 
             die($response);

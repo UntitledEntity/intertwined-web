@@ -162,6 +162,18 @@ if (isset($_POST['logout']))
 
 					<div class="dash100-column">
 						<div class="container-dash100-form-btn m-t-17">
+							<button name="resethwid" class="dash100-form-btn">
+								Reset HWID
+							</button>
+						</div>
+
+						<div class="container-dash100-form-btn m-t-17">
+							<button name="resetip" class="dash100-form-btn">
+								Reset IP
+							</button>
+						</div>
+
+						<div class="container-dash100-form-btn m-t-17">
 							<button name="getdata" class="dash100-form-btn">
 								Copy userdata
 							</button>
@@ -213,6 +225,18 @@ if (isset($_POST['logout']))
         	';
 
 		notification("User data copied to clipboard", NOTIF_OK);
+	}
+
+	if (isset($_POST['resetip'])) {
+		$user = sanitize($rows[$_POST['user']]['username']);
+
+    	mysqli_query($mysql_link, "UPDATE application_users SET ip = NULL WHERE username = '$user' and application = '$appid'");
+	}
+
+	if (isset($_POST['resethwid'])) {
+		$user = sanitize($rows[$_POST['user']]['username']);
+
+    	mysqli_query($mysql_link, "UPDATE application_users SET hwid = NULL WHERE username = '$user' and application = '$appid'");
 	}
 
 	if (isset($_POST['ban'])) {
