@@ -191,6 +191,7 @@ if (isset($_POST['logout']))
                             </button>
                         </div>
 
+
                         <div class="container-dash100-form-btn m-t-17">
                             <button name="resethwid" class="dash100-form-btn">
                                 Reset HWID
