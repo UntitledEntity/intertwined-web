@@ -12,7 +12,7 @@ $timestamp = time();
 
 $sessions_to_del = mysqli_query($mysql_link, "SELECT * FROM sessions WHERE opentime + 86400 < $timestamp");
 
-$logfile = fopen("..\logs\clearsessions.log", "a");
+$logfile = fopen("/var/www/html/clearsessions.log", "a");
 fwrite($logfile, "Deleting sessions: $sessions_to_del\n");
 
 // delete any session older than 24 hours

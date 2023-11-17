@@ -53,6 +53,15 @@
 				
 					<h1 class="header-title">Data leaks</h1>
 					<p class="header-title-text">Intertwined is not responsible for any sensitive data that may be leaked in any breach.</p>
+
+					<h1 class="header-title">Banning</h1>
+					<p class="header-title-text">Intertwined is allowed to ban your user if you fail to comply with our Acceptable use policy.</p>
+
+					<h1 class="header-title">Acceptable use</h1>
+
+					<p class="header-title-text"> - Account sharing is allowed, ONLY IF it is done for the purpose of more than one developer working on the same buisness. Account sharing for subscription avoiding or any other reason will result in a ban</p>
+					<p class="header-title-text"> - Any attack against our webserver will result in an instant account ban. </p>
+					<p class="header-title-text"> - Any file that you upload which is malware or is unlawful will result in an instant ban.</p>
 				</div>
 				
 				<div class="col-lg-8 header-title-section text-center">
