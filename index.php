@@ -209,7 +209,7 @@
 
 			</div>
 			<div class="container footer-credits">
-				<p>&copy; 2022 <b>Intertwined</b> All rights reserved</p>
+				<p>&copy; 2024 <b>Intertwined</b> All rights reserved</p>
 			</div>
 		</div>
 	</div>
