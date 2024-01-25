@@ -1,6 +1,6 @@
 <?php
 
-function gen_license($expiry, $level)
+function gen_license($expiry, $level, $createdby)
 {
     // get the mysql_link
     global $mysql_link;
@@ -21,7 +21,7 @@ function gen_license($expiry, $level)
     $result = mysqli_query($mysql_link, "SELECT * FROM licenses WHERE license = '$generated_license'");
     if (mysqli_num_rows($result) >= 1)
     {
-        return gen_license($expiry, $level);
+        return gen_license($expiry, $level, $createdby);
     }
 
     switch ($expiry)
@@ -42,7 +42,7 @@ function gen_license($expiry, $level)
 
     $timestamp = time();
 
-    $resp = mysqli_query($mysql_link, "INSERT INTO licenses (license, expires, level, created) VALUES ('$generated_license', '$expiry_time', '$level', '$timestamp')");
+    $resp = mysqli_query($mysql_link, "INSERT INTO licenses (license, expires, level, created, createdby) VALUES ('$generated_license', '$expiry_time', '$level', '$timestamp', '$createdby')");
     if ($resp == false)
     {
         return mysqli_error($mysql_link);

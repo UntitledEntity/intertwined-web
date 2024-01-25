@@ -51,6 +51,7 @@ CREATE TABLE `licenses` (
   `lastlogin` int(12) DEFAULT NULL,
   `applieduser` varchar(70) DEFAULT NULL,
   `created` int(10) DEFAULT NULL,
+  `createdby` varchar(70) DEFAULT NULL,
   `license` varchar(70) DEFAULT NULL,
   `application` varchar(70) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
