@@ -1,5 +1,10 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 require '../../includes/mysql_connect.php';
 include '../../includes/include_all.php';
 
@@ -26,16 +31,6 @@ if ($_SESSION["user_data"]["level"] == 5)
     $showadmin = "dash100-form-text";
 }
 
-$result = mysqli_query($mysql_link, "SELECT * FROM licenses WHERE application = '$appid'");
-
-$rows = array();
-while ($r = mysqli_fetch_assoc($result)) {
-    $rows[] = $r;
-}
-
-$licenses = json_encode($rows);
-
-
 if (isset($_POST['logout']))
 {
     session_destroy();
@@ -43,6 +38,26 @@ if (isset($_POST['logout']))
     header("location: ../");
     die();
 }
+
+if (isset($_POST['change_license_level'])) {
+	global $mysql_link;
+
+	$license = sanitize($_POST['license']);
+	$new_level = sanitize($_POST['new_level']);
+
+	mysqli_query($mysql_link, "UPDATE licenses SET level = '$new_level' WHERE license = '$license' and application = '$appid'");
+	
+}
+
+if (isset($_POST['delete_license'])) {
+	global $mysql_link;
+
+	$license = sanitize($_POST['license']);
+
+	mysqli_query($mysql_link, "DELETE FROM licenses WHERE license = '$license' and application = '$appid'");
+	
+}
+
 
 ?>
 
@@ -73,6 +88,49 @@ if (isset($_POST['logout']))
 </head>
 
 <body>
+
+    <script>
+
+        function ChangeLevel(id) {
+            var newLevel = prompt("Enter the new level:");
+            if (newLevel !== null && !isNaN(newLevel)) {
+                // Submit the form with AJAX
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "", true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        // Reload the page or update the table as needed
+                        location.reload();
+                    }
+                };
+
+                xhr.send("change_license_level=true&license=" + id + "&new_level=" + newLevel);
+            }
+        }
+
+        function DeleteLicense(license) {
+			var Result = confirm("Are you sure you want to delete " + license + " ?");
+			if (Result == true) {
+				// Submit the form with AJAX
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "", true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        // Reload the page or update the table as needed
+                        location.reload();
+                    }
+                };
+
+                var construct = "delete_license=true&license=" + license;
+                console.log(construct)
+                xhr.send(construct);
+            }
+		}
+
+    </script>
+
 	<div class="limiter">
 	    
         <div class="sidebar-dash100">
@@ -103,15 +161,13 @@ if (isset($_POST['logout']))
 
 		<div class="container-dash100">
 			<form method="post">
-
                 <span class="dash100-form-title">
 				    Licenses
 				</span>
                 
                 <div class="dash100-wrap-columns">
-                    
-					<div class="dash100-column">
-                        <div class="wrap-input100 validate-input m-b-16" data-validate = "Level required">
+                    <div class="dash100-column">
+                    <div class="wrap-input100 validate-input m-b-16" data-validate = "Level required">
                             <input class="input100" type="text" name="level" placeholder="Level">
                             <span class="focus-input100"></span>
                         </div>
@@ -159,68 +215,66 @@ if (isset($_POST['logout']))
                                 Delete unused licenses
                             </button>
                         </div>
-                    </div>
 
+                    </div>
                     <div class="dash100-column">
-                        <span class="dash100-form-text">Licenses</span>
-                        <div class="wrap-select100 m-b-16">
-                            <select class="select100" name="license">
-                                <?php 
+                        <table class="dash100-table">
+                            <tr>	
+                                <th>License</th>
+                                <th>Expires</th>
+                                <th>Level</th>
+                                <th>Banned</th>
+                                <th>Applied</th>
+                                <th>Applied User</th>
+                                <th>Use date</th>
+                                <th>Created</th>
+                                <th>Delete</th>
+                                <th>Change Level</th>
+                            </tr>
 
-                                    if (mysqli_num_rows($result) == 0)
-                                    {
-                                        echo "<option class=\"option100\" value=\"nolicenses\">No available licenses</option>";
-                                    }
+                            <?php
+                                $licensesPerPage = 4;
 
+                                $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                                $start = ($page - 1) * $licensesPerPage;
 
-                                    for ($i = 0; $i < count($rows); $i++) {
-                                        $row = $rows[$i];     
-                                        $license = $row['license'];
+                                $response = mysqli_query($mysql_link, "SELECT * FROM `licenses` WHERE application = '$appid' LIMIT $start, $licensesPerPage");
 
-                                        echo "<option class=\"option100\" value=\"$i\">$license</option>";
-                                    }
+                                while ($rows = mysqli_fetch_array($response)) {
+                                    echo "
+                                        <tr>
+                                            <th>". $rows['license'] . " </th>
+                                            <th>". gmdate("F j, Y, g:i a", $rows['expires'] ) . " </th>
+                                            <th>". $rows['level'] . " </th>
+                                            <th>". $rows['banned'] . " </th>
+                                            <th>". $rows['applied'] . " </th>
+                                            <th>". $rows['applieduser'] . " </th>
+                                            <th>". gmdate("F j, Y, g:i a", $rows['usedate'] ) . " </th>
+                                            <th>". gmdate("F j, Y, g:i a", $rows['created']  ) . " </th>
+                                            <th> 
+                                                <button class='dash100-table-button' onclick='DeleteLicense(\"" . $rows['license'] . "\")'>Delete</button>
+                                            </th>
+                                            <th>
+                                                <button class='dash100-table-button' onclick='ChangeLevel(\"" . $rows['license'] . "\")'>Change Level</button>
+                                            </th>
+                                        </tr>
+                                    ";
+                                };
 
+                                $totalLicensesQuery = mysqli_query($mysql_link, "SELECT COUNT(*) AS total FROM `licenses` WHERE application = '$appid'");
+                                $totalLicenses = mysqli_fetch_assoc($totalLicensesQuery)['total'];
+                                $totalPages = ceil($totalLicenses / $licensesPerPage);
+
+                                echo "<div class='pagination'>";
+                                for ($i = 1; $i <= $totalPages; $i++) {
+                                    echo "<a href='?page=$i'>$i</a> ";
+                                }
+                                echo "</div>";
                                 ?>
-                            </select>
-                            <span class="focus-select100"></span>
-                        </div>
-
-                        <div class="container-dash100-form-btn m-t-17">
-                            <button name="resetip" class="dash100-form-btn">
-                                Reset IP
-                            </button>
-                        </div>
-
-
-                        <div class="container-dash100-form-btn m-t-17">
-                            <button name="resethwid" class="dash100-form-btn">
-                                Reset HWID
-                            </button>
-                        </div>
-
-                        <div class="container-dash100-form-btn m-t-17">
-                            <button name="deletelicense" class="dash100-form-btn">
-                                Delete license
-                            </button>
-                        </div>
-
-                        <div class="container-dash100-form-btn m-t-17">
-                            <button name="copylicensedata" class="dash100-form-btn">
-                                Copy license data
-                            </button>
-                        </div>
-
-                        <div class="container-dash100-form-btn m-t-17">
-                            <button name="copylicense" class="dash100-form-btn">
-                                Copy license
-                            </button>
-                        </div>
+			            </table>
                     </div>
-
                 </div>
-
             </form>
-
 		</div>
 	</div>
 </body>
@@ -232,51 +286,6 @@ if (isset($_POST['logout']))
     if (isset($_POST['downloadlicenses']))
     {
         echo "<meta http-equiv='Refresh' Content='0; url=../misc/licenses-download.php'>";
-    }
-
-    if (isset($_POST['copylicensedata']))
-    {
-        echo '<script type=\'text/javascript\'>
-
-        navigator.clipboard.writeText(\'' . addslashes(json_encode($rows[$_POST['license']])) . '\')
-
-        </script>
-        ';
-
-        notification("Copied license data to clipboard", NOTIF_OK);
-    }
-
-    if (isset($_POST['copylicense']))
-    {
-        echo '<script type=\'text/javascript\'>
-
-        navigator.clipboard.writeText(\'' . addslashes($rows[$_POST['license']]['license']) . '\')
-
-        </script>
-        ';
-
-        notification("Copied license to clipboard", NOTIF_OK);
-    }
-
-
-    if (isset($_POST['deletelicense']))
-    {
-        $license = sanitize($rows[$_POST['license']]['license']);
-        notification(delete_application_license($license, $appid), NOTIF_OK);
-    }
-
-    if (isset($_POST['resethwid']))
-    {
-        $license = sanitize($rows[$_POST['license']]['license']);
-
-        mysqli_query($mysql_link, "UPDATE licenses SET hwid = NULL WHERE license = '$license' and application = '$appid'");
-    }
-
-    if (isset($_POST['resetip']))
-    {
-        $license = sanitize($rows[$_POST['license']]['license']);
-
-        mysqli_query($mysql_link, "UPDATE licenses SET ip = NULL WHERE license = '$license' and application = '$appid'");
     }
 
     if (isset($_POST['genlicense']))

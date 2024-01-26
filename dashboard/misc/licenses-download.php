@@ -18,38 +18,50 @@ if ($appinfo == 'no_application')
 	header('Location: '.$_SERVER['REQUEST_URI']);
 }
 
-
 $appid = $appinfo['appid'];
 
-$result = mysqli_query($mysql_link, "SELECT * FROM licenses WHERE application = '$appid'");
-
-// unable to find user
-if (mysqli_num_rows($result) == 0)
-{
-    die("No licenses");
-}
-
-$rows = array();
-while ($r = mysqli_fetch_assoc($result)) {
-    $rows[] = $r;
-}
+$export  = mysqli_query($mysql_link, "SELECT * FROM licenses WHERE application = '$appid'");
 
 $data = "";
 
-for ($i = 0; $i < count($rows); $i++) { 
-    $row = json_encode($rows[$i]);
-    $data .= "$row\n";
+// Column names
+$column_names = array('expires', 'level', 'applied', 'banned', 'ip', 'hwid', 'usedate', 'lastlogin', 'applieduser', 'created', 'createdby', 'license', 'application');
+
+// Add column names to the CS
+$data .= implode(',', $column_names) . PHP_EOL;
+
+while( $row = mysqli_fetch_assoc($export))
+{
+    $line = '';
+    foreach( $row as $key => $value )
+    {      
+        if (in_array($key, array('expires', 'usedate', 'lastlogin', 'created')) && isset($value)) {
+            // Convert timestamp to human-readable time string
+            $value = date('Y-m-d H:i:s', $value);
+        }                                      
+        if ( !isset($value) || $value == "" )
+        {
+            $value = "NULL";
+        }
+        else
+        {
+            $value = str_replace('"', '""', $value);
+            $value = '"' . $value . '"';
+        }
+        $line .= $value . ",";
+    }
+    $data .= rtrim($line, ",") . PHP_EOL;
 }
 
-header('Content-Description: File Transfer');
-header('Content-Type: application/octet-stream');
-header('Content-Disposition: attachment; filename="licenses.txt"');
-header('Expires: 0');
-header('Cache-Control: must-revalidate');
-header('Pragma: public');
-header('Content-Length: ' . strlen($data));
+if ($data == "")
+{
+    $data = "(0) Records Found!" . PHP_EOL;
+}
 
-
-die($data);
-
+header("Content-type: text/csv");
+header("Content-Disposition: attachment; filename=licenses.csv");
+header("Pragma: no-cache");
+header("Expires: 0");
+echo $data;
+exit;
 ?>

@@ -31,6 +31,13 @@ body, html {
 	font-family: Montserrat, sans-serif;
 }
 
+tr, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+
 .none {
     display: none;
 }
@@ -153,7 +160,8 @@ iframe {
 }
 
 .container-dash100 {
-  width: 100%;  
+  width: 88%;  
+  margin-left: 12%;
   min-height: 100vh;
   display: -webkit-box;
   display: -webkit-flex;
@@ -246,6 +254,14 @@ iframe {
   padding: 20px;
 }
 
+.dash100-table {
+  color: #fbfbfb;
+  padding: 20px;
+}
+
+.dash100-table-button {
+  color: #fbfbfb;
+}
 
 /*------------------------------------------------------------------
 [ Select ]*/
@@ -541,6 +557,7 @@ iframe {
   left: 0;
   padding-top: 40px;
   background-color: #192841;
+  z-index: 1; 
 }
 
 .sidebar-dash100 div {
