@@ -41,6 +41,56 @@ if (isset($_POST['logout']))
     die();
 }
 
+if (isset($_POST['ban_user'])) {
+	global $mysql_link;
+
+	$user = sanitize($_POST['ban_user']);
+	mysqli_query($mysql_link, "UPDATE application_users SET banned = 1 WHERE username = '$user' and application = '$appid'");
+}
+
+if (isset($_POST['unban_user'])) {
+	global $mysql_link;
+
+	$user = sanitize($_POST['unban_user']);
+	mysqli_query($mysql_link, "UPDATE application_users SET banned = 0 WHERE username = '$user' and application = '$appid'");
+}
+
+if (isset($_POST['change_user_level'])) {
+	global $mysql_link;
+
+	$user = sanitize($_POST['user']);
+	$new_level = sanitize($_POST['new_level']);
+	mysqli_query($mysql_link, "UPDATE application_users SET level = $new_level WHERE username = '$user' and application = '$appid'");
+}
+
+if (isset($_POST['reset_ip'])) {
+	
+	$user = sanitize($_POST['reset_ip']);
+	mysqli_query($mysql_link, "UPDATE application_users SET ip = NULL WHERE username = '$user' and application = '$appid'");
+}
+
+if (isset($_POST['reset_hwid'])) {
+	
+	$user = sanitize($_POST['reset_ip']);
+	mysqli_query($mysql_link, "UPDATE application_users SET hwid = NULL WHERE username = '$user' and application = '$appid'");
+}
+
+if (isset($_POST['reset_password'])) 
+{
+	$password = password_hash(sanitize($_POST['pass']), PASSWORD_BCRYPT);
+	$user = sanitize($_POST['user']);
+
+	mysqli_query($mysql_link, "UPDATE application_users SET password = '$password' WHERE username = '$user' and application = '$appid'");
+}
+
+if (isset($_POST['reset_user'])) 
+{
+	$user = sanitize($_POST['user']);
+	$new_user = sanitize($_POST['new_user']);
+
+	mysqli_query($mysql_link, "UPDATE application_users SET username = '$new_user' WHERE username = '$user' and application = '$appid'");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -76,6 +126,63 @@ if (isset($_POST['logout']))
 </head>
 
 <body>
+
+	<script>
+		function ChangeLevel(id) {
+            var newLevel = prompt("Enter the new level:");
+            if (newLevel !== null && !isNaN(newLevel)) {
+                // Submit the form with AJAX
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "", true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        // Reload the page or update the table as needed
+                        location.reload();
+                    }
+                };
+
+                xhr.send("change_user_level=true&user=" + id + "&new_level=" + newLevel);
+            }
+        }
+
+		function ChangeUser(id) {
+            var newUser = prompt("Enter the new user:");
+            if (newUser !== null && isNaN(newUser)) {
+                // Submit the form with AJAX
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "", true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        // Reload the page or update the table as needed
+                        location.reload();
+                    }
+                };
+
+                xhr.send("reset_user=true&user=" + id + "&new_user=" + newUser);
+            }
+        }
+
+		function ChangePassword(id) {
+            var newPassword = prompt("Enter the new password:");
+            if (newPassword !== null && isNaN(newPassword)) {
+                // Submit the form with AJAX
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "", true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        // Reload the page or update the table as needed
+                        location.reload();
+                    }
+                };
+
+                xhr.send("reset_password=true&user=" + id + "&pass=" + newPassword);
+            }
+        }
+	</script>
+
 	<div class="limiter">
 	    
 		<div class="sidebar-dash100">
@@ -110,89 +217,77 @@ if (isset($_POST['logout']))
 				    Users
 				</span>
 
-                <span class="dash100-form-text">Selected user</span>
-				<div class="wrap-select100 m-b-16">
-                   	<select class="select100" name="user">
-                        <?php 
 
-							if (mysqli_num_rows($result) == 0)
-							{
-								echo "<option class=\"option100\" value=\"nousers\">No available users</option>";
-							}
+				<table class="dash100-table">
+                            <table class="dash100-table">
+                            <tr>	
+                                <th>Username</th>
+                                <th>Expires</th>
+								<th>Last Login</th>
+                                <th>Level</th>
+                                <th>Banned</th>
+                                <th>Ban</th>
+                                <th>Unban</th>
+								<th>Reset Ip</th>
+								<th>Reset HWID</th>
+                                <th>Change Level</th>
+                                <th>Change User</th>
+                                <th>Change Password</th>
+                            </tr>
 
+                            <?php
+                                $usersPerPage = 8;
 
-                            for ($i = 0; $i < count($rows); $i++) {
-                                $row = $rows[$i];     
-                                $username = $row['username'];
+                                $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                                $start = ($page - 1) * $usersPerPage;
 
-                                echo "<option class=\"option100\" value=\"$i\">$username</option>";
-                            }
+                                $response = mysqli_query($mysql_link, "SELECT * FROM `application_users` WHERE application = '$appid' LIMIT $start, $usersPerPage");
 
-                        ?>
-					</select>
-					<span class="focus-select100"></span>
-                </div>
+                                while ($rows = mysqli_fetch_array($response)) {
+                                    echo "
+                                        <tr>
+                                            <th>". $rows['username'] . " </th>
+                                            <th>". gmdate("F j, Y, g:i a", $rows['expires'] ) . " </th>
+                                            <th>". gmdate("F j, Y, g:i a", $rows['lastlogin'] ) . " </th>
+                                            <th>". $rows['level'] . " </th>
+                                            <th>". $rows['banned'] . " </th>
+                                            <th> 
+												<button class='dash100-table-button' type='submit' name='ban_user' value='" . $rows['username'] . "'>Ban</button>
+											</th>
+											<th> 
+												<button class='dash100-table-button' type='submit' name='unban_user' value='" . $rows['username'] . "'>Unban</button>
+											</th>
+											<th> 
+												<button class='dash100-table-button' type='submit' name='reset_ip' value='" . $rows['username'] . "'>Reset IP</button>
+											</th>
+											<th> 
+												<button class='dash100-table-button' type='submit' name='reset_hwid' value='" . $rows['username'] . "'>Reset HWID</button>
+											</th>
+											<th>
+												<button class='dash100-table-button' onclick='ChangeLevel(\"" . $rows['username'] . "\")'>Change Level</button>
+											</th>
+											<th>
+												<button class='dash100-table-button' onclick='ChangeUser(\"" . $rows['username'] . "\")'>Change Username</button>
+											</th>
+											<th>
+												<button class='dash100-table-button' onclick='ChangePassword(\"" . $rows['username'] . "\")'>Change Password</button>
+											</th>
+                                        </tr>
+                                    ";
+                                };
 
-				<div class="dash100-wrap-columns">
-					<div class="dash100-column">
-						<div class="wrap-input100 validate-input m-b-16" data-validate = "new password required">
-							<input class="input100" type="text" name="pass" placeholder="New password">
-							<span class="focus-input100"></span>
-						</div>
-							
-						<div class="container-dash100-form-btn m-t-17">
-							<button name="resetpassword" class="dash100-form-btn">
-								Reset password
-							</button>
-						</div>
+                                $totalUsersQuery = mysqli_query($mysql_link, "SELECT COUNT(*) AS total FROM `application_users` WHERE application = '$appid'");
+                                $totalUsers = mysqli_fetch_assoc($totalUsersQuery)['total'];
+                                $totalPages = ceil($totalUsers / $usersPerPage);
 
-						</br>
-
-						<div class="wrap-input100 validate-input m-b-16" data-validate = "license">
-							<input class="input100" type="text" name="license" placeholder="License">
-							<span class="focus-input100"></span>
-						</div>
-
-						<div class="container-dash100-form-btn m-t-17">
-							<button name="upgrade" class="dash100-form-btn">
-								Upgrade user
-							</button>
-						</div>
-					</div>
-
-					<div class="dash100-column">
-						<div class="container-dash100-form-btn m-t-17">
-							<button name="resethwid" class="dash100-form-btn">
-								Reset HWID
-							</button>
-						</div>
-
-						<div class="container-dash100-form-btn m-t-17">
-							<button name="resetip" class="dash100-form-btn">
-								Reset IP
-							</button>
-						</div>
-
-						<div class="container-dash100-form-btn m-t-17">
-							<button name="getdata" class="dash100-form-btn">
-								Copy userdata
-							</button>
-						</div>
-						
-						<div class="container-dash100-form-btn m-t-17">
-							<button name="ban" class="dash100-form-btn">
-								Ban
-							</button>
-						</div>
-
-						<div class="container-dash100-form-btn m-t-17">
-							<button name="unban" class="dash100-form-btn">
-								Unban
-							</button>
-						</div>
-					</div>
-				</div>
-            </form>
+                                echo "<div class='pagination'>";
+                                for ($i = 1; $i <= $totalPages; $i++) {
+                                    echo "<a href='?page=$i'>$i</a> ";
+                                }
+                                echo "</div>";
+                                ?>
+			            </table>
+			</form>
 		</div>
 	</div>
 </body>
@@ -201,18 +296,7 @@ if (isset($_POST['logout']))
 
 <!-- Button functions -->
 <?php
-	if (isset($_POST['resetpassword'])) 
-	{
-		if (isset($_POST['pass'])) {
-			$password = password_hash(sanitize($_POST['pass']), PASSWORD_BCRYPT);
-    		$user = sanitize($rows[$_POST['user']]['username']);
 
-    		mysqli_query($mysql_link, "UPDATE application_users SET password = '$password' WHERE username = '$user' and application = '$appid'");
-		}
-		else {
-			notification("Password field empty", NOTIF_ERR);
-		}
-	}
 
 	if (isset($_POST['getdata'])) {
 		$userdata = json_encode($rows[$_POST['user']]);
@@ -225,37 +309,6 @@ if (isset($_POST['logout']))
         	';
 
 		notification("User data copied to clipboard", NOTIF_OK);
-	}
-
-	if (isset($_POST['resetip'])) {
-		$user = sanitize($rows[$_POST['user']]['username']);
-
-    	mysqli_query($mysql_link, "UPDATE application_users SET ip = NULL WHERE username = '$user' and application = '$appid'");
-	}
-
-	if (isset($_POST['resethwid'])) {
-		$user = sanitize($rows[$_POST['user']]['username']);
-
-    	mysqli_query($mysql_link, "UPDATE application_users SET hwid = NULL WHERE username = '$user' and application = '$appid'");
-	}
-
-	if (isset($_POST['ban'])) {
-		$user = sanitize($rows[$_POST['user']]['username']);
-
-    	mysqli_query($mysql_link, "UPDATE application_users SET banned = 1 WHERE username = '$user' and application = '$appid'");
-	}
-
-	if (isset($_POST['unban'])) {
-		$user = sanitize($rows[$_POST['user']]['username']);
-
-		mysqli_query($mysql_link, "DELETE from blacklists WHERE user = '$user' and application = '$appid';");
-		mysqli_query($mysql_link, "UPDATE application_users SET banned = 0 WHERE username = '$user' and application = '$appid'");
-	}
-
-	if (isset($_POST['upgrade'])) {
-		$user = sanitize($rows[$_POST['user']]['username']);
-
-		upgrade_application($appid, $user, sanitize($_POST['license']));
 	}
 ?>
 
