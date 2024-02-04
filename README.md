@@ -22,8 +22,10 @@ We have two examples, [a python](https://github.com/UntitledEntity/intertwined-a
 The Intertwined team will not assist you in setting up Intertwined on a web server. </br>
 
 The only acceptable instances in which the Intertwined team will assist you are: 
-- If you need assistance with integrating Intertwined with your project and you have a valid subscription, you can contact me.
+- If you need assistance integrating Intertwined with your project and have a valid subscription, you can contact me.
 - If you have any inquiries about the code or general development revolving around the Intertwined API
+
+Join [our discord](https://discord.gg/QZb96GqhGZ) for contact with our team
 
 ## License
 
