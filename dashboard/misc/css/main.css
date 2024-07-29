@@ -549,15 +549,24 @@ iframe {
   background-color: #ff4000c0;
 }
 
-.sidebar-dash100 {
-  height: 100%;
-  width: 12%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  padding-top: 40px;
-  background-color: #192841;
-  z-index: 1; 
+@media (min-width:1260px) {
+  .sidebar-dash100 {
+    height: 100%;
+    width: 12%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 40px;
+    background-color: #192841;
+    z-index: 1; 
+  }
+}
+
+@media (max-width:1260px)
+{
+  .sidebar-dash100 {
+    display: none;
+  }
 }
 
 .sidebar-dash100 div {

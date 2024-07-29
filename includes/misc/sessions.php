@@ -1,5 +1,15 @@
 <?php
 
+function num_sessions($appid) 
+{
+    // get the mysql_link
+    global $mysql_link;
+
+    $appid = sanitize($appid);
+
+    $result = mysqli_query($mysql_link, "SELECT * FROM user_applications WHERE appid = '$appid'");
+    return mysqli_num_rows($result);
+}
 
 function open_session($appid)
 {
@@ -127,6 +137,15 @@ function check_session_valid($sessionid)
     $result = mysqli_query($mysql_link, "SELECT * FROM sessions WHERE sessionid = '$sessionid' AND validated = '1'");  
 
     return $result;
+}
+
+function clear_invalid_sessions($appid) 
+{
+    // get the mysql_link
+    global $mysql_link;
+
+    $timestamp = time();
+    mysqli_query($mysql_link, "DELETE FROM sessions WHERE opentime + 86400 < $timestamp AND application = '$appid'");
 }
 
 ?>

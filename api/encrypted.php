@@ -5,8 +5,8 @@ session_start();
 require '../includes/mysql_connect.php';
 include '../includes/include_all.php';
 
-// Intertwined web encrypted API v0.2.2
-// TODO: Documentation
+// Intertwined web encrypted API v0.2.3
+// TODO: Documentation, Rate limiting
 
 function encrypt($in, $key, $iv) {
     $keyhash = substr(hash('sha256', $key), 0, 32);
@@ -73,6 +73,9 @@ if ((isset($_POST['sid']) || isset($_GET['sid'])) ||
     }
 }
 
+// Clear invalid/expired sessions every time the API is accessed.
+clear_invalid_sessions($appid);
+
 switch ($_POST['type'] ?? $_GET['type'])
 {
     case bin2hex('init'):
@@ -92,6 +95,14 @@ switch ($_POST['type'] ?? $_GET['type'])
             die(json_encode(array(
                 "success" => false,
                 "error" => "Application disabled."
+            )));
+        }
+
+        if (num_sessions($appid) > 1000) 
+        {
+            die(json_encode(array(
+                "success" => false,
+                "error" => "Number of sessions exceeded, please close some and try again."
             )));
         }
 
