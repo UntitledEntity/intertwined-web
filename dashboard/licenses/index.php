@@ -7,7 +7,7 @@ if (!isset($_SESSION["user_data"]) || $_SESSION["user_data"]["ip"] != $ip)
 {
 	session_destroy();
 	unset($_SESSION["user_data"]);
-	header("location: ../");
+	header("location: https://intertwined.solutions");
 	die();
 }
 
@@ -30,7 +30,7 @@ if (isset($_POST['logout']))
 {
     session_destroy();
     unset($_SESSION["user_data"]);
-    header("location: ../");
+    header("location: https://intertwined.solutions");
     die();
 }
 
@@ -47,10 +47,18 @@ if (isset($_POST['change_license_level'])) {
 if (isset($_POST['delete_license'])) {
 	global $mysql_link;
 
+//applieduser
+
 	$license = sanitize($_POST['license']);
+    $applied_user = get_license_data($license, $appid)['applieduser'];
 
 	mysqli_query($mysql_link, "DELETE FROM licenses WHERE license = '$license' and application = '$appid'");
 	
+    $delete_user_account = sanitize($_POST['delete_user_acc']);
+    if ($delete_user_account) {
+        mysqli_query($mysql_link, "DELETE FROM application_users WHERE username = '$applied_user' AND application = '$appid'");
+    }
+
 }
 
 
@@ -107,6 +115,7 @@ if (isset($_POST['delete_license'])) {
         function DeleteLicense(license) {
 			var Result = confirm("Are you sure you want to delete " + license + " ?");
 			if (Result == true) {
+                var DeleteUserAcc = confirm("Do you also want to delete the user account associated to " + license + " ?");
 				// Submit the form with AJAX
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "", true);
@@ -118,7 +127,7 @@ if (isset($_POST['delete_license'])) {
                     }
                 };
 
-                var construct = "delete_license=true&license=" + license;
+                var construct = "delete_license=true&delete_user_acc=" + DeleteUserAcc + "&license=" + license;
                 console.log(construct)
                 xhr.send(construct);
             }
@@ -136,7 +145,6 @@ if (isset($_POST['delete_license'])) {
                 Welcome, <?php echo $_SESSION["user_data"]["user"]; ?>.
             </span>
 
-            <a href="../" class="dash100-form-text">Home</a>
             <a href="../application" class="dash100-form-text">Application</a>
             <a href="../licenses" class="dash100-form-text">Licenses</a>
             <a href="../users" class="dash100-form-text">Users</a>

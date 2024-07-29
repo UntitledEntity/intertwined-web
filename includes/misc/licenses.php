@@ -36,7 +36,7 @@ function gen_license($expiry, $level, $createdby)
             $expiry_time = strtotime('+1 years', time());
             break;
         case 'never':
-            $expiry_time = strtotime('+5 years', time());
+            $expiry_time = strtotime('+100 years', time());
             break;
     }
 
@@ -95,7 +95,7 @@ function generate_application_license($appid, $expiry, $level)
             $expiry_time = strtotime('+1 years', time());
             break;
         case 'never':
-            $expiry_time = strtotime('+5 years', time());
+            $expiry_time = strtotime('+100 years', time());
             break;
     }
  
@@ -131,14 +131,18 @@ function get_license($user)
     return mysqli_fetch_array($result);
 }
 
-function get_license_data($license)
+function get_license_data($license, $appid=NULL)
 {
     // get the mysql_link
     global $mysql_link;
 
     $license = sanitize($license);
-    
+
     $result = mysqli_query($mysql_link, "SELECT * FROM licenses WHERE license = '$license'");
+    
+    if (!is_null($appid))
+        $result = mysqli_query($mysql_link, "SELECT * FROM licenses WHERE license = '$license' AND application = '$appid'");
+
     if (mysqli_num_rows($result) < 1)
     {
         return false;

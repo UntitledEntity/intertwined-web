@@ -7,7 +7,7 @@ if (!isset($_SESSION["user_data"]) || $_SESSION["user_data"]["ip"] != $ip)
 {
 	session_destroy();
 	unset($_SESSION["user_data"]);
-	header("location: ../");
+	header("location: https://intertwined.solutions");
 	die();
 }
 
@@ -28,9 +28,11 @@ if (isset($_POST['logout']))
 {
     session_destroy();
     unset($_SESSION["user_data"]);
-	header("location: ../");
+	header("location: https://intertwined.solutions");
     die();
 }
+
+$license_data = get_license($_SESSION["user_data"]["user"]);
 
 $appid = $appinfo['appid'];
 
@@ -47,11 +49,13 @@ if (isset($_POST['apply'])) {
 	$result = mysqli_query($mysql_link, "UPDATE user_applications SET enabled = '$enabled', iplock = '$iplock', authlock = '$authlock', hwidlock = '$hwidlock', hashcheck = '$hashcheck', hash = '$hash', version = '$version' WHERE appid = '$appid'");
 }
 
-$application_enabled = get_application_params($appid)['enabled'];
-$application_iplock = get_application_params($appid)['iplock'];
-$application_authlock = get_application_params($appid)['authlock'];
-$application_hwidlock = get_application_params($appid)['hwidlock'];
-$application_hashcheck = get_application_params($appid)['hashcheck'];
+$app_params = get_application_params($appid);
+
+$application_enabled = $app_params['enabled'];
+$application_iplock = $app_params['iplock'];
+$application_authlock = $app_params['authlock'];
+$application_hwidlock = $app_params['hwidlock'];
+$application_hashcheck = $app_params['hashcheck'];
 ?>
 
 <!DOCTYPE html>
@@ -90,7 +94,6 @@ $application_hashcheck = get_application_params($appid)['hashcheck'];
                 Welcome, <?php echo $_SESSION["user_data"]["user"]; ?>.
             </span>
 
-			<a href="../" class="dash100-form-text">Home</a>
             <a href="../application" class="dash100-form-text">Application</a>
             <a href="../licenses" class="dash100-form-text">Licenses</a>
             <a href="../users" class="dash100-form-text">Users</a>
@@ -114,72 +117,83 @@ $application_hashcheck = get_application_params($appid)['hashcheck'];
 				<span class="dash100-form-title">
 				    Application
 				</span>
-				    
-				<span class="dash100-form-text">
-					App ID: <blur><?php echo $appinfo['appid']; ?></blur>
-				</span>
-					
-				<span class="dash100-form-text">
-				    Enckey: <blur><?php echo $appinfo['enckey']; ?></blur>
-				</span>
+				
+				<div class="dash100-wrap-columns">
+                    <div class="dash100-column p-r-30">
 
-				<span class="dash100-form-text">Enabled</span>
-				<div class="wrap-select100 m-b-16">
-                    <select class="select100" name="enabled">
-                        <option class="option100" value="true" <?= $application_enabled == 1 ? ' selected="selected"' : '';?>>True</option>
-                        <option class="option100" value="false" <?= $application_enabled == 0 ? ' selected="selected"' : '';?>>False</option>
-					</select>
-                </div>
+						<span class="dash100-form-text">
+							App ID: <blur><?php echo $appinfo['appid']; ?></blur>
+						</span>
+							
+						<span class="dash100-form-text">
+							Enckey: <blur><?php echo $appinfo['enckey']; ?></blur>
+						</span>
 
-				<span class="dash100-form-text">Ip lock</span>
-				<div class="wrap-select100 m-b-16">
-                    <select class="select100" name="iplock">
-                        <option class="option100" value="true" <?= $application_iplock == 1 ? ' selected="selected"' : '';?>>True</option>
-                        <option class="option100" value="false" <?= $application_iplock == 0 ? ' selected="selected"' : '';?>>False</option>
-					</select>
-                </div>
+						<span class="dash100-form-text"> 
+							Your license: <blur><?php echo $license_data['license']; ?></blur>
+						</span>
 
-				<span class="dash100-form-text">Auth lock</span>
-				<div class="wrap-select100 m-b-16">
-                    <select class="select100" name="authlock">
-                        <option class="option100" value="true" <?= $application_authlock == 1 ? ' selected="selected"' : '';?>>True</option>
-                        <option class="option100" value="false" <?= $application_authlock == 0 ? ' selected="selected"' : '';?>>False</option>
-					</select>
-                </div>
+						<div class="wrap-input100 validate-input m-b-16">
+							<input class="input100" type="text" name="hash" placeholder="Program hash">
+							<span class="focus-input100"></span>
+						</div>
 
-				<span class="dash100-form-text">HWID lock</span>
-				<div class="wrap-select100 m-b-16">
-                    <select class="select100" name="hwidlock">
-                        <option class="option100" value="true" <?= $application_hwidlock == 1 ? ' selected="selected"' : '';?>>True</option>
-                        <option class="option100" value="false" <?= $application_hwidlock == 0 ? ' selected="selected"' : '';?>>False</option>
-					</select>
-                </div>
+						<div class="wrap-input100 validate-input m-b-16">
+							<input class="input100" type="text" name="version" placeholder="Version">
+							<span class="focus-input100"></span>
+						</div>
+					</div>
+
+					<div class="dash100-column">
+						<span class="dash100-form-text">Enabled</span>
+						<div class="wrap-select100 m-b-16">
+							<select class="select100" name="enabled">
+								<option class="option100" value="true" <?= $application_enabled == 1 ? ' selected="selected"' : '';?>>True</option>
+								<option class="option100" value="false" <?= $application_enabled == 0 ? ' selected="selected"' : '';?>>False</option>
+							</select>
+						</div>
+
+						<span class="dash100-form-text">Ip lock</span>
+						<div class="wrap-select100 m-b-16">
+							<select class="select100" name="iplock">
+								<option class="option100" value="true" <?= $application_iplock == 1 ? ' selected="selected"' : '';?>>True</option>
+								<option class="option100" value="false" <?= $application_iplock == 0 ? ' selected="selected"' : '';?>>False</option>
+							</select>
+						</div>
+
+						<span class="dash100-form-text">Auth lock</span>
+						<div class="wrap-select100 m-b-16">
+							<select class="select100" name="authlock">
+								<option class="option100" value="true" <?= $application_authlock == 1 ? ' selected="selected"' : '';?>>True</option>
+								<option class="option100" value="false" <?= $application_authlock == 0 ? ' selected="selected"' : '';?>>False</option>
+							</select>
+						</div>
+
+						<span class="dash100-form-text">HWID lock</span>
+						<div class="wrap-select100 m-b-16">
+							<select class="select100" name="hwidlock">
+								<option class="option100" value="true" <?= $application_hwidlock == 1 ? ' selected="selected"' : '';?>>True</option>
+								<option class="option100" value="false" <?= $application_hwidlock == 0 ? ' selected="selected"' : '';?>>False</option>
+							</select>
+						</div>
 
 
-				<span class="dash100-form-text">Hash integrity check</span>
-				<div class="wrap-select100 m-b-16">
-                    <select class="select100" name="hashcheck">
-                        <option class="option100" value="true" <?= $application_hashcheck == 1 ? ' selected="selected"' : '';?>>True</option>
-                        <option class="option100" value="false" <?= $application_hashcheck == 0 ? ' selected="selected"' : '';?>>False</option>
-					</select>
-                </div>
-
-				<div class="wrap-input100 validate-input m-b-16">
-					<input class="input100" type="text" name="hash" placeholder="Program hash">
-					<span class="focus-input100"></span>
+						<span class="dash100-form-text">Hash integrity check</span>
+						<div class="wrap-select100 m-b-16">
+							<select class="select100" name="hashcheck">
+								<option class="option100" value="true" <?= $application_hashcheck == 1 ? ' selected="selected"' : '';?>>True</option>
+								<option class="option100" value="false" <?= $application_hashcheck == 0 ? ' selected="selected"' : '';?>>False</option>
+							</select>
+						</div>
+					</div>
 				</div>
 
-				<div class="wrap-input100 validate-input m-b-16">
-					<input class="input100" type="text" name="version" placeholder="Version">
-					<span class="focus-input100"></span>
-				</div>
 
 				<div class="container-dash100-form-btn m-t-17">
 					<button name="apply" class="dash100-form-btn">
 						Apply
-					</button>
+					</button>		
 				</div>
-
 
             </form>
 		</div>

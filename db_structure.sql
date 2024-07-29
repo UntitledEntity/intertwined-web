@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS `application_users`;
 CREATE TABLE `application_users` (
   `username` varchar(70) DEFAULT NULL,
   `password` varchar(70) DEFAULT NULL,
-  `expires` int(10) DEFAULT NULL,
+  `expires` varchar(70) DEFAULT NULL,
   `hwid` varchar(70) DEFAULT '0',
   `banned` tinyint(1) DEFAULT NULL,
   `ip` varchar(70) DEFAULT NULL,
@@ -41,7 +41,7 @@ DROP TABLE IF EXISTS `licenses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `licenses` (
-  `expires` int(10) DEFAULT NULL,
+  `expires` varchar(70) DEFAULT NULL,
   `level` int(1) DEFAULT NULL,
   `applied` tinyint(1) DEFAULT NULL,
   `banned` int(1) DEFAULT 0,

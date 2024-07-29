@@ -7,7 +7,7 @@ if (!isset($_SESSION["user_data"]) || $_SESSION["user_data"]["ip"] != $ip)
 {
 	session_destroy();
 	unset($_SESSION["user_data"]);
-	header("location: ../");
+	header("location: https://intertwined.solutions");
 	die();
 }
 
@@ -37,7 +37,7 @@ if (isset($_POST['logout']))
 {
     session_destroy();
     unset($_SESSION["user_data"]);
-    header("location: ../");
+    header("location: https://intertwined.solutions");
     die();
 }
 
@@ -85,7 +85,6 @@ if (isset($_POST['logout']))
                 Welcome, <?php echo $_SESSION["user_data"]["user"]; ?>.
             </span>
 
-			<a href="../" class="dash100-form-text">Home</a>
             <a href="../application" class="dash100-form-text">Application</a>
             <a href="../licenses" class="dash100-form-text">Licenses</a>
             <a href="../users" class="dash100-form-text">Users</a>
