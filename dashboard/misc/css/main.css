@@ -246,6 +246,8 @@ iframe {
 }
 
 .dash100-wrap-columns {
+  margin-left: 12%;
+  width: 88%;
   display: flex;
 }
 
