@@ -56,6 +56,8 @@ $application_iplock = $app_params['iplock'];
 $application_authlock = $app_params['authlock'];
 $application_hwidlock = $app_params['hwidlock'];
 $application_hashcheck = $app_params['hashcheck'];
+$application_version = $app_params['version'];
+$application_hash = $app_params['hash'];
 ?>
 
 <!DOCTYPE html>
@@ -133,13 +135,15 @@ $application_hashcheck = $app_params['hashcheck'];
 							Your license: <blur><?php echo $license_data['license']; ?></blur>
 						</span>
 
+						<span class="dash100-form-text">Hash</span>
 						<div class="wrap-input100 validate-input m-b-16">
-							<input class="input100" type="text" name="hash" placeholder="Program hash">
+							<input class="input100" type="text" name="hash" value="<?= $application_hash ?>">
 							<span class="focus-input100"></span>
 						</div>
 
+						<span class="dash100-form-text">Version</span>
 						<div class="wrap-input100 validate-input m-b-16">
-							<input class="input100" type="text" name="version" placeholder="Version">
+							<input class="input100" type="text" name="version" value="<?= $application_version ?>">
 							<span class="focus-input100"></span>
 						</div>
 					</div>

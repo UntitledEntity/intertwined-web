@@ -7,7 +7,7 @@ if (!isset($_SESSION["user_data"]) || $_SESSION["user_data"]["ip"] != $ip)
 {
 	session_destroy();
 	unset($_SESSION["user_data"]);
-	header("location: ../");
+	header("location: https://intertwined.solutions");
 	die();
 }
 
@@ -37,7 +37,7 @@ if (isset($_POST['logout']))
 {
     session_destroy();
     unset($_SESSION["user_data"]);
-    header("location: ../");
+    header("location: https://intertwined.solutions");
     die();
 }
 

@@ -6,7 +6,7 @@ require '../includes/mysql_connect.php';
 include '../includes/include_all.php';
 
 // Intertwined web encrypted API v0.2.3
-// TODO: Documentation, Rate limiting
+// TODO: Documentation, Rate limiting, Force encryption
 
 function encrypt($in, $key, $iv) {
     $keyhash = substr(hash('sha256', $key), 0, 32);
@@ -291,16 +291,8 @@ switch ($_POST['type'] ?? $_GET['type'])
 
         $response = request($link);
 
-        if (sanitize($_POST['raw'] ?? $_GET['raw'])) {
-            header('Content-type: text/plain'); // Preserve newlines when returning 
-            die_with_header(encrypt($response, $enckey, $IV), $enckey);
-        }
-        else {
-            die_with_header(encrypt(json_encode(array(
-                "success" => true,
-                "response" => $response
-            )), $enckey, $IV), $enckey);
-        }
+        header('Content-type: text/plain'); // Preserve newlines when returning 
+        die_with_header(encrypt($response, $enckey, $IV), $enckey);
 
   case bin2hex('check_validity'):
     
