@@ -26,7 +26,7 @@ if ($_SESSION["user_data"]["level"] == 5)
     $showadmin = "dash100-form-text";
 }
 
-$filter = "";
+$filter = sanitize($_POST['filter']);
 
 if (isset($_POST['logout']))
 {
@@ -34,10 +34,6 @@ if (isset($_POST['logout']))
     unset($_SESSION["user_data"]);
     header("location: https://intertwined.solutions");
     die();
-}
-
-if (isset($_POST['applyfilter'])) {
-    $filter = sanitize($_POST['filter']);
 }
 
 if (isset($_POST['ban_user'])) {
@@ -220,14 +216,6 @@ if (isset($_POST['reset_user']))
                         <div class="wrap-input100 validate-input m-b-16" data-validate = "">
                                 <input class="input100" type="text" name="filter" placeholder="Filter">
                                 <span class="focus-input100"></span>
-                        </div>
-                    </div>
-
-                    <div class="dash100-column">
-                        <div class="wrap-input100 validate-input m-b-16" data-validate = "">
-                            <button name="applyfilter" class="dash100-form-btn">
-                                Apply 
-                            </button>
                         </div>
                     </div>
                 </div>
