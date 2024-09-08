@@ -8,7 +8,12 @@ Intertwined is a PHP-based open-source authentication service based on [php-mysq
 
 ## Documentation
 
-We have two examples, [a python](https://github.com/UntitledEntity/intertwined-api-example) and a [C++ example](https://github.com/UntitledEntity/Intertwined-CPP-Example), along with our [official documentation page](https://intertwined.solutions/docs/) and our [readme](https://github.com/UntitledEntity/intertwined-web/blob/main/DOCS.md)
+We have multiple sources of documentation, which are listed below.
+
+- [Python](https://github.com/UntitledEntity/intertwined-api-example)
+- [C++](https://github.com/UntitledEntity/Intertwined-CPP-Example)
+- [Docs Web Page](https://intertwined.solutions/docs/)
+- [ReadMe](https://github.com/UntitledEntity/intertwined-web/blob/main/DOCS.md)
 
 ## What we're running
 
@@ -33,4 +38,4 @@ Join [our discord](https://discord.gg/QZb96GqhGZ) for contact with our team
 
 This project is licensed under the [GNU Affero General Public License v3.0](https://www.gnu.org/licenses/agpl-3.0.en.htm) - see the [LICENSE](https://github.com/UntitledEntity/intertwined-web/blob/main/LICENSE) file for details.
 
-### Please note, that this license only applies to the code in this repository. This license does not apply to the Intertwined brand.
+### Please note that this license only applies to the code in this repository. It does not apply to the Intertwined brand.
