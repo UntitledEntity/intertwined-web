@@ -26,12 +26,7 @@ if ($_SESSION["user_data"]["level"] == 5)
     $showadmin = "dash100-form-text";
 }
 
-$result = mysqli_query($mysql_link, "SELECT * FROM application_users WHERE application = '$appid'");
-
-$rows = array();
-while ($r = mysqli_fetch_assoc($result)) {
-    $rows[] = $r;
-}
+$filter = "";
 
 if (isset($_POST['logout']))
 {
@@ -39,6 +34,10 @@ if (isset($_POST['logout']))
     unset($_SESSION["user_data"]);
     header("location: https://intertwined.solutions");
     die();
+}
+
+if (isset($_POST['applyfilter'])) {
+    $filter = sanitize($_POST['filter']);
 }
 
 if (isset($_POST['ban_user'])) {
@@ -216,6 +215,22 @@ if (isset($_POST['reset_user']))
 				    Users
 				</span>
 
+                <div class="dash100-wrap-columns">
+                    <div class="dash100-column">
+                        <div class="wrap-input100 validate-input m-b-16" data-validate = "">
+                                <input class="input100" type="text" name="filter" placeholder="Filter">
+                                <span class="focus-input100"></span>
+                        </div>
+                    </div>
+
+                    <div class="dash100-column">
+                        <div class="wrap-input100 validate-input m-b-16" data-validate = "">
+                            <button name="applyfilter" class="dash100-form-btn">
+                                Apply 
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
 				<table class="dash100-table">
                             <table class="dash100-table">
@@ -241,6 +256,10 @@ if (isset($_POST['reset_user']))
                                 $start = ($page - 1) * $usersPerPage;
 
                                 $response = mysqli_query($mysql_link, "SELECT * FROM `application_users` WHERE application = '$appid' LIMIT $start, $usersPerPage");
+
+                                if ($filter) {
+                                    $response = mysqli_query($mysql_link, "SELECT * FROM `application_users` WHERE application = '$appid' and username LIKE '%{$filter}%' LIMIT $start, $usersPerPage");
+                                }
 
                                 while ($rows = mysqli_fetch_array($response)) {
                                     echo "

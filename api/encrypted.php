@@ -67,7 +67,7 @@ if ((isset($_POST['sid']) || isset($_GET['sid'])) ||
     if (!check_app_enabled($appid)) 
     {
         die_with_header(encrypt(json_encode(array(
-           "success" => false,
+            "success" => false,
             "error" => "Application disabled."
         )), $enckey, $IV), $enckey);
     }
@@ -275,6 +275,7 @@ switch ($_POST['type'] ?? $_GET['type'])
             "upgrade_data" => $upgrade_resp
         )), $enckey, $IV), $enckey);
 
+        //TODO: Fix random newlines being created?
     case bin2hex('webhook'):
         
         if (get_application_params($appid)['authlock'] && !check_session_valid($sessionid))
@@ -288,10 +289,10 @@ switch ($_POST['type'] ?? $_GET['type'])
         $webhookid = decrypt(sanitize($_POST['whid'] ?? $_GET['whid']), $enckey, $IV);
 
         $link = get_webhook($webhookid, $session_data['appid']);
+        
+        header('Content-Type: text/plain'); // Preserve newlines when returning 
 
-        $response = request($link);
-
-        header('Content-type: text/plain'); // Preserve newlines when returning 
+        $response = request($link);        
         die_with_header(encrypt($response, $enckey, $IV), $enckey);
 
   case bin2hex('check_validity'):
