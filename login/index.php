@@ -98,9 +98,8 @@ if (isset($_SESSION["user_data"]))
 				
 				if (!strlen($_POST['captcha'])) 
 				{
-					notification("Ip adress mismatch. Please complete captcha.", NOTIF_ERR);
+					notification("Please complete captcha.", NOTIF_ERR);
 					$_SESSION['captcha_needed'] = true;
-					echo "<meta http-equiv='Refresh' Content='2; >";
 					return;	
 				}
 
@@ -114,8 +113,9 @@ if (isset($_SESSION["user_data"]))
 			
             switch ($resp)
             {
+				// For some reason this doesn't work?
                 case 'user_not_found':
-                    notification("The provided username is incorrect. Please check your spelling.", NOTIF_ERR);
+                    notification("The provided user is incorrect. Please check your spelling.", NOTIF_ERR);
 					return;
                 case 'blacklisted':
 					admin_log($_POST['user'] . "attempted to login with the blacklisted ip " . $ip, LOG_USR);
