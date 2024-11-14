@@ -122,7 +122,7 @@ function validate_session($sessionid)
 function check_session_valid($sessionid)
 {
     // get the mysql_link
-    global $mysql_link;
+    global $mysql_link, $ip;
 
     $sessionid = sanitize($sessionid);  
 
@@ -135,6 +135,11 @@ function check_session_valid($sessionid)
 
     // check session validity
     $result = mysqli_query($mysql_link, "SELECT * FROM sessions WHERE sessionid = '$sessionid' AND validated = '1'");  
+
+    if (strcmp($result['ip'], $ip))
+    {
+        return -1;
+    }
 
     return $result;
 }

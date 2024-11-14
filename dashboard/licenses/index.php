@@ -146,10 +146,8 @@ if (isset($_POST['delete_license'])) {
             </span>
 
             <a href="../application" class="dash100-form-text">Application</a>
-            <a href="../licenses" class="dash100-form-text">Licenses</a>
-            <a href="../users" class="dash100-form-text">Users</a>
-			<a href="../webhooks" class="dash100-form-text">Webhooks</a>
-			<a href="../variables" class="dash100-form-text">Variables</a>
+            <a href="../users" class="dash100-form-text">Users</a>			
+			<a href="../serverside" class="dash100-form-text">Server-Side Data</a>
             <a href="../admin" class='<?php echo $showadmin; ?>'>Admin</a>
 
                     
@@ -270,7 +268,7 @@ if (isset($_POST['delete_license'])) {
 
                                 echo "<div class='pagination'>";
                                 for ($i = 1; $i <= $totalPages; $i++) {
-                                    echo "<a href='?page=$i'>$i</a> ";
+                                    echo "<a href='?page=$i'>$i </a> ";
                                 }
                                 echo "</div>";
                                 ?>

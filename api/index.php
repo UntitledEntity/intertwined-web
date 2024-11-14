@@ -340,8 +340,8 @@ switch ($_POST['type'] ?? $_GET['type'])
     case 'check_validity':
         $sessionid = sanitize($_POST['sid'] ?? $_GET['sid']);
 
-        $valid = check_session_valid($sessionid);
-        if ($valid == -1 || !isset($sessionid))
+        
+        if (!check_session_valid($sessionid) || !isset($sessionid))
         {
             die(json_encode(array(
                 "success" => false,
