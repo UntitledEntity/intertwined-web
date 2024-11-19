@@ -5,8 +5,8 @@ session_start();
 require '../includes/mysql_connect.php';
 include '../includes/include_all.php';
 
-// Intertwined web encrypted API v0.2.3
-// TODO: Documentation, Rate limiting, Force encryption
+// Intertwined web encrypted API v0.3.1
+// TODO: Documentation, Force encryption
 
 function encrypt($in, $key, $iv) {
     $keyhash = substr(hash('sha256', $key), 0, 32);
@@ -19,6 +19,12 @@ function decrypt($in, $key, $iv) {
     return openssl_decrypt(hex2bin($in), 'aes-256-cbc', $keyhash, OPENSSL_RAW_DATA, $ivhash);
 }
 
+// Handle rate limits. Cloudflare has got us covered for the rest of the website, 
+// just want to have a second wall of defense for the API.
+if (!handle_rate_limits()) {
+    http_response_code(429);
+    die("Rate limit exceeded. Please wait and try again.");
+}
 
 $IV = hex2bin(sanitize($_POST['iv'] ?? $_GET['iv']));
 if (!isset($IV))
@@ -69,6 +75,18 @@ if ((isset($_POST['sid']) || isset($_GET['sid'])) ||
         die_with_header(encrypt(json_encode(array(
             "success" => false,
             "error" => "Application disabled."
+        )), $enckey, $IV), $enckey);
+    }
+
+    $app_owner = get_app_owner($appid);
+
+    $result = mysqli_query($mysql_link, "SELECT * FROM licenses WHERE applieduser = '$app_owner' AND application IS NULL");
+    $app_owner_license_data = mysqli_fetch_array($result);
+    if ($app_owner_license_data['banned'] == 1 || $app_owner_license_data['expires'] < time())
+    {
+        die_with_header(encrypt(json_encode(array(
+            "success" => false,
+            "error" => "Application not allowed to use API."
         )), $enckey, $IV), $enckey);
     }
 }

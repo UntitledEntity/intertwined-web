@@ -65,4 +65,41 @@ function get_var($var_id, $appid) {
     return mysqli_fetch_assoc($get_var)['value'];
 }
 
+function handle_rate_limits() {
+
+    global $mysql_link;
+    global $ip;
+
+    $rate_limit_log_resp = mysqli_query($mysql_link, "SELECT * from rate_limits WHERE ip = '$ip'");
+    if (!mysqli_num_rows($rate_limit_log_resp)){
+        $result = mysqli_query($mysql_link, "INSERT INTO rate_limits (ip, request_count) VALUES ('$ip', '1')");
+        if (!$result)
+            return 'bad_mysql'; 
+
+        return 1;
+    }
+
+    $rate_limit_log = mysqli_fetch_array($rate_limit_log_resp);
+    $req_count = $rate_limit_log['request_count'];
+    // 25 requests in 15 seconds is the limit.
+    if ((time() - strtotime($rate_limit_log['last_request'])) > 15) {
+        $result = mysqli_query($mysql_link, "UPDATE rate_limits SET request_count = 1, last_request = NOW() where ip = '$ip'");
+        if (!$result)
+            return 'bad_mysql'; 
+
+        return 1;
+    }
+    else if ($req_count >= 25) {
+        return 0;
+    }
+    else {
+        $new_req_count = $req_count + 1;
+        $result = mysqli_query($mysql_link, "UPDATE rate_limits SET request_count = '$new_req_count', last_request = NOW() where ip = '$ip'");
+        if (!$result)
+            return 'bad_mysql'; 
+
+        return 1;
+    }
+}
+
 ?>

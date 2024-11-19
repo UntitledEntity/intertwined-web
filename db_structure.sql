@@ -140,3 +140,16 @@ CREATE TABLE `variables` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
+--
+-- Table structure for table `rate_limits`
+--
+
+DROP TABLE IF EXISTS `rate_limits`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rate_limits` (
+  `ip` varchar(70) NOT NULL,
+  `request_count` varchar(100) DEFAULT NULL,
+  `last_request` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
