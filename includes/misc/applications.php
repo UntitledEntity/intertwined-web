@@ -60,7 +60,7 @@ function check_ban_application($appid, $user)
     // unable to find user
     if (mysqli_num_rows($result) == 0)
     {
-        return -1;
+        return 0;
     }
     
     return mysqli_fetch_array($result)['banned'];
@@ -81,7 +81,7 @@ function verify_hash($appid, $hash)
     // unable to find application
     if (mysqli_num_rows($result) == 0)
     {
-        return -1;
+        return 0;
     }
 
     $application_data = mysqli_fetch_array($result);
@@ -375,7 +375,8 @@ function get_application($user)
         return 'no_application';
     }
     
-    // get session data
+    // get application data
+    // appid, enckey, owner, enabled, iplock, hwidlock, authlock, hashcheck, hash, version
     return mysqli_fetch_array($result);
 }
 

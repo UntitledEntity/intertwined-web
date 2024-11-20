@@ -53,8 +53,8 @@ if (isset($_SESSION["user_data"]))
 						Intertwined Login
 					</span>
 				
-					<div class="wrap-input100 validate-input m-b-16" data-validate = "Username is required">
-						<input class="input100" type="text" name="user" placeholder="Username">
+					<div class="wrap-input100 validate-input m-b-16" data-validate = "Email is required">
+						<input class="input100" type="text" name="email" placeholder="Email">
 						<span class="focus-input100"></span>
 					</div>
 					
@@ -76,6 +76,8 @@ if (isset($_SESSION["user_data"]))
 						</button>
 					</div>
      	
+					<a href="forgot/">Forgot Password?</a>
+					
 				</form>
 			</div>
 		</div>
@@ -89,12 +91,20 @@ if (isset($_SESSION["user_data"]))
 	    if (isset($_POST['login']))
         {
 			global $ip;
-			$result = mysqli_query($mysql_link, "SELECT * FROM users WHERE username = '" . $_POST['user'] . "';");
+
+			$result = mysqli_query($mysql_link, "SELECT * FROM users WHERE email = '" . $_POST['email'] . "'");
+			if (!mysqli_num_rows($result))
+			{
+				notification("The provided email is incorrect. Please check your spelling.", NOTIF_ERR);
+				return;
+			}
+
+			$user = mysqli_fetch_array($result)['username'];
 
 			$ipp = mysqli_fetch_array($result)['ip'];
 			if ($ip !== $ipp) 
 			{
-				admin_log("IP mismatch detected for " . $_POST['user'] . " on IP" . $ip . " with the stored IP ". $ipp, LOG_USR);
+				admin_log("IP mismatch detected for $user on IP $ip with the stored IP $ipp", LOG_USR);
 				
 				if (!strlen($_POST['captcha'])) 
 				{
@@ -109,21 +119,20 @@ if (isset($_SESSION["user_data"]))
 				}
 			}
 
-            $resp = login($_POST['user'], $_POST['pass']);
+            $resp = login($_POST['email'], $_POST['pass']);
 			
             switch ($resp)
             {
-				// For some reason this doesn't work?
                 case 'user_not_found':
-                    notification("The provided user is incorrect. Please check your spelling.", NOTIF_ERR);
+                    notification("The provided email is incorrect. Please check your spelling.", NOTIF_ERR);
 					return;
                 case 'blacklisted':
-					admin_log($_POST['user'] . "attempted to login with the blacklisted ip " . $ip, LOG_USR);
+					admin_log("$user attempted to login with the blacklisted ip $ip", LOG_USR);
 					admin_log("A login attempt was made on a blacklisted account.", LOG_DISC);
                     notification("The IP you are trying to login to from has been blacklisted due to breaking TOS.", NOTIF_ERR);
 					return;
 				case 'banned':
-					admin_log($ip . " attempted to login to the banned account " . $_POST['user'], LOG_USR);
+  					admin_log("$ip attempted to login to the banned account $user", LOG_USR);
 					admin_log("A login attempt was made on a banned account.", LOG_DISC);
                     notification("The account you are trying to login to has been banned due to breaking TOS.", NOTIF_ERR);
 					return;

@@ -1,7 +1,7 @@
 <?php
 
 
-function login($user,$pass)
+function login($email,$pass)
 {
     // get the mysql_link
     global $mysql_link;
@@ -10,11 +10,11 @@ function login($user,$pass)
     global $ip;
 
     // sanitize
-    $user = sanitize($user);
+    $email = sanitize($email);
     $pass = sanitize($pass);
     
     // find user
-    $result = mysqli_query($mysql_link, "SELECT * FROM users WHERE username = '$user'");
+    $result = mysqli_query($mysql_link, "SELECT * FROM users WHERE email = '$email'");
     
     // unable to find user
     if (mysqli_num_rows($result) == 0)
@@ -26,6 +26,7 @@ function login($user,$pass)
     while ($row = mysqli_fetch_array($result))
     {
         $pw = $row['password'];
+        $user = $row['username'];
         $hwidd = $row['hwid'];
         $level = $row['level'];
         $banned = $row['banned'];
@@ -85,7 +86,7 @@ function login($user,$pass)
     return 'success';
 }
 
-function register($user, $pass, $license)
+function register($user, $email, $pass, $license)
 {
     // get the mysql_link
     global $mysql_link;
@@ -103,11 +104,25 @@ function register($user, $pass, $license)
         
     $license = sanitize($license);
 
+    // check if it's a valid email
+    $email = sanitize($email);
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+    {
+        return 'invalid_email';
+    }
+
     // check if there's an existing user before inserting one
     $result = mysqli_query($mysql_link, "SELECT * FROM users WHERE username = '$user'");
     if (mysqli_num_rows($result) >= 1)
     {
         return 'user_already_taken';
+    }
+
+    // check if there's an existing email before inserting one
+    $result = mysqli_query($mysql_link, "SELECT * FROM users WHERE email = '$email'");
+    if (mysqli_num_rows($result) >= 1)
+    {
+        return 'email_already_taken';
     }
 
     // check if there's a blacklist on the ip we're registering from
@@ -147,7 +162,7 @@ function register($user, $pass, $license)
 
     $timestamp = time();
 
-    $resp = mysqli_query($mysql_link, "INSERT INTO users (username, password, expires, level, ip, lastlogin) VALUES ('$user', '$hashed_pass', '$expiry', '$level', '$ip', '$timestamp')");
+    $resp = mysqli_query($mysql_link, "INSERT INTO users (username, email, password, expires, level, ip, lastlogin) VALUES ('$user', '$email', '$hashed_pass', '$expiry', '$level', '$ip', '$timestamp')");
     if ($resp == false)
     {
         return mysqli_error($mysql_link);
@@ -160,6 +175,8 @@ function register($user, $pass, $license)
     }
     
     admin_log("$user registered (License: $license, IP: $ip)", LOG_RGSTR);   
+
+    create_application($user);
 
     return 'success';
 }
@@ -263,6 +280,114 @@ function change_level($user, $level)
     }
 
     return 'success';
+}
+
+function check_email_valid($email) 
+{
+    global $mysql_link;
+
+    $email = sanitize($email);
+    if (!isset($email)) 
+    {
+        return 0;
+    }
+
+    $result = mysqli_query($mysql_link, "SELECT * FROM users WHERE email = '$email'");
+    if (mysqli_num_rows($result) < 1)
+    {
+        return 0;
+    }
+
+    return 1;
+}
+
+function check_auth_code($code) 
+{
+    global $mysql_link;
+
+    $code = sanitize($code);
+    if (!isset($code)) 
+    {
+        return 0;
+    }
+
+    $result = mysqli_query($mysql_link, "SELECT * FROM users WHERE resetcode = '$code'");
+    if (mysqli_num_rows($result) < 1)
+    {
+        return 0;
+    }
+
+    // Codes last for 15 minutes
+    if ((time() - mysqli_fetch_array($result)['lastreset']) > (15 * 60))
+    {
+        return 0;
+    }
+
+    return 1;
+}
+
+function reset_password($code, $newpass)
+{
+    global $mysql_link;
+
+    $code = sanitize($code);
+    $newpass = sanitize($newpass);
+    if (!isset($code) || !isset($newpass))
+    {
+        return 0;
+    }
+
+    $result = mysqli_query($mysql_link, "SELECT * FROM users WHERE resetcode = '$code'");
+    if (mysqli_num_rows($result) < 1)
+    {
+        return 0;
+    }
+
+    $username = mysqli_fetch_array($result)['username'];
+    $hashed_pass = password_hash($newpass, PASSWORD_BCRYPT);
+
+    return mysqli_query($mysql_link, "UPDATE users SET password = '$hashed_pass' WHERE username = '$username'");
+}
+
+function set_auth_code($email, $resetcode) 
+{
+    global $mysql_link;
+
+    $email = sanitize($email);
+    $resetcode = sanitize($resetcode);
+    if (!isset($email) || !isset($resetcode)) 
+    {
+        return 0;
+    }
+
+    $result = mysqli_query($mysql_link, "SELECT * FROM users WHERE email = '$email'");
+    if (mysqli_num_rows($result) < 1)
+    {
+        return 0;
+    }
+
+    $username = mysqli_fetch_array($result)['username'];
+    $timestamp = time();
+    
+    return mysqli_query($mysql_link, "UPDATE users SET resetcode = '$resetcode', lastreset = '$timestamp' WHERE username = '$username'");
+}
+
+function get_user_from_email($email) {
+    global $mysql_link;
+
+    $email = sanitize($email);
+    if (!isset($email)) 
+    {
+        return 0;
+    }
+
+    $result = mysqli_query($mysql_link, "SELECT * FROM users WHERE email = '$email'");
+    if (mysqli_num_rows($result) < 1)
+    {
+        return 0;
+    }
+
+    return mysqli_fetch_array($result)['username'];
 }
 
 ?>

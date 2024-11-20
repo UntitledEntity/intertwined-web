@@ -55,6 +55,11 @@ if (isset($_SESSION["user_data"]))
 						<span class="focus-input100"></span>
 					</div>
 					
+					<div class="wrap-input100 validate-input m-b-16" data-validate = "Email is required">
+						<input class="input100" type="text" name="email" placeholder="Email">
+						<span class="focus-input100"></span>
+					</div>
+
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Password is required">
 						<input class="input100" type="password" name="pass" placeholder="Password">
 						<span class="focus-input100"></span>
@@ -96,15 +101,21 @@ if (isset($_SESSION["user_data"]))
 				return;
 			}
 
-            $resp = register($_POST['user'], $_POST['pass'], $_POST['license']);
+            $resp = register($_POST['user'], $_POST['email'], $_POST['pass'], $_POST['license']);
             
             switch ($resp)
             {
                 case 'invalid_pass':
                     notification("Password may not be under 4 characters and cannot be the same as the username.", NOTIF_ERR);
 					return;
+				case 'invalid_email':
+					notification("Please provide a valid email.", NOTIF_ERR);
+					return;
                 case 'user_already_taken':
                     notification("The provided username is already in use.", NOTIF_ERR);
+					return; 
+				case 'email_already_taken':
+					notification("The provided email is already in use.", NOTIF_ERR);
 					return;
                 case 'blacklisted':
                     notification("The IP you are trying to register from has been blacklisted due to breaking TOS.", NOTIF_ERR);
@@ -121,6 +132,7 @@ if (isset($_SESSION["user_data"]))
 				case 'success':
 					echo "<meta http-equiv='Refresh' Content='2; url=../login/'>";
                 	notification("You have successfully registered.", NOTIF_OK);
+					return;
                 default:
 					notification("There has been an error registering. If this persists, please contact an administrator", NOTIF_ERR);
 					admin_log($resp, LOG_ERRR);

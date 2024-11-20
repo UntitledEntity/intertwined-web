@@ -12,7 +12,7 @@ CREATE TABLE `application_users` (
   `hwid` varchar(70) DEFAULT '0',
   `banned` tinyint(1) DEFAULT NULL,
   `ip` varchar(70) DEFAULT NULL,
-  `lastlogin` int(10) DEFAULT NULL,
+  `lastlogin` int(11) DEFAULT NULL,
   `level` int(1) DEFAULT NULL,
   `application` varchar(70) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -47,10 +47,10 @@ CREATE TABLE `licenses` (
   `banned` int(1) DEFAULT 0,
   `ip` varchar(70) DEFAULT NULL,
   `hwid` varchar(70) DEFAULT NULL,
-  `usedate` int(10) DEFAULT NULL,
+  `usedate` int(11) DEFAULT NULL,
   `lastlogin` int(12) DEFAULT NULL,
   `applieduser` varchar(70) DEFAULT NULL,
-  `created` int(10) DEFAULT NULL,
+  `created` int(11) DEFAULT NULL,
   `createdby` varchar(70) DEFAULT NULL,
   `license` varchar(70) DEFAULT NULL,
   `application` varchar(70) DEFAULT NULL
@@ -68,7 +68,7 @@ CREATE TABLE `sessions` (
   `sessionid` varchar(70) DEFAULT NULL,
   `ip` varchar(49) NOT NULL,
   `validated` int(1) DEFAULT 0,
-  `opentime` int(10) DEFAULT NULL,
+  `opentime` int(11) DEFAULT NULL,
   `application` varchar(70) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -104,12 +104,15 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `username` varchar(70) NOT NULL,
   `password` varchar(70) NOT NULL,
+  `email` varchar(70) NOT NULL, 
   `expires` varchar(70) NOT NULL DEFAULT '',
   `hwid` varchar(70) NOT NULL DEFAULT '0',
   `banned` tinyint(1) DEFAULT 0,
   `ip` varchar(49) DEFAULT NULL,
-  `lastlogin` int(10) DEFAULT NULL,
-  `level` int(1) DEFAULT NULL
+  `lastlogin` int(11) DEFAULT NULL,
+  `level` int(1) DEFAULT NULL,
+  `resetcode` varchar(32) DEFAULT NULL,
+  `lastreset` TIME int(11) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

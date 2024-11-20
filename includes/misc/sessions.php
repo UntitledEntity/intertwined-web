@@ -130,7 +130,7 @@ function check_session_valid($sessionid)
     $result = mysqli_query($mysql_link, "SELECT * FROM sessions WHERE sessionid = '$sessionid'");
     if (mysqli_num_rows($result) < 1)
     {  
-        return -1;
+        return 0;
     }
 
     // check session validity
@@ -138,7 +138,7 @@ function check_session_valid($sessionid)
 
     if (strcmp($result['ip'], $ip))
     {
-        return -1;
+        return 0;
     }
 
     return $result;
