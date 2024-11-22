@@ -18,7 +18,6 @@
 
 	<link rel="stylesheet" href="../assets/css/index-bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/css/index-style.css" />
-    <link rel="stylesheet" type="text/css" href="../assets/css/index-accordian.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800&display=swap">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800&display=swap">

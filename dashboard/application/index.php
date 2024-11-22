@@ -96,9 +96,10 @@ $application_hash = $app_params['hash'];
                 Welcome, <?php echo $_SESSION["user_data"]["user"]; ?>.
             </span>
 
+            <a href="../application" class="dash100-form-text">Application</a>
             <a href="../licenses" class="dash100-form-text">Licenses</a>
             <a href="../users" class="dash100-form-text">Users</a>
-			<a href="../serverside" class="dash100-form-text">Server-Side Data</a>
+			<a href="../serverside" class="dash100-form-text">Serverside</a>
             <a href="../admin" class='<?php echo $showadmin; ?>'>Admin</a>
 
                     

@@ -31,7 +31,6 @@ if (isset($_SESSION["user_data"]))
 	<link rel="stylesheet" href="../assets/css/index-bootstrap.min.css">
 
 	<link rel="stylesheet" type="text/css" href="../assets/css/index-style.css" />
-    <link rel="stylesheet" type="text/css" href="../assets/css/index-accordian.css" />
 	<link rel="stylesheet" type="text/css" href="../assets/css/util.css">
 	<link rel="stylesheet" type="text/css" href="../assets/css/main.css">
 

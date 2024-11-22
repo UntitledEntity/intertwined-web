@@ -134,14 +134,14 @@ function check_session_valid($sessionid)
     }
 
     // check session validity
-    $result = mysqli_query($mysql_link, "SELECT * FROM sessions WHERE sessionid = '$sessionid' AND validated = '1'");  
+    $session_data = mysqli_fetch_assoc($result);
 
-    if (strcmp($result['ip'], $ip))
+    if (strcmp($session_data['ip'], $ip))
     {
         return 0;
     }
 
-    return $result;
+    return $session_data['validated'];
 }
 
 function clear_invalid_sessions($appid) 

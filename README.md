@@ -12,7 +12,6 @@ We have multiple sources of documentation, which are listed below.
 
 - [Python](https://github.com/UntitledEntity/intertwined-api-example)
 - [C++](https://github.com/UntitledEntity/Intertwined-CPP-Example)
-- [Docs Web Page](https://intertwined.solutions/docs/)
 - [ReadMe](https://github.com/UntitledEntity/intertwined-web/blob/main/DOCS.md)
 
 ## What we're running
@@ -36,6 +35,6 @@ Join [our discord](https://discord.gg/QZb96GqhGZ) for contact with our team
 
 > Copyright (c) 2024 Jacob Gluska/UntitledEntity
 
-This project is licensed under the [GNU Affero General Public License v3.0](https://www.gnu.org/licenses/agpl-3.0.en.htm) - see the [LICENSE](https://github.com/UntitledEntity/intertwined-web/blob/main/LICENSE) file for details.
+This project is licensed under the [GNU Affero General Public License v3.0](https://www.gnu.org/licenses/agpl-3.0.html) - see the [LICENSE](https://github.com/UntitledEntity/intertwined-web/blob/main/LICENSE) file for details.
 
 ### Please note that this license only applies to the code in this repository. It does not apply to the Intertwined brand.
