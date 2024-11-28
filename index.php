@@ -56,12 +56,12 @@
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="https://discord.gg/QZb96GqhGZ">
+						<a class="nav-link" href="https://github.com/UntitledEntity/intertwined-web">
 							<p class="nav-link-menu">Github</p>
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="https://github.com/UntitledEntity/intertwined-web">
+						<a class="nav-link" href="https://discord.gg/QZb96GqhGZ">
 							<p class="nav-link-menu">Discord</p>
 						</a>
 					</li>
@@ -247,6 +247,7 @@
 	<script>
 		const swiper = new Swiper('.swiper-container', {
 			slidesPerView: 2,
+			autoHeight: true,
 			spaceBetween: 20,
 			loop: true,
 			centeredSlides: true,
@@ -256,6 +257,25 @@
 				}
 			}
 		});
+
+		document.addEventListener('DOMContentLoaded', function () {
+			// Select all slides
+			const slides = document.querySelectorAll('.swiper-slide');
+
+			// Calculate the maximum height
+			let maxHeight = 0;
+			slides.forEach(slide => {
+				const slideHeight = slide.scrollHeight;
+				if (slideHeight > maxHeight) {
+					maxHeight = slideHeight;
+				}
+			});
+
+			// Apply the maximum height to all slides
+			slides.forEach(slide => {
+				slide.style.height = maxHeight + 'px';
+			});
+		});	
   </script>
 
 </body>

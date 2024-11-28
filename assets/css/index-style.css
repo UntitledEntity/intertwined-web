@@ -445,7 +445,6 @@ button:focus{
 
 .swiper-container {
     width: 80%;
-    height: 500px;
     padding-left: 10%;
     padding-right: 10%;
     overflow: hidden;
@@ -460,21 +459,15 @@ button:focus{
     align-items: center;
     background-color: #192841;
     color: white;
-    font-size: 24px;
+    font-size: 1.3vw;
     border-left: 20px solid transparent;
     border-right: 20px solid transparent;
     overflow: hidden;
     flex-direction: row; /* Align image and text horizontally */
     padding: 20px;
-    height: 100%; /* Ensure the slide takes the full height */
+    min-height: 300px; /* Minimum height, adjust as needed */
+    height: auto; /* Allows height to expand based on content */
     text-align: center;
-}
-
-.slide-title {
-    font-size: 32px;
-    font-weight: bold;
-    text-align: center;
-    color: #ff4000c0;
 }
 
 .slide-content {
@@ -499,6 +492,7 @@ button:focus{
 }
 
 
+
 /* BOXES */ 
 
 .box-container {
@@ -520,7 +514,8 @@ button:focus{
     border-radius: 20px;
     padding: 20px;
     width: 30%;
-    height: 300px;
+    display: block;
+    overflow: auto;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     flex-direction: column; 
 }
