@@ -376,7 +376,7 @@ function get_application($user)
     }
     
     // get application data
-    // appid, enckey, owner, enabled, iplock, hwidlock, authlock, hashcheck, hash, version
+    // appid, enckey, owner, enabled, iplock, hwidlock, authlock, hashcheck, hash, version, enabled_functions
     return mysqli_fetch_array($result);
 }
 

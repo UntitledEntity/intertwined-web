@@ -162,6 +162,13 @@ switch ($_POST['type'] ?? $_GET['type'])
 
     case bin2hex('login'):
 
+        if (get_application_params($appid)['enabled_functions'][0] == "0") {
+            die_with_header(encrypt(json_encode(array(
+                "success" => false,
+                "error" => "Login API function disabled."
+            )), $enckey, $IV), $enckey);
+        }
+
         $sessionid = hex2bin(sanitize($_POST['sid'] ?? $_GET['sid']));
     
         $session_data = check_session_open($sessionid);
@@ -197,6 +204,13 @@ switch ($_POST['type'] ?? $_GET['type'])
 
     case bin2hex('loginlicense'):
 
+        if (get_application_params($appid)['enabled_functions'][1] == "0") {
+            die_with_header(encrypt(json_encode(array(
+                "success" => false,
+                "error" => "Login via license API function disabled."
+            )), $enckey, $IV), $enckey);
+        }
+
         $sessionid = hex2bin(sanitize($_POST['sid'] ?? $_GET['sid']));
     
         $session_data = check_session_open($sessionid);
@@ -229,6 +243,13 @@ switch ($_POST['type'] ?? $_GET['type'])
 
     case bin2hex('register'):
     
+        if (get_application_params($appid)['enabled_functions'][2] == "0") {
+            die_with_header(encrypt(json_encode(array(
+                "success" => false,
+                "error" => "Register API function disabled."
+            )), $enckey, $IV), $enckey);
+        }
+
         $sessionid = hex2bin(sanitize($_POST['sid'] ?? $_GET['sid']));
     
         $session_data = check_session_open($sessionid);
@@ -265,6 +286,13 @@ switch ($_POST['type'] ?? $_GET['type'])
 
     case bin2hex('upgrade'):
     
+        if (get_application_params($appid)['enabled_functions'][3] == "0") {
+            die_with_header(encrypt(json_encode(array(
+                "success" => false,
+                "error" => "Upgrade API function disabled."
+            )), $enckey, $IV), $enckey);
+        }
+
         $sessionid = hex2bin(sanitize($_POST['sid'] ?? $_GET['sid']));
     
         $session_data = check_session_open($sessionid);
@@ -295,6 +323,13 @@ switch ($_POST['type'] ?? $_GET['type'])
 
     case bin2hex('webhook'):
         
+        if (get_application_params($appid)['enabled_functions'][4] == "0") {
+            die_with_header(encrypt(json_encode(array(
+                "success" => false,
+                "error" => "Webhook API function disabled."
+            )), $enckey, $IV), $enckey);
+        }
+
         if (get_application_params($appid)['authlock'] && !check_session_valid($sessionid))
         {
             die_with_header(json_encode(array(
@@ -331,6 +366,13 @@ switch ($_POST['type'] ?? $_GET['type'])
 
     case bin2hex('get_var'):
     
+        if (get_application_params($appid)['enabled_functions'][5] == "0") {
+            die_with_header(encrypt(json_encode(array(
+                "success" => false,
+                "error" => "Variables API functions disabled."
+            )), $enckey, $IV), $enckey);
+        }
+
         $sessionid = hex2bin(sanitize($_POST['sid'] ?? $_GET['sid']));
     
         $session_data = check_session_open($sessionid);

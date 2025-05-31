@@ -212,7 +212,7 @@
 					    
 						<h3 class="footer-subsection-title">Other</h3>
 						<ul class="list-unstyled footer-list-menu">
-							<li><a href="credits">Credits</a></li>
+							<li><a href="https://github.com/UntitledEntity/intertwined-web/blob/main/README.md#credits">Credits</a></li>
 							<li><a href="terms">Terms</a></li>
 						</ul>
 					</div>

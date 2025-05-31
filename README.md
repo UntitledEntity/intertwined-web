@@ -21,6 +21,13 @@ We have multiple sources of documentation, which are listed below.
 - MySQL
 - Cloudflare
 
+## Credits
+
+Big thank you to [gaoryrt](https://github.com/gaoryrt/) and [htmlstreamofficial](https://github.com/htmlstreamofficial) for making Intertwined possible with open-source software!
+
+- Error Pages: https://github.com/gaoryrt/retro-404
+- Dashboard UI: https://github.com/htmlstreamofficial/awesome-dashboard-ui-kit
+
 ## Assistance
 
 The Intertwined team will not assist you in setting up Intertwined on a web server. </br>
