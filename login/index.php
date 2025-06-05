@@ -91,7 +91,7 @@ if (isset($_SESSION["user_data"]))
         {
 			global $ip;
 
-			$result = mysqli_query($mysql_link, "SELECT * FROM users WHERE email = '" . $_POST['email'] . "'");
+			$result = mysqli_query($mysql_link, "SELECT * FROM users WHERE email = '" . sha1($_POST['email']) . "'");
 			if (!mysqli_num_rows($result))
 			{
 				notification("The provided email is incorrect. Please check your spelling.", NOTIF_ERR);

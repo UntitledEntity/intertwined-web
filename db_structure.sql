@@ -107,7 +107,6 @@ CREATE TABLE `users` (
   `password` varchar(70) NOT NULL,
   `email` varchar(70) NOT NULL, 
   `expires` varchar(70) NOT NULL DEFAULT '',
-  `hwid` varchar(70) NOT NULL DEFAULT '0',
   `banned` tinyint(1) DEFAULT 0,
   `ip` varchar(49) DEFAULT NULL,
   `lastlogin` int(11) DEFAULT NULL,

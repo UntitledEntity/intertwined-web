@@ -26,6 +26,46 @@ $license_data = get_license($_SESSION["user_data"]["user"]);
 
 $appid = $appinfo['appid'];
 
+$level = "";
+$price = "";
+$max_users = 0;
+$max_licenses = 0;
+$max_serverside = 0;
+$max_sessions = 0;
+
+switch ($license_data['level']) {
+    case 1:
+        $level = "Basic";
+        $price = "$4.99 / year";
+        $max_users = $max_licenses = 50;
+        $max_serverside = 5;
+        $max_sessions = 500;
+        break;
+    case 2:
+        $level = "Standard";
+        $price = "$9.99 / year";
+        $max_users = $max_licenses = 100;
+        $max_serverside = 10;
+        $max_sessions = 1000;
+        break;
+    case 3:
+        $level = "Premium";
+        $price = "$14.99 / year";
+        $max_users = $max_licenses = 150;
+        $max_serverside = 25;
+        $max_sessions = 1000;
+        break;
+    case 4:
+    case 5:
+        $level = "Enterprise";
+        $price = "$34.99 / year";
+        $max_users = $max_licenses = 1000;
+        $max_serverside = 100;
+        $max_sessions = 10000;
+        break;
+}
+
+
 if (isset($_POST['UpdateAppData'])) {
     $enabled = isset($_POST['AppEnabled']) ? 1 : 0;
     $iplock = isset($_POST['IpLock']) ? 1 : 0;
@@ -54,6 +94,7 @@ if (isset($_POST['UpdateActiveFunctions'])) {
     $result = mysqli_query($mysql_link, "UPDATE user_applications SET enabled_functions = '$bitstr' where appid = '$appid'");
 }
 
+$appstats = get_application_stats($appinfo['appid']);
 $app_params = get_application_params($appid);
 
 $application_enabled = $app_params['enabled'];
@@ -387,20 +428,18 @@ if (isset($_POST['ResetAppID'])) {
             <!-- Content Body -->
             <div class="u-body">
                 <div class="row">
-                    <div class="col-12">
-                        <div class="card mb-5">
+                    <div class="col-lg-6 mb-5">
+                        <div class="card h-100">
                             <!-- Card Header -->
                             <header class="card-header d-flex align-items-center justify-content-between">
-                                <h2 class="h4 card-header-title">Application Credentials</h2>
+                                <h2 class="h4 card-header-title">Application</h2>
                             </header>
                             <!-- End Card Header -->
 
                             <!-- Crad Body -->
                             <div class="card-body pt-0">
-                                <h3 class="h4 mb-3">Application ID: <blur><?php echo $appinfo['appid']; ?></blur>
-                                </h3>
-                                <h3 class="h4 mb-3">Encryption Key: <blur><?php echo $appinfo['enckey']; ?></blur>
-                                </h3>
+                                <h5 class="card-title"><strong>Application ID:</strong> <blur><?php echo $appinfo['appid']; ?></blur></h5>
+                                <h5 class="card-title"><strong>Encryption Key:</strong> <blur><?php echo $appinfo['enckey']; ?></blur></h5>
                             </div>
                             <!-- End Card Body -->
 
@@ -413,6 +452,130 @@ if (isset($_POST['ResetAppID'])) {
                             </footer>
                             <!-- End Card Footer -->
                         </div>
+                    </div>
+
+                    <div class="col-lg-6 mb-5">
+                        <div class="card h-100">
+                            <!-- Card Header -->
+                            <header class="card-header d-flex align-items-center justify-content-between">
+                                <h2 class="h4 card-header-title">Subscription</h2>
+                            </header>
+                            <!-- End Card Header -->
+
+                            <!-- Crad Body -->
+                            <div class="card-body pt-0">
+                                <h5 class="card-title"><strong>Subscription:</strong> <?php echo $level; ?></h5>
+                                <h5 class="card-title"><strong>Price:</strong> <?php echo $price; ?></h5>
+                                <h5 class="card-title"><strong>Expires:</strong> <?php echo date("m/d/y", $license_data['expires']); ?></h5>
+                            </div>
+                            <!-- End Card Body -->
+
+                            <!-- Card Footer -->
+                            <footer class="card-footer border-0">
+                                <button href="#" class="btn btn-outline-primary text-uppercase mb-2 mr-2">Renew Subscription</button>
+                                <button href="#" class="btn btn-outline-warning text-uppercase mb-2 mr-2">Cancel Subscription</button>
+                            </footer>
+                            <!-- End Card Footer -->
+                        </div>
+                    </div>
+                </div>
+
+                  <!-- APPINFO ROW -->
+                <div class="row">
+                    <div class="col-sm-6 col-xl-3 mb-5">
+                        <!-- Card -->
+                        <div class="card">
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <!-- Chart with Info -->
+                                <div class="media align-items-center py-2">
+                                    <!-- Chart with Info - Info -->
+                                    <div class="media-body">
+                                        <h5 class="h5 text-muted mb-2">Users</h5>
+                                        <span class="h2 font-weight-normal mb-0"><?php echo "$appstats[0] / $max_users"  ?></span>
+                                    </div>
+                                    <!-- End Chart with Info - Info -->
+                                </div>
+                                <!-- End Chart with Info -->
+                                <div class="progress mb-3" style="height: 6px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: <?php echo ($appstats[0] / $max_users) * 100 ?>%;" aria-valuenow="<?php echo $appstats[0] ?>" aria-valuemin="0" aria-valuemax="<?php echo $max_users ?>"></div>
+                                </div>
+                            </div>
+                            <!-- End Card Body -->
+                        </div>
+                        <!-- End Card -->
+                    </div>
+
+                    <div class="col-sm-6 col-xl-3 mb-5">
+                        <!-- Card -->
+                        <div class="card">
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <!-- Chart with Info -->
+                                <div class="media align-items-center py-2">
+                                    <!-- Chart with Info - Info -->
+                                    <div class="media-body">
+                                        <h5 class="h5 text-muted mb-2">Licenses</h5>
+                                        <span class="h2 font-weight-normal mb-0"><?php echo "$appstats[1] / $max_licenses"  ?></span>
+                                    </div>
+                                    <!-- End Chart with Info - Info -->
+                                </div>
+                                <!-- End Chart with Info -->
+                                <div class="progress mb-3" style="height: 6px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: <?php echo ($appstats[1] / $max_licenses) * 100 ?>%;" aria-valuenow="<?php echo $appstats[1] ?>" aria-valuemin="0" aria-valuemax="<?php echo $max_licenses ?>"></div>
+                                </div>
+                            </div>
+                            <!-- End Card Body -->
+                        </div>
+                        <!-- End Card -->
+                    </div>
+
+                    <div class="col-sm-6 col-xl-3 mb-5">
+                        <!-- Card -->
+                        <div class="card">
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <!-- Chart with Info -->
+                                <div class="media align-items-center py-2">
+                                    <!-- Chart with Info - Info -->
+                                    <div class="media-body">
+                                        <h5 class="h5 text-muted mb-2">Serverside Data</h5>
+                                        <span class="h2 font-weight-normal mb-0"><?php echo "$appstats[2] / $max_serverside"  ?></span>
+                                    </div>
+                                    <!-- End Chart with Info - Info -->
+                                </div>
+                                <!-- End Chart with Info -->
+                                <div class="progress mb-3" style="height: 6px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: <?php echo ($appstats[2] / $max_serverside) * 100 ?>%;" aria-valuenow="<?php echo $appstats[2] ?>" aria-valuemin="0" aria-valuemax="<?php echo $max_serverside ?>"></div>
+                                </div>
+                            </div>
+                            <!-- End Card Body -->
+                        </div>
+                        <!-- End Card -->
+                    </div>
+
+                    <div class="col-sm-6 col-xl-3 mb-5">
+                        <!-- Card -->
+                        <div class="card">
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <!-- Chart with Info -->
+                                <div class="media align-items-center py-2">
+                                    <!-- Chart with Info - Info -->
+                                    <div class="media-body">
+                                        <h5 class="h5 text-muted mb-2">Sessions</h5>
+                                        <span class="h2 font-weight-normal mb-0"><?php echo "$appstats[3] / $max_sessions"  ?></span>
+                                    </div>
+                                    <!-- End Chart with Info - Info -->
+                                </div>
+                                <!-- End Chart with Info -->
+                                <div class="progress mb-3" style="height: 6px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: <?php echo ($appstats[3] / $max_sessions) * 100 ?>%;" aria-valuenow="<?php echo $appstats[3] ?>" aria-valuemin="0" aria-valuemax="<?php echo $max_sessions ?>"></div>
+                                </div>
+                            </div>
+                            <!-- End Card Body -->
+                        </div>
+                        <!-- End Card -->
                     </div>
                 </div>
 
@@ -571,7 +734,7 @@ if (isset($_POST['ResetAppID'])) {
                         <div class="card h-100">
                             <!-- Card Header -->
                             <header class="card-header d-flex align-items-center justify-content-between">
-                                <h2 class="h4 card-header-title">Application Data</h2>
+                                <h2 class="h4 card-header-title">Settings</h2>
                             </header>
                             <!-- End Card Header -->
 

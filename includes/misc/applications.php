@@ -380,6 +380,28 @@ function get_application($user)
     return mysqli_fetch_array($result);
 }
 
+function get_application_stats($appid)
+{
+    // get the mysql_link
+    global $mysql_link;
+
+    // check application
+    $result = mysqli_query($mysql_link, "SELECT * FROM user_applications WHERE appid = '$appid'");
+    if (mysqli_num_rows($result) < 1)
+    {  
+        return 'no_application';
+    }
+
+    // App stats
+    $app_users = mysqli_num_rows(mysqli_query($mysql_link, "SELECT * FROM application_users WHERE application = '$appid'"));
+    $app_licenses = mysqli_num_rows(mysqli_query($mysql_link, "SELECT * FROM licenses WHERE application = '$appid'"));
+    $current_sessions = mysqli_num_rows(mysqli_query($mysql_link, "SELECT * from sessions WHERE application = '$appid'"));
+    $app_serverside = mysqli_num_rows(mysqli_query($mysql_link, "SELECT * from webhooks WHERE appid = '$appid'")) + 
+        mysqli_num_rows(mysqli_query($mysql_link, "SELECT * from variables WHERE appid = '$appid'"));
+    
+    return [$app_users, $app_licenses, $app_serverside, $current_sessions];
+}
+
 function delete_application_account($user, $appid)
 {
     // get the mysql_link

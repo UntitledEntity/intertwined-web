@@ -10,9 +10,9 @@ function login($email,$pass)
     global $ip;
 
     // sanitize
-    $email = sanitize($email);
+    $email = sha1(sanitize($email));
     $pass = sanitize($pass);
-    
+
     // find user
     $result = mysqli_query($mysql_link, "SELECT * FROM users WHERE email = '$email'");
     
@@ -27,17 +27,16 @@ function login($email,$pass)
     {
         $pw = $row['password'];
         $user = $row['username'];
-        $hwidd = $row['hwid'];
         $level = $row['level'];
         $banned = $row['banned'];
         $expiry = $row['expires'];
     }
     
     // check blacklist
-    $result = mysqli_query($mysql_link, "SELECT * FROM blacklists WHERE ip = '$ip' or hwid='$hwidd'");
+    $result = mysqli_query($mysql_link, "SELECT * FROM blacklists WHERE ip = '$ip'");
     if (mysqli_num_rows($result) >= 1)
     {
-        // ban the user if the hwid or ip is blacklisted
+        // ban the user if the ip is blacklisted
         // they already should be, but just in case
         mysqli_query($mysql_link, "UPDATE users SET banned = '1' WHERE username = '$user'");
         return 'blacklisted';
@@ -110,6 +109,8 @@ function register($user, $email, $pass, $license)
     {
         return 'invalid_email';
     }
+
+    $email = sha1($email);
 
     // check if there's an existing user before inserting one
     $result = mysqli_query($mysql_link, "SELECT * FROM users WHERE username = '$user'");
@@ -188,7 +189,6 @@ function blacklist($user, $ip, $appid = NULL)
 
     // sanitize
     $ip = sanitize($ip);
-    $hwid = NULL;
 
     // check if there's a blacklist on the ip we're registering from
     $result = mysqli_query($mysql_link, "SELECT * FROM blacklists WHERE ip = '$ip'");
@@ -197,7 +197,7 @@ function blacklist($user, $ip, $appid = NULL)
         return 'blacklisted';
     }
 
-    $resp = mysqli_query($mysql_link, "INSERT INTO blacklists (ip, hwid, application) VALUES ('$ip', '$hwid', '$appid')");
+    $resp = mysqli_query($mysql_link, "INSERT INTO blacklists (ip, application) VALUES ('$ip', '$appid')");
 
     if ($resp == false)
     {
@@ -216,19 +216,18 @@ function blacklist($user, $ip, $appid = NULL)
     return 'blacklisted';
 }
 
-function check_blacklist($ip = NULL, $hwid = NULL)
+function check_blacklist($ip = NULL)
 {
     // get the mysql_link
     global $mysql_link;
 
     $ip = sanitize($ip);
-    $hwid = sanitize($hwid);
 
     // check blacklist
     $result = mysqli_query($mysql_link, "SELECT * FROM blacklists WHERE ip = '$ip' and application is NULL");
     if (mysqli_num_rows($result) >= 1)
     {
-        // ban the user if the hwid or ip is blacklisted
+        // ban the user if the ip is blacklisted
         // they already should be, but just in case
         mysqli_query($mysql_link, "UPDATE users SET banned = '1' WHERE ip = '$ip' and application is NULL");
         return true;
@@ -291,6 +290,8 @@ function check_email_valid($email)
     {
         return 0;
     }
+
+    $email = sha1($email);
 
     $result = mysqli_query($mysql_link, "SELECT * FROM users WHERE email = '$email'");
     if (mysqli_num_rows($result) < 1)
@@ -360,6 +361,8 @@ function set_auth_code($email, $resetcode)
         return 0;
     }
 
+    $email = sha1($email);
+
     $result = mysqli_query($mysql_link, "SELECT * FROM users WHERE email = '$email'");
     if (mysqli_num_rows($result) < 1)
     {
@@ -380,6 +383,8 @@ function get_user_from_email($email) {
     {
         return 0;
     }
+
+    $email = sha1($email);
 
     $result = mysqli_query($mysql_link, "SELECT * FROM users WHERE email = '$email'");
     if (mysqli_num_rows($result) < 1)
