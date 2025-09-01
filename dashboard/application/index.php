@@ -108,12 +108,12 @@ $application_hash = $app_params['hash'];
 if (isset($_POST['ResetEncKey'])) {
     global $mysql_link;
 
-    $new_enckey = md5(rand());
+    $new_enckey = base64_encode(random_bytes(32));
 
     // the chance of two randomly generated md5 keys being the same is 2.9387359e-39%, so it's safe to say if it happens once (it won't), it won't happen consecutively twice.
     $result = mysqli_query($mysql_link, "SELECT * from user_applications WHERE enckey = '$new_enckey'");
     if (mysqli_num_rows($result))
-        $new_enckey = md5(rand());
+        $new_enckey = base64_encode(random_bytes(32));
 
     mysqli_query($mysql_link, "UPDATE user_applications SET enckey = '$new_enckey' WHERE appid = '$appid'");
 }

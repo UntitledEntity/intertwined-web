@@ -12,7 +12,7 @@ function create_application($owner)
     $appid = randomstring();
 
     // generate an enckey (md5 random hash)
-    $enckey = md5(rand());
+    $enckey = base64_encode(random_bytes(32));
 
     $resp = mysqli_query($mysql_link, "INSERT INTO user_applications (appid, enckey, owner) VALUES ('$appid', '$enckey', '$owner')");
     if ($resp == false)

@@ -8,15 +8,93 @@ include '../includes/include_all.php';
 // Intertwined web encrypted API v0.3.1
 // TODO: Documentation, Force encryption
 
-function encrypt($in, $key, $iv) {
-    $keyhash = substr(hash('sha256', $key), 0, 32);
-    $ivhash = substr(hash('sha256', $iv), 0, 16);
-    return bin2hex(openssl_encrypt($in, 'aes-256-cbc', $keyhash, OPENSSL_RAW_DATA, $ivhash));
+/** Normalize $enckey to raw 32 bytes */
+function enckey_to_bin32(string $enckey): string {
+    // Try strict Base64 first
+    $b64 = base64_decode($enckey, true);
+    if ($b64 !== false && strlen($b64) === 32) {
+        return $b64;
+    }
+
+    die(json_encode(array(
+        "success" => false,
+        "error" => "Invalid EncKey; expected base64(32B)"
+    )));
 }
-function decrypt($in, $key, $iv) {
-    $keyhash = substr(hash('sha256', $key), 0, 32);
-    $ivhash = substr(hash('sha256', $iv), 0, 16);
-    return openssl_decrypt(hex2bin($in), 'aes-256-cbc', $keyhash, OPENSSL_RAW_DATA, $ivhash);
+
+/**
+ * AEAD encrypt (AES-256-GCM).
+ * AAD IS IV
+ * Accepts "NONCE_HEX:TAG_HEX:CT_HEX"
+ */
+function encrypt(string $plaintext, string $enckey, string $aad = ''): string {
+    $key32 = enckey_to_bin32($enckey);
+
+    $nonceLen = openssl_cipher_iv_length('aes-256-gcm'); // should be 12
+    if ($nonceLen !== 12) {
+        die(json_encode(array(
+            "success" => false,
+            "error" => "Unexpected Nonce Length"
+        )));
+    }
+    $nonce = random_bytes($nonceLen);
+
+    $tag = '';
+    $ct  = openssl_encrypt( $plaintext, 'aes-256-gcm', 
+        $key32,
+        OPENSSL_RAW_DATA,
+        $nonce,
+        $tag,
+        $aad,
+        16 // 128-bit tag
+    );
+    if ($ct === false || strlen($tag) !== 16) {
+        die(json_encode(array(
+            "success" => false,
+            "error" => "Encryption Failed"
+        )));
+    }
+
+    return bin2hex($nonce) . ':' . bin2hex($tag) . ':' . bin2hex($ct);
+}
+
+/**
+ * AEAD decrypt (AES-256-GCM).
+ * AAD IS IV
+ * Accepts "NONCE_HEX:TAG_HEX:CT_HEX"
+ */
+function decrypt(string $blobhex, string $enckey, string $aad = ''): string {
+    $key32  = enckey_to_bin32($enckey);
+
+    $parts = explode(':', $blobhex, 3);
+    if (count($parts) !== 3) {
+        die(json_encode(array(
+            "success" => false,
+            "error" => "Bad blob format; expected NONCE:TAG:CT"
+        )));
+    }
+    [$nonceHex, $tagHex, $ctHex] = $parts;
+
+    $nonce = hex2bin($nonceHex);
+    $tag   = hex2bin($tagHex);
+    $ct    = hex2bin($ctHex);
+
+    $pt = openssl_decrypt(
+        $ct,
+        'aes-256-gcm',
+        $key32,
+        OPENSSL_RAW_DATA,
+        $nonce,
+        $tag,
+        $aad
+    );
+    if ($pt === false) {
+        die(json_encode(array(
+            "success" => false,
+            "error" => "Decryption failed; Auth Error"
+        )));
+    }
+    return $pt;
 }
 
 // Handle rate limits. Cloudflare has got us covered for the rest of the website, 
